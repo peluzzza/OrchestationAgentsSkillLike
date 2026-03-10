@@ -33,15 +33,17 @@ Shows help.
 
 .EXAMPLE
 # Ensure local clone and print recommended settings
-pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1
+
+# If you have PowerShell 7 installed, you can use `pwsh` instead of `powershell`.
 
 .EXAMPLE
 # Copy Atlas pack agents into the current workspace's .github/agents folder
-pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1 -Mode agents -Pack atlas-orchestration-team
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1 -Mode agents -Pack atlas-orchestration-team
 
 .EXAMPLE
 # Copy all pack agents, overwriting existing files
-pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1 -Mode agents -Force
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1 -Mode agents -Force
 #>
 
 [CmdletBinding()]
@@ -242,31 +244,31 @@ function Print-RecommendedSettings {
   Write-Output "A) Marketplace (remote)"
   Write-Output "----------------------"
   Write-Output "{"
-  Write-Output "  \"chat.plugins.enabled\": true,"
-  Write-Output "  \"chat.plugins.marketplaces\": [\"$RemoteMarketplaceId\"]"
+  Write-Output '  "chat.plugins.enabled": true,'
+  Write-Output ('  "chat.plugins.marketplaces": ["{0}"]' -f $RemoteMarketplaceId)
   Write-Output "}"
   Write-Output ""
 
   Write-Output "B) Local plugin path (no marketplace UI)"
   Write-Output "---------------------------------------"
   Write-Output "{"
-  Write-Output "  \"chat.plugins.enabled\": true,"
-  Write-Output "  \"chat.plugins.paths\": [\"$localPluginsPathJson\"]"
+  Write-Output '  "chat.plugins.enabled": true,'
+  Write-Output ('  "chat.plugins.paths": ["{0}"]' -f $localPluginsPathJson)
   Write-Output "}"
   Write-Output ""
 
   Write-Output "C) Agents-only (copy/sync into this workspace)"
   Write-Output "---------------------------------------------"
   Write-Output "{"
-  Write-Output "  \"chat.agentFilesLocations\": [\"$workspaceAgentsDirJson\"]"
+  Write-Output ('  "chat.agentFilesLocations": ["{0}"]' -f $workspaceAgentsDirJson)
   Write-Output "}"
   Write-Output ""
 
   Write-Output "(Optional) Marketplace (local clone)"
   Write-Output "-----------------------------------"
   Write-Output "{"
-  Write-Output "  \"chat.plugins.enabled\": true,"
-  Write-Output "  \"chat.plugins.marketplaces\": [\"$localRepoDirJson\"]"
+  Write-Output '  "chat.plugins.enabled": true,'
+  Write-Output ('  "chat.plugins.marketplaces": ["{0}"]' -f $localRepoDirJson)
   Write-Output "}"
   Write-Output ""
 }

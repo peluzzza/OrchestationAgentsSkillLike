@@ -13,7 +13,8 @@ This repo demonstrates a “skills-like” distribution model for **agent orches
 
 3) Install or sync packs
 - Marketplace UI: Copilot Chat → Agent Plugins (or type `@agentPlugins`) and install the pack(s).
-- Local sync: run `pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1` and follow the printed settings snippet.
+- Local sync: run `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1` and follow the printed settings snippet.
+  - If you have PowerShell 7 installed, you can use `pwsh` instead of `powershell`.
 
 ## Architecture
 
