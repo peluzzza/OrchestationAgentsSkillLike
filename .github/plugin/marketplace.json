@@ -1,0 +1,25 @@
+{
+  "name": "OrchestationAgentsSkillLike",
+  "metadata": {
+    "description": "Agent Plugin marketplace for installable packs of agents and optional skills.",
+    "version": "0.1.0",
+    "pluginRoot": "./plugins"
+  },
+  "owner": {
+    "name": "peluzzza"
+  },
+  "plugins": [
+    {
+      "name": "agent-pack-catalog",
+      "source": "agent-pack-catalog",
+      "description": "Meta pack for discovering/searching available agent packs in this marketplace.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "atlas-orchestration-team",
+      "source": "atlas-orchestration-team",
+      "description": "Atlas coordinator plus a small set of focused subagents for plan → implement → review → test → deploy flows.",
+      "version": "0.1.0"
+    }
+  ]
+}

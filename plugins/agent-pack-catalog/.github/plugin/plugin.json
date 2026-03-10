@@ -1,0 +1,24 @@
+{
+  "name": "agent-pack-catalog",
+  "description": "A minimal discovery pack: a catalog agent plus a small skill that reads this repo marketplace and recommends which packs to install.",
+  "version": "0.1.0",
+  "author": {
+    "name": "peluzzza"
+  },
+  "repository": "https://github.com/peluzzza/OrchestationAgentsSkillLike",
+  "license": "MIT",
+  "keywords": [
+    "catalog",
+    "marketplace",
+    "discovery",
+    "plugins",
+    "agents",
+    "skills"
+  ],
+  "agents": [
+    "./agents"
+  ],
+  "skills": [
+    "./skills/agent-pack-search"
+  ]
+}
