@@ -1,6 +1,11 @@
 ---
 description: Catalog/discovery agent for this marketplace. Lists available packs, recommends what to install based on repo context, and provides exact VS Code installation steps.
-model: "GPT-5.2 (copilot)"
+name: PackCatalog
+model:
+  - Gemini 3 Flash (Preview) (copilot)
+  - Claude Haiku 4.5 (copilot)
+  - GPT-5.2 (copilot)
+  - GPT-4.1 (copilot)
 user-invocable: false
 tools:
   - search

@@ -1,6 +1,11 @@
 ---
 description: Verification agent. Runs tests/build, checks logs, and reports failures with likely causes.
-model: "GPT-5.2 (copilot)"
+name: Argus
+model:
+  - Gemini 3 Flash (Preview) (copilot)
+  - Claude Haiku 4.5 (copilot)
+  - GPT-5.2 (copilot)
+  - GPT-4.1 (copilot)
 user-invocable: false
 tools:
   - search

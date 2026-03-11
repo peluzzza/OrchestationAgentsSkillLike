@@ -1,6 +1,12 @@
 ---
 description: Codebase reconnaissance agent. Locates where changes should happen and what tests/commands are relevant.
-model: "GPT-5.2 (copilot)"
+name: Explorer
+model:
+  - Gemini 3 Flash (Preview) (copilot)
+  - Claude Haiku 4.5 (copilot)
+  - GPT-5.2 (copilot)
+  - Claude Sonnet 4.5 (copilot)
+  - GPT-4.1 (copilot)
 user-invocable: false
 tools:
   - search

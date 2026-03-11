@@ -1,6 +1,11 @@
 ---
 description: Review agent. Checks diffs for correctness, security, style, and adherence to requirements.
-model: "GPT-5.2 (copilot)"
+name: Code-Review
+model:
+  - Claude Opus 4.5 (copilot)
+  - GPT-5.2 (copilot)
+  - Claude Sonnet 4.5 (copilot)
+  - GPT-4.1 (copilot)
 user-invocable: false
 tools:
   - search

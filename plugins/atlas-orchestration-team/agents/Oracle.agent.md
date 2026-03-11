@@ -1,6 +1,11 @@
 ---
 description: Research and requirements agent. Clarifies intent, constraints, and edge cases; proposes a minimal plan.
-model: "GPT-5.2 (copilot)"
+name: Oracle
+model:
+  - Claude Opus 4.5 (copilot)
+  - GPT-5.2 (copilot)
+  - Claude Sonnet 4.5 (copilot)
+  - GPT-4.1 (copilot)
 user-invocable: false
 tools:
   - search
