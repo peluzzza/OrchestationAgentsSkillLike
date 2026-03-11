@@ -34,6 +34,8 @@ For each agent file, extract:
 - `name` (canonical invocation name)
 - `description`
 - `user-invocable`
+- `handoffs` (if present; for routing)
+- `tools` (if present; for routing)
 
 Selection rules:
 - Requirements/risks/acceptance criteria → `Oracle`

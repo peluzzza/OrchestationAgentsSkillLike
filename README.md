@@ -1,76 +1,17 @@
-# Agent Plugin Marketplace (skills-like distribution for agent orchestration)
+# Atlas Agents For VS Code
 
-This repo demonstrates a “skills-like” distribution model for **agent orchestration** in VS Code: you publish a small **marketplace** definition that points to installable **plugin packs**, and each pack can bundle **agents** (custom agents) and optional **skills**.
+This repo is set up so you can start from zero with a simple experience:
 
-## Quickstart
+- You see only `Atlas` in the agent picker.
+- `Atlas` delegates internally to hidden specialist subagents when needed.
+- No plugin marketplace setup is required for the default flow.
 
-1) Enable agent plugins
-- Set `chat.plugins.enabled` = true
+## Install From Zero (60 seconds)
 
-2) Choose a consumption mode (A/B/C below)
-- If you can use remote marketplaces, start with **A**.
-- If you can’t (enterprise policy/network), use **B** (local plugin path) or **C** (copy agents).
-
-3) Install or sync packs
-- Marketplace UI: Copilot Chat → Agent Plugins (or type `@agentPlugins`) and install the pack(s).
-- Local sync: run `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1` and follow the printed settings snippet.
-  - If you have PowerShell 7 installed, you can use `pwsh` instead of `powershell`.
-
-## Architecture
-
-- Marketplace: .github/plugin/marketplace.json
-- Plugin packs: ./plugins/<pack>
-   - Each pack can expose:
-      - Agents (./agents/*.agent.md)
-      - Skills (./skills/<skill>/SKILL.md)
-
-Included packs:
-
-- atlas-orchestration-team: Atlas coordinator + focused subagents for plan → implement → review → test → deploy.
-- agent-pack-catalog: a catalog agent + discovery skill to list/recommend packs from the marketplace.
-
-## Consume this repo (three options)
-
-### A) Marketplace install (recommended)
-
-1) Add the marketplace
-- Settings: add one of these to `chat.plugins.marketplaces`
-  - Remote: `peluzzza/OrchestationAgentsSkillLike`
-  - Local: absolute path to a local clone of this repo
-
-2) Install packs
-- Open Copilot Chat → Agent Plugins (or type `@agentPlugins`)
-- Install the pack(s) you want:
-   - atlas-orchestration-team
-   - agent-pack-catalog
-- Reload VS Code if agents don’t appear immediately
-
-### B) Local plugin path (no marketplace UI)
-
-If you can’t use marketplaces (policy/sandbox/network), you can still “sync” agents locally:
-
-- Clone this repo and add the plugin root to `chat.plugins.paths`
-  - Point it at the folder that contains the pack folders (the `plugins/` directory in this repo)
-
-`chat.plugins.paths` uses an object-map form, e.g.:
-
-```json
-{
-  "chat.plugins.enabled": true,
-  "chat.plugins.paths": {
-    "plugins": true
-  }
-}
-```
-
-Tip: `scripts/sync_agent_packs.ps1` can clone/pull the repo for you and print the exact settings snippet.
-
-### C) Copy agents into `.github/agents` (agents-only)
-
-If you want agent files to live inside a specific workspace (and avoid plugin packs entirely):
-
-- Copy `*.agent.md` into `.github/agents/` in your repo
-- Add `.github/agents` to `chat.agentFilesLocations` (object-map form), e.g.:
+1. Clone this repository.
+2. Open the repository folder in VS Code.
+3. Make sure Copilot Chat agents are enabled in your environment.
+4. Confirm workspace setting `.vscode/settings.json` contains:
 
 ```json
 {
@@ -80,35 +21,53 @@ If you want agent files to live inside a specific workspace (and avoid plugin pa
 }
 ```
 
-Tip: `scripts/sync_agent_packs.ps1 -Mode agents` performs the copy, and will not overwrite existing files unless you pass `-Force`.
+5. Run `Developer: Reload Window`.
+6. Open Copilot Chat and select `Atlas`.
+7. Ask for a task (for example: "Plan and implement X with tests").
 
-A VS Code reload may be required after changing these settings.
+Done. No extra installation steps are needed.
 
-## Why this is “skills-like”
+## What You Should See
 
-“Skills” often work through progressive disclosure: you start with a small capability, then the system discovers and enables more specialized tools when needed.
+- Visible agent: `Atlas` only.
+- Hidden subagents: `Oracle`, `Explorer`, `Sisyphus`, `Argus`, `Code-Review`, `Hephaestus`, `Frontend-Engineer`, `PackCatalog`.
+- `Atlas` chooses and calls subagents internally.
 
-This repo emulates that pattern for agents:
+## Optional: Marketplace / Plugin Packs
 
-- A small marketplace definition points to installable packs.
-- Packs bundle a coordinator (Atlas) plus focused subagents, and optionally “skills” content.
-- The coordinator is instructed to discover what’s available in the current workspace, proceed safely when things are missing, and guide the user through installation/sync steps instead of assuming capabilities.
+Use this only if you want distribution through plugin packs. It is not required for normal use.
 
-## Windows/Enterprise notes
+- Marketplace definition: `.github/plugin/marketplace.json`
+- Plugin packs: `plugins/atlas-orchestration-team`, `plugins/agent-pack-catalog`
+- Sync helper script: `scripts/sync_agent_packs.ps1`
 
-- There is no silent install/sandbox bypass: any cloning, pulling, or copying requires explicit user approval.
-- Enterprise policies may restrict marketplace usage or network access. Prefer **B** (local plugin path) or **C** (agents-only copy) in locked-down environments.
-- Execution policy can block scripts; the examples use `-ExecutionPolicy Bypass` for the current PowerShell process only.
+Example (optional):
 
-## How Atlas bootstraps
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1
+```
 
-The Atlas coordinator is designed to behave like “skills”: it attempts to **discover** whether its required subagents are available in the current workspace, and if they aren’t it:
+## Keep Setup Simple (Recommended)
 
-- Continues in single-agent mode (no pretending subagents exist)
-- Explains how to install/sync the missing pack(s)
-- Can run terminal commands only if the user explicitly approves
+If you are testing the default Atlas-only UX, remove `plugins/` to avoid duplicate sources:
 
-## Limitations
+```powershell
+Remove-Item -Recurse -Force "plugins"
+```
 
-- No fully automatic installation: agents can guide steps, but they cannot silently install VS Code plugins.
-- Locked-down Windows/enterprise environments may restrict marketplace usage or require policy changes; use the local folder-reference mode when needed.
+Then reload VS Code.
+
+## Troubleshooting
+
+If you see more than one visible agent:
+
+1. Check all subagents have `user-invocable: false`.
+2. Check `Atlas` has `user-invocable: true`.
+3. Remove duplicate plugin sources (`plugins/`) if you are not using plugin mode.
+4. Reload VS Code.
+
+If `Atlas` does not delegate:
+
+1. Verify `Atlas` frontmatter includes `tools: [agent, ...]`.
+2. Verify `Atlas` includes `agents: ["*"]`.
+3. Confirm subagent files exist under `.github/agents`.
