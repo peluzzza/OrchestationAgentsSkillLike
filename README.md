@@ -52,6 +52,17 @@ If you can’t use marketplaces (policy/sandbox/network), you can still “sync�
 - Clone this repo and add the plugin root to `chat.plugins.paths`
   - Point it at the folder that contains the pack folders (the `plugins/` directory in this repo)
 
+`chat.plugins.paths` uses an object-map form, e.g.:
+
+```json
+{
+  "chat.plugins.enabled": true,
+  "chat.plugins.paths": {
+    "plugins": true
+  }
+}
+```
+
 Tip: `scripts/sync_agent_packs.ps1` can clone/pull the repo for you and print the exact settings snippet.
 
 ### C) Copy agents into `.github/agents` (agents-only)
@@ -59,7 +70,15 @@ Tip: `scripts/sync_agent_packs.ps1` can clone/pull the repo for you and print th
 If you want agent files to live inside a specific workspace (and avoid plugin packs entirely):
 
 - Copy `*.agent.md` into `.github/agents/` in your repo
-- Add `.github/agents` to `chat.agentFilesLocations`
+- Add `.github/agents` to `chat.agentFilesLocations` (object-map form), e.g.:
+
+```json
+{
+  "chat.agentFilesLocations": {
+    ".github/agents": true
+  }
+}
+```
 
 Tip: `scripts/sync_agent_packs.ps1 -Mode agents` performs the copy, and will not overwrite existing files unless you pass `-Force`.
 

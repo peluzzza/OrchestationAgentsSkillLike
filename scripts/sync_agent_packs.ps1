@@ -229,9 +229,85 @@ function Print-RecommendedSettings {
     [string]$WorkspaceAgentsDir
   )
 
+  function Convert-ToSettingsPath {
+    param(
+      [Parameter(Mandatory = $true)]
+      [string]$Path
+    )
+
+    $resolved = $null
+    try {
+      $resolved = (Resolve-Path -LiteralPath $Path -ErrorAction SilentlyContinue)
+    }
+    catch {
+      $resolved = $null
+    }
+
+    $absolutePath = if ($resolved) { $resolved.Path } else { $Path }
+    $cwd = (Resolve-Path -LiteralPath (Get-Location).Path).Path
+    $relative = $null
+
+    $cwdPrefix = $cwd.TrimEnd('\') + '\'
+    if ($absolutePath.StartsWith($cwdPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+      $candidate = $absolutePath.Substring($cwdPrefix.Length)
+      if ($candidate) {
+        return ($candidate -replace '\\', '/')
+      }
+    }
+
+    try {
+      function Convert-ToFileUri {
+        param(
+          [Parameter(Mandatory = $true)]
+          [string]$Path,
+
+          [Parameter(Mandatory = $false)]
+          [switch]$AsDirectory
+        )
+
+        if ($Path.StartsWith('\\')) {
+          $unc = $Path.TrimStart('\\')
+          $parts = $unc.Split('\\', 2)
+          $host = $parts[0]
+          $rest = if ($parts.Count -gt 1) { $parts[1] } else { '' }
+          $rest = ($rest -replace '\\', '/')
+          if ($AsDirectory -and $rest -and -not $rest.EndsWith('/')) {
+            $rest += '/'
+          }
+          return New-Object System.Uri(("file://{0}/{1}" -f $host, $rest))
+        }
+
+        $normalized = ($Path -replace '\\', '/')
+        if ($AsDirectory -and -not $normalized.EndsWith('/')) {
+          $normalized += '/'
+        }
+
+        return New-Object System.Uri(("file:///{0}" -f $normalized))
+      }
+
+      $fromUri = Convert-ToFileUri -Path ($cwd.TrimEnd('\') + '\') -AsDirectory
+      $toUri = Convert-ToFileUri -Path $absolutePath
+      $relative = [System.Uri]::UnescapeDataString($fromUri.MakeRelativeUri($toUri).ToString())
+    }
+    catch {
+      $relative = $null
+    }
+
+    $isActuallyRelative = $relative -and
+      -not ($relative.StartsWith('..')) -and
+      -not ($relative -match '^[a-zA-Z]+:') -and
+      -not ($relative.StartsWith('/'))
+
+    if ($isActuallyRelative) {
+      return ($relative -replace '\\', '/')
+    }
+
+    return ($absolutePath -replace '\\', '/')
+  }
+
   $localPluginsPath = Join-Path $LocalRepoDir 'plugins'
-  $localPluginsPathJson = ($localPluginsPath -replace '\\', '/')
-  $workspaceAgentsDirJson = ($WorkspaceAgentsDir -replace '\\', '/')
+  $localPluginsPathJson = Convert-ToSettingsPath -Path $localPluginsPath
+  $workspaceAgentsDirJson = Convert-ToSettingsPath -Path $WorkspaceAgentsDir
   $localRepoDirJson = ($LocalRepoDir -replace '\\', '/')
 
   Write-Output ""
@@ -253,14 +329,18 @@ function Print-RecommendedSettings {
   Write-Output "---------------------------------------"
   Write-Output "{"
   Write-Output '  "chat.plugins.enabled": true,'
-  Write-Output ('  "chat.plugins.paths": ["{0}"]' -f $localPluginsPathJson)
+  Write-Output '  "chat.plugins.paths": {'
+  Write-Output ('    "{0}": true' -f $localPluginsPathJson)
+  Write-Output '  }'
   Write-Output "}"
   Write-Output ""
 
   Write-Output "C) Agents-only (copy/sync into this workspace)"
   Write-Output "---------------------------------------------"
   Write-Output "{"
-  Write-Output ('  "chat.agentFilesLocations": ["{0}"]' -f $workspaceAgentsDirJson)
+  Write-Output '  "chat.agentFilesLocations": {'
+  Write-Output ('    "{0}": true' -f $workspaceAgentsDirJson)
+  Write-Output '  }'
   Write-Output "}"
   Write-Output ""
 
@@ -273,10 +353,19 @@ function Print-RecommendedSettings {
   Write-Output ""
 }
 
-Assert-GitAvailable
+$scriptRepoRoot = Split-Path -Parent $PSScriptRoot
+$localPluginsDir = Join-Path $scriptRepoRoot 'plugins'
+$localMarketplaceJson = Join-Path $scriptRepoRoot '.github\plugin\marketplace.json'
 
-Ensure-MarketplaceRepo -RepoDir $TargetDir
-$resolvedRepoDir = (Resolve-Path -LiteralPath $TargetDir).Path
+if ((Test-Path -LiteralPath $localPluginsDir) -and (Test-Path -LiteralPath $localMarketplaceJson)) {
+  Write-Host "Using local marketplace repo: $scriptRepoRoot"
+  $resolvedRepoDir = (Resolve-Path -LiteralPath $scriptRepoRoot).Path
+}
+else {
+  Assert-GitAvailable
+  Ensure-MarketplaceRepo -RepoDir $TargetDir
+  $resolvedRepoDir = (Resolve-Path -LiteralPath $TargetDir).Path
+}
 
 if ($Mode -eq 'agents') {
   $selectedPacks = Resolve-PackSelection -RepoDir $resolvedRepoDir -Pack $Pack
