@@ -3,12 +3,7 @@ description: Coordinator/orchestrator agent for multi-step execution. Plans work
 name: Atlas
 user-invocable: true
 model:
-  - Claude Opus 4.5 (copilot)
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
-  - Claude Haiku 4.5 (copilot)
-  - GPT-4.1 (copilot)
+  - GPT-5.3-Codex (copilot)
 tools:
   - agent
   - search
@@ -59,9 +54,9 @@ If a subagent invocation fails for any reason, fall back to single-agent mode an
 You cannot enumerate models at runtime. Model selection works by a prioritized `model:` list per agent.
 
 Role intent:
-- Orchestration/planning/review: prefer strong reasoning.
-- Discovery/catalog: prefer fast models.
-- Implementation: prefer code-focused models (Codex) when available.
+- Orchestration/planning/review: prefer strong reasoning, preference for GPT last-gen.
+- Discovery/catalog: prefer fast models, preference for flash/haiku for speed.
+- Implementation: prefer code-focused models, preference for Sonnet/Opus for better code quality.
 
 ## 3) Execution loop (plan → implement → review → test/verify)
 
