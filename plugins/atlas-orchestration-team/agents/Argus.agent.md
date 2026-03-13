@@ -3,6 +3,7 @@ description: Verification agent for targeted test/build execution and failure tr
 name: Argus
 argument-hint: Verify this phase by running the smallest relevant checks first and triaging failures.
 model:
+  - GPT-5.3-Codex (copilot)
   - Gemini 3 Flash (Preview) (copilot)
   - Claude Haiku 4.5 (copilot)
   - GPT-5.2 (copilot)
