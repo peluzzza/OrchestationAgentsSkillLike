@@ -125,12 +125,9 @@ class TaskRepository:
         BUG: This implementation doesn't properly reject invalid values!
         It should raise ValidationError for values outside 1-4.
         """
-        # BUG: Missing range check - allows any value that happens to match enum
-        try:
-            return Priority(priority)
-        except ValueError:
-            # BUG: Returns MEDIUM as default instead of raising error
-            return Priority.MEDIUM
+        if priority < 1 or priority > 4:
+            raise ValidationError("priority must be between 1 and 4")
+        return Priority(priority)
     
     def _validate_due_date(self, due_date: date) -> None:
         """Validate due date is not in the past."""

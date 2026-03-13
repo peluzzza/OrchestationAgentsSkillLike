@@ -3,6 +3,7 @@ description: Review gate that validates implementation quality, correctness, and
 name: Code-Review
 argument-hint: Review these changes and return APPROVED, NEEDS_REVISION, or FAILED.
 model:
+  - GPT-5.3-Codex (copilot)
   - Claude Opus 4.5 (copilot)
   - GPT-5.2 (copilot)
   - Claude Sonnet 4.5 (copilot)

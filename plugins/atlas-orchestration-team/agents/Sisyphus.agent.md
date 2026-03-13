@@ -3,6 +3,7 @@ description: Implementation specialist that executes focused changes with strict
 name: Sisyphus
 argument-hint: Implement this scoped phase/task with tests first and minimal diffs.
 model:
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.3-Codex (copilot)
   - Claude Opus 4.5 (copilot)
   - GPT-5.2 (copilot)
