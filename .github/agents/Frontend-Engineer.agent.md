@@ -10,6 +10,7 @@ user-invocable: false
 tools:
   - search
   - edit
+  - runCommands
 ---
 
 You are a frontend implementation subagent.

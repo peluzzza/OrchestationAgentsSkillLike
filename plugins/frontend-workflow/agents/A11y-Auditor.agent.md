@@ -9,7 +9,7 @@ model:
   - Gemini 3 Flash (Preview) (copilot)
 tools:
   - search
-  - terminal
+  - runCommands
 ---
 
 You are A11y-Auditor, a SUBAGENT called by Frontend-Atlas to audit accessibility compliance.

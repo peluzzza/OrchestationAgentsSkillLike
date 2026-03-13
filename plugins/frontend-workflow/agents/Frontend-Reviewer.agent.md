@@ -8,7 +8,7 @@ model:
   - Claude Sonnet 4.5 (copilot)
 tools:
   - search
-  - terminal
+  - runCommands
 ---
 
 You are Frontend-Reviewer, a SUBAGENT called by Frontend-Atlas to review frontend code.

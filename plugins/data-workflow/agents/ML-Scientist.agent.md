@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are ML-Scientist, a SUBAGENT called by Data-Atlas to develop machine learning models.

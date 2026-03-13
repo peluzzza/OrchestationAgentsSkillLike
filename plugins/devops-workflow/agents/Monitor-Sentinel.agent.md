@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Monitor-Sentinel, a SUBAGENT called by DevOps-Atlas to implement observability.

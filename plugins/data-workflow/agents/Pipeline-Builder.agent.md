@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Pipeline-Builder, a SUBAGENT called by Data-Atlas to build data pipelines.

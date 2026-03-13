@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Data-Quality, a SUBAGENT called by Data-Atlas to ensure data quality and governance.

@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Pipeline-Engineer, a SUBAGENT called by DevOps-Atlas to design and implement CI/CD pipelines.

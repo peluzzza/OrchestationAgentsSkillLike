@@ -113,6 +113,44 @@ Remove-Item -Recurse -Force "plugins"
 
 Then reload VS Code.
 
+## Automatic Flow Source Selection (NEW)
+
+Atlas now includes **intelligent flow source selection**. When you ask Atlas for a task, it automatically:
+
+1. **Discovers all available flow sources** (`.github/agents` + `plugins/*/agents`)
+2. **Analyzes the task type** (frontend, backend, devops, data, general)
+3. **Selects the best workflow** based on:
+   - Origin precedence (`github > plugin > other`)
+   - Capability matching (task type + required skills)
+   - Preferred source with fallback if unavailable
+   - Deterministic tie-break for stable results
+
+### Example Flow Selection
+
+| Your Task | Selected Workflow | Why |
+|-----------|-------------------|-----|
+| "Create a React login form" | `frontend-workflow` | Has UI-Designer, Component-Builder, A11y-Auditor |
+| "Add REST endpoint for users" | `backend-workflow` | Has API-Designer, Service-Builder, Security-Guard |
+| "Deploy to Kubernetes" | `devops-workflow` | Has Container-Master, Pipeline-Engineer |
+| "Train ML model" | `data-workflow` | Has ML-Scientist, Pipeline-Builder |
+| "Fix this bug" | `.github/agents` | General-purpose, highest precedence |
+
+### Demo: Test Source Selection
+
+Two demos are included to verify the system works:
+
+```powershell
+# Smoke test (basic subagent delegation)
+cd demos/subagents-smoke-demo
+py -m unittest -v
+
+# Source selection engine (multi-flow selection)
+cd demos/atlas-source-selection-demo
+py -m unittest -v
+```
+
+See [demos/atlas-source-selection-demo/DEMO_PROMPT.md](demos/atlas-source-selection-demo/DEMO_PROMPT.md) for a guided orchestration test.
+
 ## Troubleshooting
 
 If you see more than one visible agent:
@@ -127,3 +165,9 @@ If `Atlas` does not delegate:
 1. Verify `Atlas` frontmatter includes `tools: [agent, ...]`.
 2. Verify `Atlas` includes `agents: ["*"]`.
 3. Confirm subagent files exist under `.github/agents`.
+
+If flow selection seems wrong:
+
+1. Check that domain workflows are enabled in `.vscode/settings.json`.
+2. Verify the task description is clear about domain (e.g., "React component" vs "API endpoint").
+3. Run the source selection demo to confirm the engine works: `py -m unittest -v demos/atlas-source-selection-demo/test_selection_engine.py`

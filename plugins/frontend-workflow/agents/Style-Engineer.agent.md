@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Style-Engineer, a SUBAGENT called by Frontend-Atlas to implement styling, animations, and responsive design.

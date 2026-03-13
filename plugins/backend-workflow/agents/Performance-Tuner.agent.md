@@ -9,7 +9,7 @@ model:
   - Gemini 3 Flash (Preview) (copilot)
 tools:
   - search
-  - terminal
+  - runCommands
 ---
 
 You are Performance-Tuner, a SUBAGENT called by Backend-Atlas to analyze and optimize backend performance.

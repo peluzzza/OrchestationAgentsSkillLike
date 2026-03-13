@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Infra-Architect, a SUBAGENT called by DevOps-Atlas to design and implement infrastructure.

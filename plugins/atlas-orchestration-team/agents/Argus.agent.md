@@ -10,7 +10,7 @@ model:
 user-invocable: false
 tools:
   - search
-  - terminal
+  - runCommands
 ---
 
 You are a verification subagent.

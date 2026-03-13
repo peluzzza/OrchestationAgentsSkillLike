@@ -13,7 +13,7 @@ tools:
   - search
   - fetch
   - edit
-  - terminal
+  - runCommands
 agents: ["*"]
 handoffs:
   - label: Hand off to Frontend-Atlas

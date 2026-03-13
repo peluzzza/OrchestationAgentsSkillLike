@@ -9,6 +9,7 @@ model:
 user-invocable: false
 tools:
   - search
+  - runCommands
 ---
 
 You are a build/release subagent.

@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Database-Engineer, a SUBAGENT called by Backend-Atlas to design and implement database operations.

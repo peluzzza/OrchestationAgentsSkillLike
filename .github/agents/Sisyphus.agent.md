@@ -12,6 +12,7 @@ user-invocable: false
 tools:
   - search
   - edit
+  - runCommands
 ---
 
 You are an implementation subagent called by a conductor.

@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Container-Master, a SUBAGENT called by DevOps-Atlas to handle containerization and orchestration.

@@ -8,7 +8,7 @@ model:
   - Claude Sonnet 4.5 (copilot)
 tools:
   - search
-  - terminal
+  - runCommands
 ---
 
 You are Backend-Reviewer, a SUBAGENT called by Backend-Atlas to review backend code.

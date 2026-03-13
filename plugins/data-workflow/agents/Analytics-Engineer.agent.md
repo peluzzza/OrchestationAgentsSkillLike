@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Analytics-Engineer, a SUBAGENT called by Data-Atlas to build analytics and reporting.

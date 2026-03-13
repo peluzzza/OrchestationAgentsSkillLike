@@ -8,7 +8,7 @@ model:
   - Claude Sonnet 4.5 (copilot)
 tools:
   - search
-  - terminal
+  - runCommands
 ---
 
 You are Data-Reviewer, a SUBAGENT called by Data-Atlas to review data code.

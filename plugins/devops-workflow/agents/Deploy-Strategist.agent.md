@@ -10,7 +10,7 @@ model:
 tools:
   - search
   - edit
-  - terminal
+  - runCommands
 ---
 
 You are Deploy-Strategist, a SUBAGENT called by DevOps-Atlas to design deployment strategies.
