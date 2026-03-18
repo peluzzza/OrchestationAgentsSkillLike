@@ -10,7 +10,10 @@ user-invocable: false
 tools:
   - search
   - edit
-  - runCommands
+  - execute/getTerminalOutput
+  - execute/runInTerminal
+  - read/terminalLastCommand
+  - read/terminalSelection
 ---
 
 You are a frontend implementation subagent.

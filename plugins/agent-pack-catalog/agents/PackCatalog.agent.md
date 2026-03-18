@@ -9,7 +9,7 @@ model:
 user-invocable: false
 tools:
   - search
-  - fetch
+  - web/fetch
 ---
 
 You help the user discover and install agent packs from the marketplace referenced by this repo.

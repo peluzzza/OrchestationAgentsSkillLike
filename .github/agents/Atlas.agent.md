@@ -5,8 +5,8 @@ user-invocable: true
 argument-hint: Orchestrate end-to-end execution for this task using hidden specialist agents.
 model:
   - Claude Sonnet 4.6 (copilot)
+  - GPT-5.2 (copilot)
   - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
   - Gemini 3 Flash (Preview) (copilot)
 tools:
   - agent
@@ -113,4 +113,3 @@ In each major response include:
 - `Next`: immediate next step or explicit pause gate
 
 Stop when acceptance criteria are met or when a mandatory user decision is required.
-

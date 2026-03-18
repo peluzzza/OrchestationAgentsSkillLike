@@ -11,7 +11,7 @@ user-invocable: false
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
 ---
 
 You are a research specialist subagent called by a conductor.
@@ -37,4 +37,3 @@ Return format:
 - Open Questions: unresolved items
 
 Keep output concise, structured, and directly actionable for Atlas.
-

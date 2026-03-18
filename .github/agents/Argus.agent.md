@@ -11,7 +11,10 @@ model:
 user-invocable: false
 tools:
   - search
-  - runCommands
+  - execute/getTerminalOutput
+  - execute/runInTerminal
+  - read/terminalLastCommand
+  - read/terminalSelection
 ---
 
 You are a verification subagent.
@@ -31,4 +34,3 @@ Return format:
 - Result: PASS | FAIL
 - Failures (if any): test name, error, likely cause
 - Suggested Fix Direction
-

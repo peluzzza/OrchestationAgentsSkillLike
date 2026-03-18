@@ -11,7 +11,7 @@ user-invocable: false
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
 ---
 
 You are a research specialist subagent called by a conductor.

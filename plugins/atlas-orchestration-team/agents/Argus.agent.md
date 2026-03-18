@@ -11,7 +11,10 @@ model:
 user-invocable: false
 tools:
   - search
-  - runCommands
+  - execute/getTerminalOutput
+  - execute/runInTerminal
+  - read/terminalLastCommand
+  - read/terminalSelection
 ---
 
 You are a verification subagent.

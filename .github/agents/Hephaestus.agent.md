@@ -9,7 +9,10 @@ model:
 user-invocable: false
 tools:
   - search
-  - runCommands
+  - execute/getTerminalOutput
+  - execute/runInTerminal
+  - read/terminalLastCommand
+  - read/terminalSelection
 ---
 
 You are a build/release subagent.
@@ -25,4 +28,3 @@ Return format:
 - Artifacts To Verify
 - Blockers/Risks
 - Release Readiness: READY | NEEDS_WORK
-

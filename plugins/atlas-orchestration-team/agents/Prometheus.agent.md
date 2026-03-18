@@ -10,7 +10,7 @@ model:
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
 handoffs:
   - label: Start implementation with Atlas

@@ -30,4 +30,3 @@ Return format (mandatory):
 - Next Step: what Atlas should do next
 
 If no issues are found, still report residual risks/testing gaps briefly.
-

@@ -11,9 +11,12 @@ model:
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
-  - runCommands
+  - execute/getTerminalOutput
+  - execute/runInTerminal
+  - read/terminalLastCommand
+  - read/terminalSelection
 agents: ["*"]
 ---
 
