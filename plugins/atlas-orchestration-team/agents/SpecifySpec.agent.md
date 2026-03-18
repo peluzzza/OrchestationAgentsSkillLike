@@ -10,15 +10,13 @@ model:
 tools:
   - search
   - edit
-  - fetch
-  - runCommands
-handoffs:
-  - label: Build Technical Plan
-    agent: SpecifyPlan
-    prompt: Create a plan for the spec. I am building with...
-  - label: Clarify Spec Requirements
-    agent: SpecifyClarify
-    prompt: Clarify specification requirements
+  - web/fetch
+  - execute/getTerminalOutput
+  - execute/runInTerminal
+  - read/terminalLastCommand
+  - read/terminalSelection
+  - agent
+agents: ["Explorer", "Oracle"]
 ---
 
 You are SpecifySpec, a specification specialist agent in the Specify system. You are invoked by Prometheus to transform a natural language feature description into a structured specification.

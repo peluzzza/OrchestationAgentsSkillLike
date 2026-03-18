@@ -11,10 +11,8 @@ tools:
   - search
   - edit
   - fetch
-handoffs:
-  - label: Build Specification
-    agent: SpecifySpec
-    prompt: Create the feature specification based on the updated constitution. I want to build...
+  - agent
+agents: ["Oracle"]
 ---
 
 You are SpecifyConstitution, a governance specialist agent in the Specify system. You are invoked by Prometheus at the start of the planning pipeline.

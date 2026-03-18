@@ -12,13 +12,6 @@ tools:
   - edit
   - web/fetch
   - agent
-handoffs:
-  - label: Create Tasks
-    agent: SpecifyTasks
-    prompt: Break the plan into tasks
-  - label: Create Checklist
-    agent: SpecifyChecklist
-    prompt: Create a checklist for the following domain...
 agents: ["Explorer", "Oracle"]
 ---
 

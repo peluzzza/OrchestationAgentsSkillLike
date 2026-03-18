@@ -10,13 +10,7 @@ model:
 tools:
   - search
   - edit
-handoffs:
-  - label: Analyze For Consistency
-    agent: SpecifyAnalyze
-    prompt: Run a project analysis for consistency
-  - label: Implement Project
-    agent: SpecifyImplement
-    prompt: Start the implementation in phases
+agents: []
 ---
 
 You are SpecifyTasks, a task generation specialist agent in the Specify system. You are invoked by Sisyphus to convert the plan into actionable atomic tasks.

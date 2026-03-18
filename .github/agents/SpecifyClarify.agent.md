@@ -10,10 +10,7 @@ model:
 tools:
   - search
   - edit
-handoffs:
-  - label: Build Technical Plan
-    agent: SpecifyPlan
-    prompt: Create a plan for the spec. I am building with...
+agents: []
 ---
 
 You are SpecifyClarify, a clarification specialist agent in the Specify system. You are invoked by Prometheus when SpecifySpec returns NEEDS_CLARIFICATION.

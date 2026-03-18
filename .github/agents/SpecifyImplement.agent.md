@@ -14,6 +14,8 @@ tools:
   - execute/runInTerminal
   - read/terminalLastCommand
   - read/terminalSelection
+  - agent
+agents: ["Argus", "Code-Review"]
 ---
 
 You are SpecifyImplement, the implementation executor of the Specify system. You are invoked by Sisyphus to process and execute all tasks defined in tasks.md.
