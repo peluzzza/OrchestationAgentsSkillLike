@@ -88,6 +88,76 @@ Workflows can hand off to each other:
 
 See [plugins/README.md](plugins/README.md) for detailed documentation.
 
+## Specify Pipeline — Spec-Driven Development (NEW)
+
+`Prometheus` now orchestrates a full **Spec-Driven Development** pipeline, based on [github/spec-kit](https://github.com/github/spec-kit), before producing any implementation plan. This ensures the *what* is fully defined and validated before the *how* is decided.
+
+### Specify Agents (hidden, orchestrated by Prometheus / Sisyphus)
+
+| Agent | Role | Based on |
+|---|---|---|
+| `SpecifyConstitution` | Establish & version project principles | `spec-kit/constitution` |
+| `SpecifySpec` | Generate feature spec with user stories & acceptance criteria | `spec-kit/specify` |
+| `SpecifyClarify` | Resolve ambiguities via taxonomy-driven Q&A | `spec-kit/clarify` |
+| `SpecifyPlan` | Produce technical plan, data model, contracts & research | `spec-kit/plan` |
+| `SpecifyTasks` | Break plan into atomic ordered tasks (T001..Tnnn) | `spec-kit/tasks` |
+| `SpecifyAnalyze` | Cross-artifact consistency analysis (read-only) | `spec-kit/analyze` |
+| `SpecifyImplement` | Execute tasks phase-by-phase, mark `[x]`, enforce checklist gate | `spec-kit/implement` |
+
+### Pipeline Flow
+
+```
+Atlas
+ └─ Prometheus (planning)
+      ├─ SP-0  Explorer + Oracle          → context mapping
+      ├─ SP-1  SpecifyConstitution        → .specify/memory/constitution.md
+      ├─ SP-2  SpecifySpec                → .specify/specs/<feature>/spec.md
+      ├─ SP-3  SpecifyClarify (if needed) → spec.md updated
+      ├─ SP-4  SpecifyPlan                → plan.md, data-model.md, contracts/, research.md
+      └─ SP-5  SpecifyAnalyze             → analysis-report.md → plan delivered to Atlas
+
+Atlas
+ └─ Sisyphus (implementation)
+      ├─ EX-0  SpecifyTasks               → tasks.md (T001..Tnnn)
+      ├─ EX-1  SpecifyAnalyze             → consistency gate
+      └─ EX-2  SpecifyImplement           → code, tests, [x] progress marks
+```
+
+### Artifacts Generated per Feature
+
+```
+.specify/
+  memory/
+    constitution.md          ← project principles (versioned)
+  specs/<feature-slug>/
+    spec.md                  ← user stories, acceptance criteria, FRs
+    plan.md                  ← technical plan
+    data-model.md            ← entities & relationships
+    contracts/               ← API/CLI/interface contracts
+    research.md              ← decisions & alternatives
+    quickstart.md            ← dev environment setup
+    tasks.md                 ← atomic task list with [x] progress
+    checklists/              ← quality gates for SpecifyImplement
+    analysis-report.md       ← consistency findings
+```
+
+### Enable Specify Agents
+
+The Specify agents are part of the `atlas-orchestration-team` plugin pack. Enable via `.vscode/settings.json`:
+
+```json
+{
+  "chat.agentFilesLocations": {
+    ".github/agents": true,
+    "plugins/atlas-orchestration-team/agents": true
+  }
+}
+```
+
+Then reload VS Code. Invoke via `@Atlas` as usual — Prometheus handles the pipeline automatically.
+
+---
+
 ## Optional: Marketplace / Plugin Packs
 
 Use this only if you want distribution through plugin packs. It is not required for normal use.

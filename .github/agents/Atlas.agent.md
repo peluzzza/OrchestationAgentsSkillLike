@@ -4,16 +4,19 @@ name: Atlas
 user-invocable: true
 argument-hint: Orchestrate end-to-end execution for this task using hidden specialist agents.
 model:
-  - Claude Opus 4.5 (copilot)
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
+  - Claude Sonnet 4.6 (copilot)
+  - Claude Opus 4.6 (copilot)
+  - GPT-5.3-Codex (copilot)
   - Gemini 3 Flash (Preview) (copilot)
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
-  - runCommands
+  - execute/getTerminalOutput
+  - execute/runInTerminal
+  - read/terminalLastCommand
+  - read/terminalSelection
 agents: ["*"]
 ---
 
