@@ -58,16 +58,16 @@ py -m unittest -v
 
 | Step | Agent | Task |
 |------|-------|------|
-| 1 | **Explorer** | Locate `task_api.py` and identify `_validate_priority` method |
+| 1 | **Hermes** | Locate `task_api.py` and identify `_validate_priority` method |
 | 2 | **Oracle** | Analyze the bug pattern and propose fix approach |
 | 3 | **Sisyphus** | Implement the fix in `_validate_priority` |
-| 4 | **Code-Review** | Validate the fix is correct and minimal |
+| 4 | **Themis** | Validate the fix is correct and minimal |
 | 5 | **Argus** | Run tests and confirm all 20 pass |
 
 ## Success Criteria
 
 - [ ] Atlas invokes at least 3 different subagents
-- [ ] Explorer identifies the correct file and method
+- [ ] Hermes identifies the correct file and method
 - [ ] Sisyphus modifies only `_validate_priority` method
 - [ ] All 21 tests pass after the fix
 - [ ] No unnecessary files created or modified

@@ -14,7 +14,7 @@ DevOps-Atlas (Conductor - User Visible)
     ├── Security-Ops (DevSecOps)
     └── Deploy-Strategist (Release Strategies)
     
-    Handoffs → Backend-Atlas, Frontend-Atlas, Data-Atlas
+    Handoffs → Backend-Atlas, Afrodita, Data-Atlas
 ```
 
 ## Agents

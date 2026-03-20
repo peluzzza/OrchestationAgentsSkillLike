@@ -1,6 +1,6 @@
 ---
 description: Fast read-only scout for locating files, usages, and dependencies across the codebase.
-name: Explorer
+name: Hermes
 argument-hint: Find files, usages, dependencies, and context related to: <research goal or problem statement>
 model:
   - Gemini 3 Flash (Preview) (copilot)

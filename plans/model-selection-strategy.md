@@ -4,7 +4,7 @@ This repo uses VS Code Copilot Custom Agents (`*.agent.md`). In these files, the
 
 This means we cannot "dynamically" swap models per subtask at runtime; instead, we:
 
-1) Delegate the task to the *right specialist agent* (Oracle/Explorer/Sisyphus/…)
+1) Delegate the task to the *right specialist agent* (Oracle/Hermes/Sisyphus/…)
 2) Give that specialist a **short, role-appropriate** model list
 
 ## Evidence-backed mapping
@@ -25,9 +25,9 @@ Workspace agents are in `.github/agents/` and plugin-pack copies (if used) are i
 
 - `Atlas` (orchestrator): Opus → GPT-5.2 → Sonnet → Flash → Haiku → GPT-4.1
 - `Oracle` (requirements/acceptance criteria): Opus → GPT-5.2 → Sonnet → GPT-4.1
-- `Code-Review` (deep review): Opus → GPT-5.2 → Sonnet → GPT-4.1
+- `Themis` (deep review): Opus → GPT-5.2 → Sonnet → GPT-4.1
 - `Sisyphus` (implementation): GPT-5.3-Codex → Opus → GPT-5.2 → Sonnet → GPT-4.1
-- `Explorer` (fast repo reconnaissance): Flash → Haiku → GPT-5.2 → Sonnet → GPT-4.1
+- `Hermes` (fast repo reconnaissance): Flash → Haiku → GPT-5.2 → Sonnet → GPT-4.1
 - `Argus` (tests/log triage): Flash → Haiku → GPT-5.2 → GPT-4.1
 - `Hephaestus` (build/release): Sonnet → GPT-5.2 → GPT-4.1
 - `Frontend-Engineer` (UI work): Sonnet → GPT-5.2 → GPT-4.1

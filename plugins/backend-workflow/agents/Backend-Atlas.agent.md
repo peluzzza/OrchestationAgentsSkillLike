@@ -16,8 +16,8 @@ tools:
   - runCommands
 agents: ["*"]
 handoffs:
-  - label: Hand off to Frontend-Atlas
-    agent: Frontend-Atlas
+  - label: Hand off to Afrodita
+    agent: Afrodita
     prompt: This backend task requires frontend UI work.
   - label: Hand off to DevOps-Atlas
     agent: DevOps-Atlas
@@ -59,7 +59,7 @@ Routing policy:
 - Business logic implementation (TDD) → `Service-Builder`
 - Performance optimization → `Performance-Tuner`
 - Code review gate → `Backend-Reviewer`
-- Frontend UI needs → handoff to `Frontend-Atlas`
+- Frontend UI needs → handoff to `Afrodita`
 - Infrastructure needs → handoff to `DevOps-Atlas`
 - Data pipeline needs → handoff to `Data-Atlas`
 

@@ -20,11 +20,11 @@ Delegations: Routing to Prometheus for full Specify pipeline (SP-0..SP-5).
 
 ---
 
-## SP-0 — Prometheus → Explorer + Oracle (parallel)
+## SP-0 — Prometheus → Hermes + Oracle (parallel)
 
-**Prometheus** dispatches Explorer and Oracle in parallel.
+**Prometheus** dispatches Hermes and Oracle in parallel.
 
-- **Explorer** scans `demos/specify-pipeline-demo/` → finds `spec_validator.py`,
+- **Hermes** scans `demos/specify-pipeline-demo/` → finds `spec_validator.py`,
   `fixtures/`, existing tests, no `.specify/` directory yet.
 - **Oracle** reviews Python CLI patterns, argparse best practices, stdlib JSON persistence.
 
@@ -88,7 +88,7 @@ If it runs, it should resolve questions about storage location and amount valida
 
 SpecifyPlan executes two phases:
 
-**Phase 0 (Research)** — dispatches Explorer/Oracle for:
+**Phase 0 (Research)** — dispatches Hermes/Oracle for:
 - Python argparse subcommand patterns
 - JSON file persistence approach
 - Pathlib for cross-platform file paths

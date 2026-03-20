@@ -23,14 +23,22 @@ Consider any context or requirements provided by Prometheus before proceeding.
 
 ## Outline
 
-You are updating the project constitution at `.specify/memory/constitution.md`. This file is a TEMPLATE containing placeholder tokens in square brackets (e.g. `[PROJECT_NAME]`, `[PRINCIPLE_1_NAME]`). Your job is to (a) collect/derive concrete values, (b) fill the template precisely, and (c) propagate any amendments across dependent artifacts.
+You are updating the project constitution at `.specify/memory/constitution.md`.
 
-**Note**: If `.specify/memory/constitution.md` does not exist yet, it should be initialized from the constitution template. If it's missing, copy the template first.
+### 0. State Detection
+
+Before loading, determine the state of `.specify/memory/constitution.md`:
+
+- **BOOTSTRAP state**: The file does not exist, or exists but is still the original template (many `[ALL_CAPS]` placeholder tokens remaining, no concrete project values filled). → Copy `.specify/templates/constitution-template.md` to `.specify/memory/constitution.md` if the file is missing, then proceed to fill every placeholder using the steps below.
+- **RATIFIED state**: The file exists with concrete, project-specific content (project name and principles contain real text, not template placeholders). → This is the authoritative governance document. **Do not re-bootstrap from the template.** Proceed directly to step 1 treated as amendment mode — identify only the fields explicitly requested for change plus any residual placeholders that still need resolution.
+
+Continue with the steps below according to the detected state.
 
 Follow this execution flow:
 
-1. **Load the existing constitution** at `.specify/memory/constitution.md`.
-   - Identify every placeholder token of the form `[ALL_CAPS_IDENTIFIER]`.
+1. **Load the constitution** at `.specify/memory/constitution.md`.
+   - In BOOTSTRAP state: all or most fields will be bracket tokens — identify every `[ALL_CAPS_IDENTIFIER]` to fill.
+   - In RATIFIED state: load the document to understand existing principles and locate only the sections targeted for amendment or any remaining bracket tokens.
    - **IMPORTANT**: The user might require less or more principles than the ones used in the template. If a number is specified, respect that - follow the general template. You will update the doc accordingly.
 
 2. **Collect/derive values for placeholders**:

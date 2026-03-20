@@ -17,9 +17,9 @@ tools:
   - testFailure
   - web/fetch
 handoffs:
-  - label: Delegate to Explorer
+  - label: Delegate to Hermes
     agent: Atlas
-    prompt: Research scope is large, delegate to Explorer for file discovery
+    prompt: Research scope is large, delegate to Hermes for file discovery
     send: true
 ---
 
@@ -32,7 +32,7 @@ You are a research specialist subagent called by a conductor. Your sole job is t
 
 **Workflow:**
 1. Start broad — semantic searches and high-level dependency mapping.
-2. If discovery scope is large (>10 potential files), delegate file discovery to `Explorer` via the `agent` tool.
+2. If discovery scope is large (>10 potential files), delegate file discovery to `Hermes` via the `agent` tool.
 3. Drill down into high-value files only — avoid loading unnecessary context.
 4. Stop at **90% confidence**: when you can answer what files/functions are relevant, how the existing code works, what patterns the codebase follows, and what dependencies are involved.
 

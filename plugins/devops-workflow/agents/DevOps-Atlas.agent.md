@@ -19,8 +19,8 @@ handoffs:
   - label: Hand off to Backend-Atlas
     agent: Backend-Atlas
     prompt: This infrastructure task requires backend application changes.
-  - label: Hand off to Frontend-Atlas
-    agent: Frontend-Atlas
+  - label: Hand off to Afrodita
+    agent: Afrodita
     prompt: This infrastructure task requires frontend application changes.
   - label: Hand off to Data-Atlas
     agent: Data-Atlas
@@ -60,7 +60,7 @@ Routing policy:
 - Security scanning, compliance → `Security-Ops`
 - Deployment strategies → `Deploy-Strategist`
 - Backend app changes → handoff to `Backend-Atlas`
-- Frontend app changes → handoff to `Frontend-Atlas`
+- Frontend app changes → handoff to `Afrodita`
 - Data infrastructure → handoff to `Data-Atlas`
 
 If subagent invocation fails, continue in degraded mode.

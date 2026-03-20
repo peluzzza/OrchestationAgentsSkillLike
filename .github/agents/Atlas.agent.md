@@ -72,10 +72,13 @@ Capture for each agent: `name`, `description`, `user-invocable`, `tools`, `hando
 Routing policy:
 - Complex planning and phase design → `Prometheus` (preferred) or `Oracle` + direct plan
 - Requirements, risks, subsystem analysis → `Oracle`
-- Codebase mapping and entry points → `Explorer`
+- Codebase mapping and entry points → `Hermes`
 - Backend implementation → `Sisyphus`
 - Frontend implementation → `Frontend-Engineer`
-- Code review gate → `Code-Review`
+- Security-sensitive changes (auth, secrets, permissions, exposed config) → `Security`
+- Dependency, lockfile, runtime image, or manifest drift → `Dependencies`
+- Behavior/setup/interface documentation alignment → `Documentation`
+- Code review gate → `Themis`
 - Verification and test triage → `Argus`
 - Build/release checks → `Hephaestus`
 
@@ -115,9 +118,10 @@ Do not load skills speculatively. Name them in the delegation brief only when cl
 ### Phase 1: Planning
 
 1. Gather context from `.github/`, `README.md`, and project docs.
-2. If scope touches > 5 files, delegate discovery to `Explorer` first.
-3. If `Prometheus` is available and scope is medium/large, delegate planning to it.
-   Otherwise, run parallel `Oracle` instances (one per major subsystem) and produce a concise phased plan (3–10 phases).
+2. If scope touches > 5 files, delegate discovery to `Hermes` first.
+3. Determine the planning path based on work type:
+   - **Implementation / code work** (any scope): If `Prometheus` is available, always delegate planning to it — this ensures the Specify pipeline (constitution → spec → plan → consistency check) runs before any code is implemented. If `Prometheus` is unavailable, fall back to parallel `Oracle` instances and produce a phased plan directly.
+   - **Docs-only, meta, or orchestration-only work** (no code changes): If `Prometheus` is available and scope is medium/large, delegate; otherwise handle with `Oracle` instances or produce a plan directly.
 4. Draft plan with phases, risks, and open questions.
 5. Present synopsis to the user. Pause for approval only if the user explicitly requested a checkpoint or a key decision is blocked.
 6. Save plan to `<plan-directory>/<task-name>-plan.md`.
@@ -132,7 +136,7 @@ Do not load skills speculatively. Name them in the delegation brief only when cl
 - Sisyphus implements the scoped phase only. It does not own QA, commit messages, or completion files.
 
 #### 2B. Review
-- Invoke `Code-Review` with phase objective, acceptance criteria, and modified files.
+- Invoke `Themis` with phase objective, acceptance criteria, and modified files.
 - **APPROVED** → proceed to 2C (Testing).
 - **NEEDS_REVISION** → return to 2A with exact findings.
 - **FAILED** → stop and consult user.
@@ -189,13 +193,19 @@ Stop when acceptance criteria are met or a mandatory user decision is required.
 
 **Sisyphus** — Provide phase number, objective, files/functions, and code constraints. Instruct: implement the scoped code changes only, keep existing quality gates green when practical, work autonomously, ask user only for critical decisions. NOT own QA, NOT advance to next phase, NOT write completion files.
 
-**Code-Review** — Provide phase objective, acceptance criteria, modified files. Instruct: verify correctness/coverage/quality, return Status/Summary/Issues/Recommendations. NOT implement fixes.
+**Themis** — Provide phase objective, acceptance criteria, modified files. Instruct: verify correctness/coverage/quality, return Status/Summary/Issues/Recommendations. NOT implement fixes.
 
 **Argus** — Provide phase objective, acceptance criteria, files, existing tests. Instruct: analyze coverage, discover edge cases, recommend additional tests, execute the most relevant existing test suite. Return Status/Coverage/Edge Cases/Additional Tests. Focus on testing exhaustiveness, NOT code quality.
 
-**Explorer** — Provide crisp goal. Instruct: read-only, produce final results with files, answer, and next steps. Use results to guide Oracle or Sisyphus.
+**Hermes** — Provide crisp goal. Instruct: read-only, produce final results with files, answer, and next steps. Use results to guide Oracle or Sisyphus.
 
 **Frontend-Engineer** — Provide phase, UI components/features, and styling scope. Instruct: implement the scoped UI changes only, preserve existing quality gates when practical, focus on accessibility/responsive/patterns, report what was implemented. QA ownership stays with Argus.
+
+**Security** — Provide phase objective, changed files, threat-sensitive surfaces, and any auth/secret/config context. Instruct: review for secrets exposure, insecure defaults, OWASP-style risks, and operational blast radius. Return Status/Summary/Findings/Recommendations. NOT implement fixes.
+
+**Dependencies** — Provide changed manifests, lockfiles, Dockerfiles, or runtime image context. Instruct: assess dependency drift, CVE/license risk, and upgrade blast radius. Return Status/Summary/Findings/Recommended Actions. NOT implement fixes.
+
+**Documentation** — Provide changed behavior, setup, or interface scope and the docs likely affected. Instruct: update README/usage/setup text to match implementation precisely. Return Status/Summary/Files Updated/Remaining Gaps. NOT change production code.
 
 **Hephaestus** — Provide phase, services/components, target env, configs (env vars/secrets/ports), deployment strategy. For incidents: provide context and affected systems. Instruct: validate pre-deployment (deps/resources/configs), perform post-deployment validation (health/logs/smoke). Return Status/validation results/issues. Focus on deployment/ops, NOT code quality.
 

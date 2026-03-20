@@ -41,8 +41,8 @@ enabled_agents: [Sisyphus, Argus]
 disabled_agents: [Hephaestus]
 ```
 
-- `enabled_agents` — allow-list; do not invoke any agent outside this list.
-- `disabled_agents` — block-list; never invoke listed agents during that run.
+- `enabled_agents` is an allow-list — do not invoke any agent outside this list.
+- `disabled_agents` is a block-list — never invoke listed agents during that run.
 - If both are present, apply the allow-list first, then remove disabled entries.
 - If neither is present, use normal orchestration rules.
 
@@ -53,9 +53,11 @@ Any uncommented line (not prefixed with `#`) is treated as a disabled agent name
 If the file does not exist, assume all agents are enabled.
 Prompt-level controls always take precedence over file-level controls.
 
-### Plan directory
+### Plan directory configuration
 
-Check the workspace for an `AGENTS.md` file. If it specifies a plan directory (e.g., `plans/`, `.sisyphus/plans`), use it for all plan and completion files. Default to `plans/` if not specified.
+- Check the workspace for an `AGENTS.md` file.
+- If it specifies a plan directory (e.g., `plans/`, `.sisyphus/plans`), use it for all plan and completion files.
+- Default to `plans/` if no specification is found.
 
 ## 2. Agent Discovery (mandatory, before first delegation)
 
@@ -68,40 +70,46 @@ Discovery sources (higher precedence wins on duplicate names):
 Capture for each agent: `name`, `description`, `user-invocable`, `tools`, `handoffs`.
 
 Routing policy:
+- Complex planning and phase design → `Prometheus` (preferred) or `Oracle` + direct plan
+- Requirements, risks, subsystem analysis → `Oracle`
+- Codebase mapping and entry points → `Hermes`
+- Backend implementation → `Sisyphus`
+- Frontend implementation → `Frontend-Engineer`
+- Security-sensitive changes (auth, secrets, permissions, exposed config) → `Security`
+- Dependency, lockfile, runtime image, or manifest drift → `Dependencies`
+- Behavior/setup/interface documentation alignment → `Documentation`
+- Code review gate → `Themis`
+- Verification and test triage → `Argus`
+- Build/release checks → `Hephaestus`
 
-| Task | Preferred agent |
-|------|-----------------|
-| Complex planning and phase design | `Prometheus` → else `Oracle` + direct plan |
-| Requirements, risks, subsystem analysis | `Oracle` |
-| Codebase mapping and entry points | `Explorer` |
-| Backend / core implementation | `Sisyphus` |
-| Frontend / UI implementation | `Frontend-Engineer` |
-| Code review gate | `Code-Review` |
-| Verification and test triage | `Argus` |
-| Build / release checks | `Hephaestus` |
-
-If a subagent invocation fails, continue in **degraded mode** with available agents.
+If a subagent invocation fails, continue in degraded mode with available agents.
 
 ## 3. Context Conservation
 
-**Delegate when:** scope spans >2 files, multiple subsystems, heavy reading (>1 k tokens), or the work is parallelizable.
+**Delegate when:**
+- The task spans more than ~2 files or multiple subsystems.
+- Heavy file reading (> ~1 k tokens) would consume Atlas's context.
+- The task can be parallelized into independent streams.
 
-**Handle directly when:** task is small and orchestration overhead exceeds execution cost; synthesizing findings into a decision; writing plan or completion files.
+**Handle directly when:**
+- The task is small and orchestration overhead exceeds execution cost.
+- Synthesizing findings into a decision or the next subagent brief.
+- Writing plan files or completion artifacts.
 
 Prefer parallel subagent calls for independent workstreams. Merge findings before deciding.
 
 ## 4. Skills Routing
 
-Workspace skills may exist at a configured skills directory (e.g., `.agents/skills`, `skills/`).
-Name the relevant skill explicitly in a delegation brief only when it materially improves execution.
+Shared workspace skills may exist at a configured skills directory (e.g., `.agents/skills`, `skills/`).
 
-- `python-dev` — Python services, scripts, CLIs.
-- `python-testing-patterns` — test-file work (only when Atlas explicitly scopes tests into a phase).
-- `python-performance-optimization` — Python latency, CPU, memory, profiling.
-- `golang-patterns` — idiomatic Go, package layout, error handling.
-- `golang-testing`, `golang-pro` — Go testing, concurrency, performance.
-- `claude-api` — Anthropic/Claude API or Agent SDK integrations only.
-- `find-skills` — capability discovery; do not call speculatively.
+Name the relevant skill explicitly when briefing a subagent — only when it materially improves execution:
+- `python-dev`: Python services, scripts, CLIs.
+- `python-testing-patterns`: test-file implementation (only when Atlas explicitly scopes tests into the phase).
+- `python-performance-optimization`: Python latency, CPU, memory, profiling.
+- `golang-patterns`: idiomatic Go, package layout, error handling.
+- `golang-testing`, `golang-pro`: Go testing rigor, concurrency, performance.
+- `claude-api`: Anthropic/Claude API or Agent SDK integrations.
+- `find-skills`: capability discovery only — do not call speculatively.
 
 Do not load skills speculatively. Name them in the delegation brief only when clearly relevant.
 
@@ -110,48 +118,44 @@ Do not load skills speculatively. Name them in the delegation brief only when cl
 ### Phase 1: Planning
 
 1. Gather context from `.github/`, `README.md`, and project docs.
-2. If scope touches >5 files or multiple subsystems, delegate discovery to `Explorer` first.
-3. If `Prometheus` is available and scope is medium/large, delegate planning to it.
-   Otherwise, run parallel `Oracle` instances (one per major subsystem) and produce a concise phased plan (3–10 phases).
-4. Draft plan with phases, risks, and open questions per `<plan_style_guide>`.
-5. Present synopsis to user. Pause for approval only if the user explicitly requested a checkpoint or a key decision is blocked.
+2. If scope touches > 5 files, delegate discovery to `Hermes` first.
+3. Determine the planning path based on work type:
+   - **Implementation / code work** (any scope): If `Prometheus` is available, always delegate planning to it — this ensures the Specify pipeline (constitution → spec → plan → consistency check) runs before any code is implemented. If `Prometheus` is unavailable, fall back to parallel `Oracle` instances and produce a phased plan directly.
+   - **Docs-only, meta, or orchestration-only work** (no code changes): If `Prometheus` is available and scope is medium/large, delegate; otherwise handle with `Oracle` instances or produce a plan directly.
+4. Draft plan with phases, risks, and open questions.
+5. Present synopsis to the user. Pause for approval only if the user explicitly requested a checkpoint or a key decision is blocked.
 6. Save plan to `<plan-directory>/<task-name>-plan.md`.
 
 ### Phase 2: Implementation Cycle (repeat per phase)
 
-**Before each phase:** re-read the plan file and the latest completion artifact (if any) to confirm the next incomplete phase. Treat a phase as complete only when its completion artifact exists — never from memory alone.
+**Before each phase:** Re-read the plan file and the latest completion artifact (if any) to confirm the next incomplete phase. Treat a phase as complete only when its completion artifact exists — never from memory alone.
 
 #### 2A. Implement
-
 - Invoke `Sisyphus` (backend/core) or `Frontend-Engineer` (UI/UX).
 - Provide: phase number, objective, files/functions to touch, acceptance criteria, interface constraints, and quality gates that must stay green.
 - Sisyphus implements the scoped phase only. It does not own QA, commit messages, or completion files.
 
 #### 2B. Review
-
-- Invoke `Code-Review` with phase objective, acceptance criteria, and modified files.
-- **APPROVED** → proceed to 2C.
+- Invoke `Themis` with phase objective, acceptance criteria, and modified files.
+- **APPROVED** → proceed to 2C (Testing).
 - **NEEDS_REVISION** → return to 2A with exact findings.
 - **FAILED** → stop and consult user.
 
 #### 2C. Testing
-
 - Invoke `Argus` with phase objective, modified files, and existing tests.
-- **PASSED** → proceed to 2D.
+- **PASSED** → proceed to 2D (Deploy).
 - **NEEDS_MORE_TESTS** → return to 2A for the smallest scoped follow-up (code fix or explicitly assigned test change), then re-run Argus with updated state.
 - **FAILED** → return to 2A with critical issues.
-- Skip Argus for trivial non-behavioral changes (typos, documentation); use judgment.
+- Skip Argus for trivial non-behavioral changes (typos, documentation). Use judgment.
 - Do not re-run Argus with unchanged code/test state.
 
 #### 2D. Deploy (conditional)
-
 - Invoke `Hephaestus` only when the phase requires infrastructure changes, new services, configuration updates, or migrations.
 - Skip for docs-only, test-only, or minor-refactoring phases.
 - **DEPLOYED** → proceed to 2E.
 - **FAILED / ROLLED_BACK** → fix or return to 2A with root cause.
 
 #### 2E. Phase Completion
-
 1. Summarize: phase number, objective, accomplishments, files changed, gate results.
 2. Write `<plan-directory>/<task-name>-phase-<N>-complete.md` per `<phase_complete_style_guide>`.
 3. Check for relevant git changes. If changes exist, propose a ready-to-copy commit message (short title + bullet list of changes). If no changes exist, skip the commit proposal.
@@ -189,13 +193,19 @@ Stop when acceptance criteria are met or a mandatory user decision is required.
 
 **Sisyphus** — Provide phase number, objective, files/functions, and code constraints. Instruct: implement the scoped code changes only, keep existing quality gates green when practical, work autonomously, ask user only for critical decisions. NOT own QA, NOT advance to next phase, NOT write completion files.
 
-**Code-Review** — Provide phase objective, acceptance criteria, modified files. Instruct: verify correctness/coverage/quality, return Status/Summary/Issues/Recommendations. NOT implement fixes.
+**Themis** — Provide phase objective, acceptance criteria, modified files. Instruct: verify correctness/coverage/quality, return Status/Summary/Issues/Recommendations. NOT implement fixes.
 
 **Argus** — Provide phase objective, acceptance criteria, files, existing tests. Instruct: analyze coverage, discover edge cases, recommend additional tests, execute the most relevant existing test suite. Return Status/Coverage/Edge Cases/Additional Tests. Focus on testing exhaustiveness, NOT code quality.
 
-**Explorer** — Provide crisp goal. Instruct: read-only, produce final results with files, answer, and next steps. Use results to guide Oracle or Sisyphus.
+**Hermes** — Provide crisp goal. Instruct: read-only, produce final results with files, answer, and next steps. Use results to guide Oracle or Sisyphus.
 
 **Frontend-Engineer** — Provide phase, UI components/features, and styling scope. Instruct: implement the scoped UI changes only, preserve existing quality gates when practical, focus on accessibility/responsive/patterns, report what was implemented. QA ownership stays with Argus.
+
+**Security** — Provide phase objective, changed files, threat-sensitive surfaces, and any auth/secret/config context. Instruct: review for secrets exposure, insecure defaults, OWASP-style risks, and operational blast radius. Return Status/Summary/Findings/Recommendations. NOT implement fixes.
+
+**Dependencies** — Provide changed manifests, lockfiles, Dockerfiles, or runtime image context. Instruct: assess dependency drift, CVE/license risk, and upgrade blast radius. Return Status/Summary/Findings/Recommended Actions. NOT implement fixes.
+
+**Documentation** — Provide changed behavior, setup, or interface scope and the docs likely affected. Instruct: update README/usage/setup text to match implementation precisely. Return Status/Summary/Files Updated/Remaining Gaps. NOT change production code.
 
 **Hephaestus** — Provide phase, services/components, target env, configs (env vars/secrets/ports), deployment strategy. For incidents: provide context and affected systems. Instruct: validate pre-deployment (deps/resources/configs), perform post-deployment validation (health/logs/smoke). Return Status/validation results/issues. Focus on deployment/ops, NOT code quality.
 

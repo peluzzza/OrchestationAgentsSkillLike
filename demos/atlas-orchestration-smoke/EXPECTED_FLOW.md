@@ -21,13 +21,13 @@ Delegations: Building agent index...
 
 ## Phase 1: Exploration
 
-**Atlas delegates to: Explorer**
+**Atlas delegates to: Hermes**
 
-Prompt to Explorer:
+Prompt to Hermes:
 > Find files related to priority validation in demos/atlas-orchestration-smoke.
 > Identify the _validate_priority method and report its location and current implementation.
 
-**Explorer returns:**
+**Hermes returns:**
 - File: `demos/atlas-orchestration-smoke/task_api.py`
 - Method: `_validate_priority` at lines ~108-118
 - Bug identified: Missing range check, silent fallback to MEDIUM
@@ -75,13 +75,13 @@ def _validate_priority(self, priority: int) -> Priority:
 
 ## Phase 4: Review
 
-**Atlas delegates to: Code-Review**
+**Atlas delegates to: Themis**
 
-Prompt to Code-Review:
+Prompt to Themis:
 > Review the changes to _validate_priority in task_api.py.
 > Verify: correct validation logic, proper error message, minimal diff.
 
-**Code-Review returns:**
+**Themis returns:**
 - Status: APPROVED
 - Findings:
   - ✅ Range check is correct (1-4)
@@ -110,10 +110,10 @@ Prompt to Argus:
 Status: complete
 
 Delegations:
-- Explorer: Located bug in task_api.py:_validate_priority
+- Hermes: Located bug in task_api.py:_validate_priority
 - Oracle: Confirmed fix approach (range validation)
 - Sisyphus: Implemented fix (+5 lines)
-- Code-Review: APPROVED
+- Themis: APPROVED
 - Argus: 21/21 tests pass
 
 Decision: Bug fixed successfully.
@@ -128,10 +128,10 @@ Files modified:
 After running the demo, verify:
 
 - [ ] Atlas displayed agent index at start
-- [ ] Explorer was invoked for file discovery
+- [ ] Hermes was invoked for file discovery
 - [ ] Oracle analyzed the bug (optional but recommended)
 - [ ] Sisyphus made the code change
-- [ ] Code-Review validated the change
+- [ ] Themis validated the change
 - [ ] Argus ran tests and reported results
 - [ ] Final status showed "complete"
 - [ ] Only task_api.py was modified

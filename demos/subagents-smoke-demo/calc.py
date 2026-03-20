@@ -1,7 +1,7 @@
 """Tiny module for subagent-orchestration smoke testing.
 
 The demo is intentionally small and self-contained. Use it as a sandbox
-to run an orchestration loop (Oracle → Explorer → Sisyphus → Code-Review → Argus)
+to run an orchestration loop (Oracle → Hermes → Sisyphus → Themis → Argus)
 while keeping changes confined to this folder.
 """
 

@@ -5,7 +5,7 @@ A specialized multi-agent orchestration system for frontend development, followi
 ## Architecture
 
 ```
-Frontend-Atlas (Conductor - User Visible)
+Afrodita (Conductor - User Visible)
     ├── Frontend-Planner (Autonomous Planning)
     ├── UI-Designer (Design & Architecture)
     ├── Style-Engineer (CSS & Animations)
@@ -21,7 +21,7 @@ Frontend-Atlas (Conductor - User Visible)
 
 | Agent | Role | Model |
 |-------|------|-------|
-| **Frontend-Atlas** | Conductor - orchestrates the team | Claude Opus 4.5 |
+| **Afrodita** | Conductor - orchestrates the team | Claude Opus 4.5 |
 | **Frontend-Planner** | Autonomous planning for complex tasks | GPT-5.2 |
 | **UI-Designer** | Component architecture & layout | Claude Sonnet 4.5 |
 | **Style-Engineer** | CSS, animations, responsive | Claude Sonnet 4.5 |
@@ -59,10 +59,10 @@ Frontend-Atlas (Conductor - User Visible)
 ## Usage
 
 ```
-@Frontend-Atlas Build a dashboard widget showing user statistics with charts
+@Afrodita Build a dashboard widget showing user statistics with charts
 ```
 
-Frontend-Atlas will:
+Afrodita will:
 1. Delegate design to UI-Designer
 2. Research state patterns with State-Manager
 3. Implement components via Component-Builder

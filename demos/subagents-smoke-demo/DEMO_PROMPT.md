@@ -17,9 +17,9 @@ Constraints:
 
 Process:
 1) Ask Oracle for acceptance criteria and risks.
-2) Ask Explorer to locate the best place to add the feature with minimal surface area.
+2) Ask Hermes to locate the best place to add the feature with minimal surface area.
 3) Ask Sisyphus to implement the feature (tests-first if appropriate).
-4) Ask Code-Review to review the diff for minimalism and correctness.
+4) Ask Themis to review the diff for minimalism and correctness.
 5) Ask Argus to propose/confirm the exact command to verify.
 
 Definition of done:

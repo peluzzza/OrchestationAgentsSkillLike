@@ -31,10 +31,10 @@ test_priority_hundred_raises ... FAIL
 
 ## Required Process
 
-1. **Explorer**: Find `_validate_priority` method and understand current implementation
+1. **Hermes**: Find `_validate_priority` method and understand current implementation
 2. **Oracle**: Analyze the bug and confirm the fix approach
 3. **Sisyphus**: Implement the fix (add range validation, raise ValidationError for invalid values)
-4. **Code-Review**: Verify the fix is correct and minimal
+4. **Themis**: Verify the fix is correct and minimal
 5. **Argus**: Run all tests and confirm 20/20 pass
 
 ## Expected Fix

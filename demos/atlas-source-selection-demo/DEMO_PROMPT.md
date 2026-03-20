@@ -13,9 +13,9 @@ Requirements:
 
 Process:
 1) Ask Oracle to confirm acceptance criteria and edge cases.
-2) Ask Explorer to inspect fixtures and identify minimal code surface.
+2) Ask Hermes to inspect fixtures and identify minimal code surface.
 3) Ask Sisyphus to implement or adjust tests-first.
-4) Ask Code-Review to validate deterministic behavior and rationale clarity.
+4) Ask Themis to validate deterministic behavior and rationale clarity.
 5) Ask Argus for exact verification command.
 
 Definition of done:

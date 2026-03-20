@@ -1,6 +1,6 @@
 ---
 description: Review gate that validates implementation quality, correctness, and readiness.
-name: Code-Review
+name: Themis
 argument-hint: Provide phase name, files changed, and acceptance criteria. I will analyze the implementation and return APPROVED, NEEDS_REVISION, or FAILED.
 model: GPT-5.3-Codex (copilot)
 user-invocable: false

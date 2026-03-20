@@ -16,7 +16,7 @@ tools:
   - read/terminalLastCommand
   - read/terminalSelection
   - agent
-agents: ["Explorer", "Oracle"]
+agents: ["Hermes", "Oracle"]
 ---
 
 You are SpecifySpec, a specification specialist agent in the Specify system. You are invoked by Prometheus to transform a natural language feature description into a structured specification.

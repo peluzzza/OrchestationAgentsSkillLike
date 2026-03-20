@@ -6,8 +6,8 @@ This directory contains specialized multi-agent workflow packs following the big
 
 | Workflow | Conductor | Specialists | Purpose |
 |----------|-----------|-------------|---------|
-| [atlas-orchestration-team](./atlas-orchestration-team/) | Atlas | 9 agents | General-purpose orchestration |
-| [frontend-workflow](./frontend-workflow/) | Frontend-Atlas | 8 agents | UI/UX development |
+| [atlas-orchestration-team](./atlas-orchestration-team/) | Atlas | 19 agents | General-purpose orchestration, Specify pipeline, governance specialists (Security, Documentation, Dependencies) |
+| [frontend-workflow](./frontend-workflow/) | Afrodita | 8 agents | UI/UX development |
 | [backend-workflow](./backend-workflow/) | Backend-Atlas | 8 agents | API & database development |
 | [devops-workflow](./devops-workflow/) | DevOps-Atlas | 8 agents | Infrastructure & CI/CD |
 | [data-workflow](./data-workflow/) | Data-Atlas | 8 agents | Data engineering & ML |
@@ -18,7 +18,7 @@ Workflows can hand off to each other for complex multi-domain tasks:
 
 ```
 ┌─────────────────┐     ┌─────────────────┐
-│ Frontend-Atlas  │◄───►│  Backend-Atlas  │
+│ Afrodita  │◄───►│  Backend-Atlas  │
 └────────┬────────┘     └────────┬────────┘
          │                       │
          │    ┌──────────────┐   │
@@ -32,9 +32,9 @@ Workflows can hand off to each other for complex multi-domain tasks:
 
 | From | Can handoff to |
 |------|----------------|
-| Frontend-Atlas | Backend-Atlas, DevOps-Atlas |
-| Backend-Atlas | Frontend-Atlas, DevOps-Atlas, Data-Atlas |
-| DevOps-Atlas | Frontend-Atlas, Backend-Atlas, Data-Atlas |
+| Afrodita | Backend-Atlas, DevOps-Atlas |
+| Backend-Atlas | Afrodita, DevOps-Atlas, Data-Atlas |
+| DevOps-Atlas | Afrodita, Backend-Atlas, Data-Atlas |
 | Data-Atlas | Backend-Atlas, DevOps-Atlas |
 
 ## Architecture Pattern
@@ -68,7 +68,7 @@ Each workflow follows the **conductor + planner + hidden specialists** pattern:
 
 ### Frontend Workflow
 ```
-@Frontend-Atlas Build a dashboard component with charts
+@Afrodita Build a dashboard component with charts
 ```
 Specialists: UI-Designer, Style-Engineer, State-Manager, Component-Builder, A11y-Auditor, Frontend-Reviewer
 
@@ -97,9 +97,16 @@ Copy desired workflow folders to your project's `.github/agents/` or configure i
 
 ```json
 {
-  "chat.agentFilesLocations": ["plugins/*/agents"]
+  "chat.agentFilesLocations": {
+    "plugins/frontend-workflow/agents": true,
+    "plugins/backend-workflow/agents": true,
+    "plugins/devops-workflow/agents": true,
+    "plugins/data-workflow/agents": true
+  }
 }
 ```
+
+Enable only the workflow-pack locations you actually want active in the workspace to avoid duplicate sources.
 
 ### Option 2: User Data (Global)
 Copy workflow folders to VS Code user prompts directory:
@@ -123,7 +130,7 @@ Copy workflow folders to VS Code user prompts directory:
 
 | I want to... | Use |
 |--------------|-----|
-| Build UI components with accessibility | `@Frontend-Atlas` |
+| Build UI components with accessibility | `@Afrodita` |
 | Create REST APIs with database | `@Backend-Atlas` |
 | Set up cloud infrastructure | `@DevOps-Atlas` |
 | Build data pipelines or ML models | `@Data-Atlas` |

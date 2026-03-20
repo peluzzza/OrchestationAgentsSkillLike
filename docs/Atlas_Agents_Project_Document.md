@@ -121,10 +121,10 @@ Atlas implements a hierarchical orchestration model where a single **conductor a
 User → Atlas (Conductor)
            ├── Prometheus (Planning)
            ├── Oracle (Research & Requirements)
-           ├── Explorer (Codebase Reconnaissance)
+           ├── Hermes (Codebase Reconnaissance)
            ├── Sisyphus (Implementation)
            ├── Frontend-Engineer (UI Development)
-           ├── Code-Review (Quality Review)
+           ├── Themis (Quality Review)
            ├── Argus (Testing & Verification)
            ├── Hephaestus (Build & Release)
            └── PackCatalog (Pack Discovery)
@@ -139,10 +139,10 @@ The core orchestration team consists of the following agents:
 | 1 | **Atlas** | Conductor | User-visible | Orchestrates all phases; delegates and synthesizes |
 | 2 | **Prometheus** | Planner | Hidden | Autonomous research and phased plan generation |
 | 3 | **Oracle** | Analyst | Hidden | Deep requirements analysis and risk assessment |
-| 4 | **Explorer** | Scout | Hidden | Fast, read-only codebase reconnaissance |
+| 4 | **Hermes** | Scout | Hidden | Fast, read-only codebase reconnaissance |
 | 5 | **Sisyphus** | Implementer | Hidden | Focused code implementation with TDD discipline |
 | 6 | **Frontend-Engineer** | UI Specialist | Hidden | Accessible, responsive UI implementation |
-| 7 | **Code-Review** | Reviewer | Hidden | Implementation quality gate (APPROVED / NEEDS_REVISION / FAILED) |
+| 7 | **Themis** | Reviewer | Hidden | Implementation quality gate (APPROVED / NEEDS_REVISION / FAILED) |
 | 8 | **Argus** | Verifier | Hidden | Targeted test execution and failure triage |
 | 9 | **Hephaestus** | Build Engineer | Hidden | CI readiness, packaging, release validation |
 | 10 | **PackCatalog** | Discovery | Hidden | Workflow pack catalog and installation guidance |
@@ -155,16 +155,16 @@ Every task orchestrated by Atlas follows a structured lifecycle:
 ┌──────────┐    ┌─────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
 │  1. Plan  │───▶│ 2. Implement │───▶│ 3. Review │───▶│ 4. Verify │───▶│ 5. Report │
 └──────────┘    └─────────────┘    └──────────┘    └──────────┘    └──────────┘
- Prometheus       Sisyphus /        Code-Review       Argus /          Atlas
- Explorer         Frontend-Eng.                      Hephaestus
+ Prometheus       Sisyphus /        Themis       Argus /          Atlas
+ Hermes         Frontend-Eng.                      Hephaestus
  Oracle
 ```
 
 **Phase Details:**
 
-1. **Plan**: If `Prometheus` is available and scope is medium/large, planning is delegated to it. Otherwise, `Explorer` + `Oracle` gather context and Atlas produces a concise 3–7 phase plan.
+1. **Plan**: If `Prometheus` is available and scope is medium/large, planning is delegated to it. Otherwise, `Hermes` + `Oracle` gather context and Atlas produces a concise 3–7 phase plan.
 2. **Implement**: Each phase is delegated to `Sisyphus` or `Frontend-Engineer` with explicit acceptance criteria and test expectations.
-3. **Review**: `Code-Review` evaluates the implementation. If status is `NEEDS_REVISION`, work routes back to the implementer. If `FAILED`, Atlas stops and requests user guidance.
+3. **Review**: `Themis` evaluates the implementation. If status is `NEEDS_REVISION`, work routes back to the implementer. If `FAILED`, Atlas stops and requests user guidance.
 4. **Verify**: `Argus` runs targeted checks. `Hephaestus` validates build and release readiness when applicable.
 5. **Report**: Atlas returns a concise outcome summarizing completed phases, changed files, test/review status, and recommended next actions.
 
@@ -190,7 +190,7 @@ The project includes five specialized **workflow packs**, each targeting a speci
 | # | Workflow Pack | Conductor | Specialists | Domain |
 |---|----------|-----------|:-----------:|--------|
 | 1 | `atlas-orchestration-team` | Atlas | 9 agents | General software engineering |
-| 2 | `frontend-workflow` | Frontend-Atlas | 8 agents | UI/UX development |
+| 2 | `frontend-workflow` | Afrodita | 8 agents | UI/UX development |
 | 3 | `backend-workflow` | Backend-Atlas | 8 agents | API design, databases, services |
 | 4 | `devops-workflow` | DevOps-Atlas | 8 agents | Infrastructure, CI/CD, containers |
 | 5 | `data-workflow` | Data-Atlas | 8 agents | Data engineering, ML pipelines |
@@ -204,11 +204,11 @@ Each workflow follows the same conductor pattern: **Conductor + Planner + Hidden
 Workflows are not isolated — they support **cross-workflow handoffs** that enable complex, multi-domain projects:
 
 ```
-Frontend-Atlas ←→ Backend-Atlas ←→ DevOps-Atlas ←→ Data-Atlas
+Afrodita ←→ Backend-Atlas ←→ DevOps-Atlas ←→ Data-Atlas
 ```
 
 For example:
-- `Frontend-Atlas` can delegate a database schema task to `Backend-Atlas`.
+- `Afrodita` can delegate a database schema task to `Backend-Atlas`.
 - `Backend-Atlas` can request `DevOps-Atlas` to generate deployment manifests.
 - `DevOps-Atlas` can coordinate with `Data-Atlas` for data pipeline infrastructure.
 
@@ -237,9 +237,9 @@ Atlas employs a **role-specific model selection** strategy, where each agent spe
 |---|-------|---------------|-----------|
 | 1 | Atlas (Conductor) | Claude Opus | Complex multi-step orchestration decisions |
 | 2 | Oracle (Research) | Claude Opus | Deep analytical reasoning for requirements |
-| 3 | Code-Review | Claude Opus | Rigorous quality assessment |
+| 3 | Themis | Claude Opus | Rigorous quality assessment |
 | 4 | Sisyphus (Implementation) | GPT-5.3 Codex | Optimized for code generation |
-| 5 | Explorer (Reconnaissance) | Gemini Flash | Speed-critical file scanning |
+| 5 | Hermes (Reconnaissance) | Gemini Flash | Speed-critical file scanning |
 | 6 | Argus (Testing) | Gemini Flash | Fast test execution and log analysis |
 | 7 | Hephaestus (Build) | Claude Sonnet | Balanced build/release tasks |
 | 8 | Frontend-Engineer | Claude Sonnet | UI component generation |
@@ -257,7 +257,7 @@ Atlas enforces **three mandatory quality gates** at every orchestration cycle:
 
 | # | Gate | Description | Enforced By |
 |---|------|-------------|-------------|
-| 1 | **Scope Verification** | Confirms the implementation matches the planned scope; no unplanned additions | Code-Review |
+| 1 | **Scope Verification** | Confirms the implementation matches the planned scope; no unplanned additions | Themis |
 | 2 | **Evidence via Tests** | Verifies that all acceptance criteria are covered by passing tests | Argus |
 | 3 | **Delivery Readiness** | Validates that the output is complete, documented, and deployable | Hephaestus |
 
@@ -290,7 +290,7 @@ The following components have been designed, implemented, and validated:
 | # | Component | Status | Description |
 |---|-----------|:------:|-------------|
 | 1 | Core Atlas conductor agent | ✅ Complete | Full orchestration lifecycle with dynamic routing |
-| 2 | 9 specialist agents (core team) | ✅ Complete | Prometheus, Oracle, Explorer, Sisyphus, Argus, Code-Review, Hephaestus, Frontend-Engineer, PackCatalog |
+| 2 | 9 specialist agents (core team) | ✅ Complete | Prometheus, Oracle, Hermes, Sisyphus, Argus, Themis, Hephaestus, Frontend-Engineer, PackCatalog |
 | 3 | Frontend workflow pack (8 agents) | ✅ Complete | Component-Builder, State-Manager, A11y-Auditor, and more |
 | 4 | Backend workflow pack (8 agents) | ✅ Complete | API-Designer, Database-Engineer, Security-Guard, and more |
 | 5 | DevOps workflow pack (8 agents) | ✅ Complete | Container-Master, Pipeline-Engineer, Monitor-Sentinel, and more |
@@ -336,7 +336,7 @@ A complete **Java Spring Boot 3.2.2 microservice** has been built as the primary
 
 **Demonstrated Orchestration Flow:**
 
-1. **Phase A — Research & Design**: Atlas delegates to `Explorer` to analyze Jira requirements, define the domain model, identify ports (Hexagonal Architecture), and research Spring Security JWT best practices.
+1. **Phase A — Research & Design**: Atlas delegates to `Hermes` to analyze Jira requirements, define the domain model, identify ports (Hexagonal Architecture), and research Spring Security JWT best practices.
 2. **Phase B — Implementation**: `Sisyphus` generates the project structure and implements domain → application → infrastructure layers.
 3. **Phase C — QA/TDD**: `Argus` writes unit tests (Mockito), integration tests, and enforces 80% code coverage targets.
 4. **Phase D — DevOps**: `Hephaestus` generates Dockerfile and Kubernetes deployment manifests.

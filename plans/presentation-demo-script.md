@@ -1,7 +1,7 @@
 # Demo Script: Atlas Microservice Orchestration
 
 ## Overview
-This demo showcases **Atlas**, our AI Orchestrator, building a production-ready Java Microservice using Spring Boot and Hexagonal Architecture. It highlights the seamless transitions between specialized subagents: **Explorer**, **Sisyphus**, and **Argus**, while maintaining synchronization with **Jira**.
+This demo showcases **Atlas**, our AI Orchestrator, building a production-ready Java Microservice using Spring Boot and Hexagonal Architecture. It highlights the seamless transitions between specialized subagents: **Hermes**, **Sisyphus**, and **Argus**, while maintaining synchronization with **Jira**.
 
 ---
 
@@ -15,9 +15,9 @@ This demo showcases **Atlas**, our AI Orchestrator, building a production-ready 
 
 ## 2. Orchestration in Action
 
-### Phase A: Research & Design (Explorer)
-**Atlas Action:** Delegates to **Explorer**.
-*   **Prompt to Explorer:** "Analyze Jira USER-101. Define the Domain Model for 'User' and identify required outbound ports for persistence (PostgreSQL) and inbound ports for REST. Research latest Spring Security best practices for JWT."
+### Phase A: Research & Design (Hermes)
+**Atlas Action:** Delegates to **Hermes**.
+*   **Prompt to Hermes:** "Analyze Jira USER-101. Define the Domain Model for 'User' and identify required outbound ports for persistence (PostgreSQL) and inbound ports for REST. Research latest Spring Security best practices for JWT."
 *   **Audience Highlight:** *Atlas doesn't just code; it thinks. It validates architectural decisions against enterprise standards before a single line of code is written.*
 
 ### Phase B: Implementation (Sisyphus)
@@ -51,7 +51,7 @@ Most AI prompts result in "spaghetti code." Atlas is programmed to enforce **Hex
 
 ### Jira & Atlassian Syncing
 Every major milestone is updated in Jira. 
-- When Explorer finishes design -> Jira Comment updated with architecture diagram link.
+- When Hermes finishes design -> Jira Comment updated with architecture diagram link.
 - When Argus passes tests -> Jira Status moved to "Ready for Review".
 - **Benefit:** Project managers see real-time progress without bothering developers.
 

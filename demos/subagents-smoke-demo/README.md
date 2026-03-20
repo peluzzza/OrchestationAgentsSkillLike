@@ -5,7 +5,7 @@ This folder is a tiny, self-contained demo to verify that subagents are running 
 ## What you should see
 
 - Tests pass.
-- You can run an orchestration loop (Oracle → Explorer → Sisyphus → Code-Review → Argus) to implement a small change and re-verify.
+- You can run an orchestration loop (Oracle → Hermes → Sisyphus → Themis → Argus) to implement a small change and re-verify.
 
 ## Run the tests (Windows)
 

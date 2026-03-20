@@ -2,9 +2,9 @@
 
 This repo is set up so you can start from zero with a simple experience:
 
-- You see only `Atlas` in the agent picker.
+- In the default zero-setup mode, you see only `Atlas` in the agent picker.
 - `Atlas` delegates internally to hidden specialist subagents when needed.
-- `Atlas` can optionally delegate planning to hidden `Prometheus` for larger tasks.
+- For implementation or code-changing work, `Atlas` routes planning through hidden `Prometheus` so the Specify pipeline runs before execution.
 - No plugin marketplace setup is required for the default flow.
 
 ## Install From Zero (60 seconds)
@@ -30,9 +30,11 @@ Done. No extra installation steps are needed.
 
 ## What You Should See
 
-- Visible agent: `Atlas` only.
-- Hidden agents: `Prometheus`, `Oracle`, `Explorer`, `Sisyphus`, `Argus`, `Code-Review`, `Hephaestus`, `Frontend-Engineer`, `PackCatalog`.
+- Default mode visible agent: `Atlas` only.
+- Hidden agents: `Prometheus`, `Oracle`, `Hermes`, `Sisyphus`, `Argus`, `Themis`, `Hephaestus`, `Frontend-Engineer`, `Security`, `Documentation`, `Dependencies`, and the Specify specialists (`SpecifyConstitution`, `SpecifySpec`, `SpecifyClarify`, `SpecifyPlan`, `SpecifyTasks`, `SpecifyAnalyze`, `SpecifyImplement`).
 - `Atlas` chooses and calls subagents internally.
+
+If you explicitly enable domain workflow packs, additional approved conductors such as `Afrodita`, `Backend-Atlas`, `DevOps-Atlas`, and `Data-Atlas` can also appear in the agent picker.
 
 ## Orchestration Style (Merged)
 
@@ -41,7 +43,7 @@ This setup blends two ideas:
 - Skill-style progressive activation: only activate specialist agents when needed.
 - Conductor lifecycle: plan -> implement -> review -> verify, with explicit routing by agent specialty.
 
-For medium/large tasks, Atlas can route planning to `Prometheus` and then execute phases with implementation/review/verification specialists.
+For implementation or code-changing tasks, Atlas routes planning through `Prometheus` so the Specify pipeline runs before execution. For docs-only, meta, or orchestration-only work, Atlas can take a lighter planning path when that is the simpler fit.
 
 ## Domain-Specific Workflows (NEW)
 
@@ -49,8 +51,8 @@ In addition to the general-purpose `Atlas`, we now have specialized conductors f
 
 | Workflow | Conductor | Agents | Purpose |
 |----------|-----------|--------|---------|
-| General | `Atlas` | 10 | General development orchestration |
-| Frontend | `Frontend-Atlas` | 8 | UI/UX development (React, Vue, Angular) |
+| General | `Atlas` | 19 | General development orchestration |
+| Frontend | `Afrodita` | 8 | UI/UX development (React, Vue, Angular) |
 | Backend | `Backend-Atlas` | 8 | API & database development (Spring, Express, FastAPI) |
 | DevOps | `DevOps-Atlas` | 8 | Infrastructure & CI/CD (Terraform, K8s, GitHub Actions) |
 | Data | `Data-Atlas` | 8 | Data engineering & ML (dbt, Spark, ML pipelines) |
@@ -73,7 +75,7 @@ Add to `.vscode/settings.json`:
 
 Then reload VS Code. You'll see these conductors in the agent picker:
 - `@Atlas` - General orchestration
-- `@Frontend-Atlas` - UI/UX tasks
+- `@Afrodita` - UI/UX tasks
 - `@Backend-Atlas` - API/Database tasks
 - `@DevOps-Atlas` - Infrastructure/CI-CD tasks
 - `@Data-Atlas` - Data pipelines/ML tasks
@@ -81,9 +83,9 @@ Then reload VS Code. You'll see these conductors in the agent picker:
 ### Cross-Workflow Handoffs
 
 Workflows can hand off to each other:
-- `Frontend-Atlas` → `Backend-Atlas`, `DevOps-Atlas`
-- `Backend-Atlas` → `Frontend-Atlas`, `DevOps-Atlas`, `Data-Atlas`
-- `DevOps-Atlas` → `Frontend-Atlas`, `Backend-Atlas`, `Data-Atlas`
+- `Afrodita` → `Backend-Atlas`, `DevOps-Atlas`
+- `Backend-Atlas` → `Afrodita`, `DevOps-Atlas`, `Data-Atlas`
+- `DevOps-Atlas` → `Afrodita`, `Backend-Atlas`, `Data-Atlas`
 - `Data-Atlas` → `Backend-Atlas`, `DevOps-Atlas`
 
 See [plugins/README.md](plugins/README.md) for detailed documentation.
@@ -109,7 +111,7 @@ See [plugins/README.md](plugins/README.md) for detailed documentation.
 ```
 Atlas
  └─ Prometheus (planning)
-      ├─ SP-0  Explorer + Oracle          → context mapping
+      ├─ SP-0  Hermes + Oracle          → context mapping
       ├─ SP-1  SpecifyConstitution        → .specify/memory/constitution.md
       ├─ SP-2  SpecifySpec                → .specify/specs/<feature>/spec.md
       ├─ SP-3  SpecifyClarify (if needed) → spec.md updated
@@ -143,18 +145,7 @@ Atlas
 
 ### Enable Specify Agents
 
-The Specify agents are part of the `atlas-orchestration-team` plugin pack. Enable via `.vscode/settings.json`:
-
-```json
-{
-  "chat.agentFilesLocations": {
-    ".github/agents": true,
-    "plugins/atlas-orchestration-team/agents": true
-  }
-}
-```
-
-Then reload VS Code. Invoke via `@Atlas` as usual — Prometheus handles the pipeline automatically.
+Specify agents are already included in `.github/agents/` — no extra plugin source is needed. They are hidden from the agent picker and invoked automatically by `Prometheus` (during planning) and `Sisyphus` (during implementation). Just use `@Atlas` as normal.
 
 ---
 
@@ -183,9 +174,11 @@ Remove-Item -Recurse -Force "plugins"
 
 Then reload VS Code.
 
-## Automatic Flow Source Selection (NEW)
+## Optional: Flow Source Selection Demo
 
-Atlas now includes **intelligent flow source selection**. When you ask Atlas for a task, it automatically:
+This repo includes demos and reference logic for **intelligent flow source selection** in multi-workflow setups. That logic is useful if you build a custom Atlas variant or explicitly enable workflow packs, but it is **not** the default root-only `.github/agents` behavior documented above.
+
+In the demo/reference model, a conductor can:
 
 1. **Discovers all available flow sources** (`.github/agents` + `plugins/*/agents`)
 2. **Analyzes the task type** (frontend, backend, devops, data, general)
@@ -195,7 +188,7 @@ Atlas now includes **intelligent flow source selection**. When you ask Atlas for
    - Preferred source with fallback if unavailable
    - Deterministic tie-break for stable results
 
-### Example Flow Selection
+### Example Flow Selection Policy
 
 | Your Task | Selected Workflow | Why |
 |-----------|-------------------|-----|
@@ -236,7 +229,7 @@ If `Atlas` does not delegate:
 2. Verify `Atlas` includes `agents: ["*"]`.
 3. Confirm subagent files exist under `.github/agents`.
 
-If flow selection seems wrong:
+If the flow-selection demo seems wrong:
 
 1. Check that domain workflows are enabled in `.vscode/settings.json`.
 2. Verify the task description is clear about domain (e.g., "React component" vs "API endpoint").

@@ -14,7 +14,7 @@ Backend-Atlas (Conductor - User Visible)
     ├── Performance-Tuner (Optimization)
     └── Backend-Reviewer (Code Review Gate)
     
-    Handoffs → Frontend-Atlas, DevOps-Atlas, Data-Atlas
+    Handoffs → Afrodita, DevOps-Atlas, Data-Atlas
 ```
 
 ## Agents
