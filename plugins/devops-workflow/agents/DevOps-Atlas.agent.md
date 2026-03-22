@@ -4,10 +4,8 @@ description: Conductor orchestrator for DevOps with infrastructure and CI/CD spe
 user-invocable: true
 argument-hint: Orchestrate infrastructure and deployment automation with DevOps specialists.
 model:
-  - Claude Opus 4.5 (copilot)
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - agent
   - search

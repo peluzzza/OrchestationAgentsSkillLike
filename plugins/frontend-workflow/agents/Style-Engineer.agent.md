@@ -4,9 +4,9 @@ description: CSS, animations, theming, and responsive design specialist.
 user-invocable: false
 argument-hint: Implement styling, animations, and responsive design for these components.
 model:
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-5.2 (copilot)
   - Gemini 3 Flash (Preview) (copilot)
+  - Claude Haiku 4.5 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - edit

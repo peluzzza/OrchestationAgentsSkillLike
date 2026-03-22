@@ -21,14 +21,14 @@ Data-Atlas (Conductor - User Visible)
 
 | Agent | Role | Model |
 |-------|------|-------|
-| **Data-Atlas** | Conductor - orchestrates the team | Claude Opus 4.5 |
-| **Data-Planner** | Autonomous planning for complex tasks | GPT-5.2 |
-| **Data-Architect** | Data modeling & schema design | GPT-5.2 |
-| **Pipeline-Builder** | ETL/ELT pipeline development | Claude Sonnet 4.5 |
-| **Analytics-Engineer** | BI, metrics, reporting | GPT-5.2 |
-| **ML-Scientist** | Machine learning models | GPT-5.2 |
-| **Data-Quality** | Quality checks & governance | GPT-5.2 |
-| **Data-Reviewer** | Code review gate | GPT-5.2 |
+| **Data-Atlas** | Conductor - orchestrates the team | GPT-5.4 |
+| **Data-Planner** | Autonomous planning for complex tasks | GPT-5.4 |
+| **Data-Architect** | Data modeling & schema design | GPT-5.4 |
+| **Pipeline-Builder** | ETL/ELT pipeline development | Claude Opus 4.6 |
+| **Analytics-Engineer** | BI, metrics, reporting | Claude Opus 4.6 |
+| **ML-Scientist** | Machine learning models | Claude Opus 4.6 |
+| **Data-Quality** | Quality checks & governance | Claude Opus 4.6 |
+| **Data-Reviewer** | Code review gate | GPT-5.3-Codex |
 
 ## Workflow
 

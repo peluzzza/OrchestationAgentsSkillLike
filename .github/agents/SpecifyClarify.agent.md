@@ -4,9 +4,9 @@ name: SpecifyClarify
 user-invocable: false
 argument-hint: Clarify the pending ambiguities in the spec for feature [feature-id].
 model:
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-4.1 (copilot)
 tools:
   - search
   - edit

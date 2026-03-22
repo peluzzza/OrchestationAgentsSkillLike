@@ -4,9 +4,9 @@ description: Accessibility specialist ensuring WCAG 2.1 AA compliance.
 user-invocable: false
 argument-hint: Audit these components for accessibility compliance.
 model:
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
   - Gemini 3 Flash (Preview) (copilot)
+  - Claude Haiku 4.5 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - runCommands

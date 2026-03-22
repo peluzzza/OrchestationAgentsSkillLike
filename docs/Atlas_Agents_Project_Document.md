@@ -114,7 +114,8 @@ Atlas Agents introduces a **conductor–specialist orchestration pattern** inspi
 Atlas implements a hierarchical orchestration model where a single **conductor agent** (`Atlas`) manages a team of **hidden specialist agents**. This pattern provides:
 
 - **Zero-setup experience**: Users see only `Atlas` in the VS Code agent picker.
-- **Automatic agent discovery**: At runtime, Atlas scans `.github/agents/` and `plugins/**/agents/` directories to build an in-memory index of available specialists.
+- **Canonical core pack**: `.github/agents/` is the source of truth for the agent system.
+- **Automatic agent discovery**: At runtime, Atlas scans `.github/agents/` first and may also scan `plugins/**/agents/` when optional distribution packs are explicitly enabled.
 - **Dynamic routing**: Based on task analysis, Atlas routes work to the most appropriate specialist using a defined routing policy.
 
 ```
@@ -123,16 +124,20 @@ User → Atlas (Conductor)
            ├── Oracle (Research & Requirements)
            ├── Hermes (Codebase Reconnaissance)
            ├── Sisyphus (Implementation)
-           ├── Frontend-Engineer (UI Development)
+           ├── Afrodita-UX (UI Development)
            ├── Themis (Quality Review)
            ├── Argus (Testing & Verification)
-           ├── Hephaestus (Build & Release)
-           └── PackCatalog (Pack Discovery)
+           ├── Atenea (Security Review)
+           ├── Ariadna (Dependency Audit)
+           ├── Clio (Docs Alignment)
+           ├── Hephaestus (Release & Operations)
+           ├── SpecifyConstitution / SpecifySpec / SpecifyClarify
+           └── SpecifyPlan / SpecifyTasks / SpecifyAnalyze / SpecifyImplement
 ```
 
 ### 3.2 Agent Roster
 
-The core orchestration team consists of the following agents:
+The canonical `.github/agents` pack consists of the following agents:
 
 | # | Agent | Role | Visibility | Primary Function |
 |---|-------|------|------------|------------------|
@@ -141,32 +146,43 @@ The core orchestration team consists of the following agents:
 | 3 | **Oracle** | Analyst | Hidden | Deep requirements analysis and risk assessment |
 | 4 | **Hermes** | Scout | Hidden | Fast, read-only codebase reconnaissance |
 | 5 | **Sisyphus** | Implementer | Hidden | Focused code implementation with TDD discipline |
-| 6 | **Frontend-Engineer** | UI Specialist | Hidden | Accessible, responsive UI implementation |
+| 6 | **Afrodita-UX** | UI Specialist | Hidden | Accessible, responsive UI implementation |
 | 7 | **Themis** | Reviewer | Hidden | Implementation quality gate (APPROVED / NEEDS_REVISION / FAILED) |
 | 8 | **Argus** | Verifier | Hidden | Targeted test execution and failure triage |
-| 9 | **Hephaestus** | Build Engineer | Hidden | CI readiness, packaging, release validation |
-| 10 | **PackCatalog** | Discovery | Hidden | Workflow pack catalog and installation guidance |
+| 9 | **Atenea** | Security Specialist | Hidden | Security review for code, config, and secrets-sensitive changes |
+| 10 | **Ariadna** | Dependency Specialist | Hidden | Manifest, lockfile, image, and CVE/drift review |
+| 11 | **Clio** | Docs Specialist | Hidden | README and usage alignment after behavior changes |
+| 12 | **Hephaestus** | DevOps/SRE Specialist | Hidden | Deploy, release readiness, incident response, maintenance, and performance/capacity validation |
+| 13 | **SpecifyConstitution** | Specify Specialist | Hidden | Establishes and versions project principles |
+| 14 | **SpecifySpec** | Specify Specialist | Hidden | Generates feature specifications and acceptance criteria |
+| 15 | **SpecifyClarify** | Specify Specialist | Hidden | Resolves ambiguities before planning |
+| 16 | **SpecifyPlan** | Specify Specialist | Hidden | Produces technical plans, research, and contracts |
+| 17 | **SpecifyTasks** | Specify Specialist | Hidden | Breaks plans into ordered executable tasks |
+| 18 | **SpecifyAnalyze** | Specify Specialist | Hidden | Validates cross-artifact consistency |
+| 19 | **SpecifyImplement** | Specify Specialist | Hidden | Executes task plans phase-by-phase under Sisyphus |
 
 ### 3.3 Workflow Lifecycle
 
 Every task orchestrated by Atlas follows a structured lifecycle:
 
 ```
-┌──────────┐    ┌─────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
-│  1. Plan  │───▶│ 2. Implement │───▶│ 3. Review │───▶│ 4. Verify │───▶│ 5. Report │
-└──────────┘    └─────────────┘    └──────────┘    └──────────┘    └──────────┘
- Prometheus       Sisyphus /        Themis       Argus /          Atlas
- Hermes         Frontend-Eng.                      Hephaestus
+┌──────────┐    ┌─────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────┐
+│  1. Plan  │───▶│ 2. Implement │───▶│ 3. Review │───▶│ 4. Security │───▶│ 5. Verify │───▶│ 6. Docs / Deps │───▶│ 7. Report │
+└──────────┘    └─────────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────────┘    └──────────┘
+ Prometheus       Sisyphus /        Themis          Atenea          Argus /         Clio /              Atlas
+ Hermes         Afrodita-UX                                         Hephaestus     Ariadna
  Oracle
 ```
 
 **Phase Details:**
 
 1. **Plan**: If `Prometheus` is available and scope is medium/large, planning is delegated to it. Otherwise, `Hermes` + `Oracle` gather context and Atlas produces a concise 3–7 phase plan.
-2. **Implement**: Each phase is delegated to `Sisyphus` or `Frontend-Engineer` with explicit acceptance criteria and test expectations.
+2. **Implement**: Each phase is delegated to `Sisyphus` or `Afrodita-UX` with explicit acceptance criteria and test expectations.
 3. **Review**: `Themis` evaluates the implementation. If status is `NEEDS_REVISION`, work routes back to the implementer. If `FAILED`, Atlas stops and requests user guidance.
-4. **Verify**: `Argus` runs targeted checks. `Hephaestus` validates build and release readiness when applicable.
-5. **Report**: Atlas returns a concise outcome summarizing completed phases, changed files, test/review status, and recommended next actions.
+4. **Security**: `Atenea` runs when behavior-bearing code, dependencies, configuration, infrastructure, or exposed interfaces changed.
+5. **Verify**: `Argus` runs targeted checks. `Hephaestus` validates build and release readiness when applicable.
+6. **Docs / Dependencies**: `Clio` and `Ariadna` run conditionally when operator-facing docs or manifests/images changed.
+7. **Report**: Atlas returns a concise outcome summarizing completed phases, changed files, gate status, and recommended next actions.
 
 ### 3.4 Context Conservation Strategy
 
@@ -181,23 +197,23 @@ This strategy results in significant **token budget savings** compared to feedin
 
 ---
 
-## 4. Domain-Specific Workflows
+## 4. Optional Distribution Packs
 
-### 4.1 Workflow Pack Summary
+### 4.1 Distribution Pack Summary
 
-The project includes five specialized **workflow packs**, each targeting a specific software engineering domain:
+The project also includes optional **distribution packs**, each targeting a specific software engineering domain. These packs are secondary to the canonical `.github/agents` core and are intended for explicit enablement, packaging, or future expansion.
 
 | # | Workflow Pack | Conductor | Specialists | Domain |
 |---|----------|-----------|:-----------:|--------|
-| 1 | `atlas-orchestration-team` | Atlas | 9 agents | General software engineering |
+| 1 | `atlas-orchestration-team` | Atlas | 19 agents | General software engineering |
 | 2 | `frontend-workflow` | Afrodita | 8 agents | UI/UX development |
 | 3 | `backend-workflow` | Backend-Atlas | 8 agents | API design, databases, services |
 | 4 | `devops-workflow` | DevOps-Atlas | 8 agents | Infrastructure, CI/CD, containers |
 | 5 | `data-workflow` | Data-Atlas | 8 agents | Data engineering, ML pipelines |
 
-**Total: 5 workflow packs, 5 conductors, 41+ specialist agents.**
+**Total: 5 optional distribution packs, 5 additional conductors, 51+ distribution-oriented specialist agents.**
 
-Each workflow follows the same conductor pattern: **Conductor + Planner + Hidden Specialists + Reviewer**, ensuring consistency across domains while allowing domain-specific expertise.
+Each workflow follows the same conductor pattern: **Conductor + Planner + Hidden Specialists + Domain-Specific Final Gate**, ensuring consistency across domains while allowing domain-specific expertise. Depending on the workflow, that final gate may be a reviewer, an accessibility verifier, or a release/deployment strategist.
 
 ### 4.2 Cross-Workflow Handoffs
 
@@ -212,7 +228,7 @@ For example:
 - `Backend-Atlas` can request `DevOps-Atlas` to generate deployment manifests.
 - `DevOps-Atlas` can coordinate with `Data-Atlas` for data pipeline infrastructure.
 
-This mesh of specialized conductors enables the system to handle enterprise-scale projects spanning multiple technology domains.
+This mesh of specialized optional conductors enables the system to handle enterprise-scale projects spanning multiple technology domains when distribution-pack mode is intentionally enabled.
 
 ---
 
@@ -224,28 +240,29 @@ Atlas employs a **role-specific model selection** strategy, where each agent spe
 
 | Model Family | Strengths | Best For |
 |-------------|-----------|----------|
-| **Claude Opus** | Most intelligent for agents and coding | Orchestration, review, complex decisions |
-| **Claude Sonnet** | Speed-intelligence balance | Implementation, UI development |
+| **GPT-5.4** | Strongest general orchestration and planning reasoning in current use | Conductors, planners, complex synthesis |
+| **Claude Opus 4.6** | Highest-quality implementation reasoning | Core implementation agents |
+| **Claude Sonnet 4.6** | Speed-intelligence balance | Planning fallback, implementation fallback, build/release |
 | **Claude Haiku** | Fastest option | Quick searches, pack discovery |
-| **GPT-5.2** | Strong reasoning, broad capability | Research, fallback for all roles |
-| **GPT-5.3 Codex** | Optimized for software engineering | Code implementation |
-| **Gemini Flash** | Low-latency, high-volume | Fast reconnaissance, test execution |
+| **GPT-5.2** | Strong reasoning, broad capability | Planning fallback, exploration fallback |
+| **GPT-5.3 Codex** | Optimized for software engineering | Review and implementation fallback |
+| **Gemini Flash** | Low-latency, high-volume | Fast reconnaissance, frontend-specialist work |
 
 ### 5.2 Role-Specific Model Assignments
 
 | # | Agent | Primary Model | Rationale |
 |---|-------|---------------|-----------|
-| 1 | Atlas (Conductor) | Claude Opus | Complex multi-step orchestration decisions |
-| 2 | Oracle (Research) | Claude Opus | Deep analytical reasoning for requirements |
-| 3 | Themis | Claude Opus | Rigorous quality assessment |
-| 4 | Sisyphus (Implementation) | GPT-5.3 Codex | Optimized for code generation |
-| 5 | Hermes (Reconnaissance) | Gemini Flash | Speed-critical file scanning |
-| 6 | Argus (Testing) | Gemini Flash | Fast test execution and log analysis |
-| 7 | Hephaestus (Build) | Claude Sonnet | Balanced build/release tasks |
-| 8 | Frontend-Engineer | Claude Sonnet | UI component generation |
-| 9 | PackCatalog | Gemini Flash | Quick catalog lookups |
+| 1 | Atlas / Afrodita (Conductors) | GPT-5.4 | Complex multi-step orchestration decisions |
+| 2 | Prometheus / Oracle / Specify* / Frontend-Planner | GPT-5.4 | Deep planning and specification work |
+| 3 | Themis | GPT-5.3 Codex | Rigorous implementation review |
+| 4 | Sisyphus / SpecifyImplement | Claude Opus 4.6 | Highest-quality implementation execution |
+| 5 | Hermes / optional distribution discovery agents | Gemini 3 Flash (Preview) | Speed-critical discovery and scanning |
+| 6 | Argus | Claude Sonnet 4.6 | Stable targeted verification and triage |
+| 7 | Hephaestus | Claude Sonnet 4.6 | Balanced build/release tasks |
+| 8 | Frontend specialists | Gemini 3 Flash (Preview) | Fast UI iteration with lightweight-first routing |
+| 9 | Frontend fallback quality tier | Claude Sonnet 4.6 | Quality fallback for frontend specialists |
 
-This differentiated approach ensures that **expensive, high-capability models** are reserved for tasks requiring deep reasoning (orchestration, review), while **fast, lightweight models** handle high-volume, speed-critical tasks (reconnaissance, testing).
+This differentiated approach ensures that **high-capability models** are reserved for orchestration, planning, and core implementation, while **fast, lightweight models** handle reconnaissance and frontend-specialist work.
 
 ---
 
@@ -290,21 +307,17 @@ The following components have been designed, implemented, and validated:
 | # | Component | Status | Description |
 |---|-----------|:------:|-------------|
 | 1 | Core Atlas conductor agent | ✅ Complete | Full orchestration lifecycle with dynamic routing |
-| 2 | 9 specialist agents (core team) | ✅ Complete | Prometheus, Oracle, Hermes, Sisyphus, Argus, Themis, Hephaestus, Frontend-Engineer, PackCatalog |
-| 3 | Frontend workflow pack (8 agents) | ✅ Complete | Component-Builder, State-Manager, A11y-Auditor, and more |
-| 4 | Backend workflow pack (8 agents) | ✅ Complete | API-Designer, Database-Engineer, Security-Guard, and more |
-| 5 | DevOps workflow pack (8 agents) | ✅ Complete | Container-Master, Pipeline-Engineer, Monitor-Sentinel, and more |
-| 6 | Data workflow pack (8 agents) | ✅ Complete | Pipeline-Builder, ML-Scientist, Data-Quality, and more |
-| 7 | PackCatalog agent | ✅ Complete | Discovery and installation guidance for workflow packs |
-| 8 | Model selection strategy | ✅ Complete | Documented role-specific model assignments |
-| 9 | Cross-workflow handoff system | ✅ Complete | Inter-conductor delegation protocol |
-| 10 | Agent auto-discovery system | ✅ Complete | Runtime scanning of plugin directories |
-| 11 | Flow source selection engine | ✅ Complete | Intelligent workflow routing based on task analysis |
-| 12 | Three demo environments | ✅ Complete | Smoke tests and validation scenarios |
-| 13 | User Management demo (Java/Spring) | ✅ Complete | Full Hexagonal Architecture microservice |
-| 14 | Presentation materials | ✅ Complete | Demo scripts, slide decks, architectural reports |
-| 15 | Sync and utility scripts | ✅ Complete | PowerShell sync, Python PPTX generator, LLM listing |
-| 16 | Public GitHub repository | ✅ Complete | MIT-licensed, documented, ready for community use |
+| 2 | 18 hidden specialist agents (core pack) | ✅ Complete | Prometheus, Oracle, Hermes, Sisyphus, Themis, Argus, Atenea, Ariadna, Clio, Hephaestus, Afrodita-UX, and Specify specialists |
+| 3 | Model selection strategy | ✅ Complete | Documented role-specific model assignments |
+| 4 | Agent auto-discovery system | ✅ Complete | Runtime scanning with `.github/agents` precedence over optional distribution packs |
+| 5 | Optional distribution packs | ✅ Complete | Frontend, backend, DevOps, and data domain packs for explicit enablement |
+| 6 | Cross-workflow handoff system | ✅ Complete | Inter-conductor delegation protocol for optional packs |
+| 7 | Flow source selection engine | ✅ Complete | Intelligent workflow routing based on task analysis |
+| 8 | Three demo environments | ✅ Complete | Smoke tests and validation scenarios |
+| 9 | User Management demo (Java/Spring) | ✅ Complete | Full Hexagonal Architecture microservice |
+| 10 | Presentation materials | ✅ Complete | Demo scripts, slide decks, architectural reports |
+| 11 | Sync and utility scripts | ✅ Complete | PowerShell sync, Python PPTX generator, LLM listing |
+| 12 | Public GitHub repository | ✅ Complete | MIT-licensed, documented, ready for community use |
 
 ### 7.2 Demonstration Environments
 
@@ -365,8 +378,9 @@ The project is publicly available as an open-source repository under the **MIT L
 atlas-agents/
 ├── README.md                          # Project documentation and quick start
 ├── LICENSE                            # MIT License
-├── plugins/                           # Workflow packs (agent definitions)
-│   ├── atlas-orchestration-team/      # Core team (9 agents)
+├── .github/agents/                    # Canonical agent pack (source of truth)
+├── plugins/                           # Optional distribution/organization packs
+│   ├── atlas-orchestration-team/      # Core team mirror (19 agents)
 │   ├── frontend-workflow/             # Frontend specialists (8 agents)
 │   ├── backend-workflow/              # Backend specialists (8 agents)
 │   ├── devops-workflow/               # DevOps specialists (8 agents)
@@ -395,9 +409,14 @@ The project provides a **60-second setup** experience:
 
 ```json
 {
-  "chat.customAgentInSubagent.enabled": true
+   "chat.customAgentInSubagent.enabled": true,
+   "chat.agentFilesLocations": {
+      ".github/agents": true
+   }
 }
 ```
+
+Optional distribution packs under `plugins/` can be enabled separately, but they are not required for the canonical Atlas-first experience.
 
 **Prerequisites:**
 - VS Code Insiders with GitHub Copilot extension
@@ -410,7 +429,7 @@ As an MIT-licensed project, the repository welcomes:
 
 - **Usage**: Any individual or organization may use, modify, and distribute the software.
 - **Contributions**: Bug reports, feature requests, and pull requests are encouraged.
-- **Custom Workflows**: Organizations can create their own workflow packs following the established patterns.
+- **Custom Distributions**: Organizations can create their own optional workflow/distribution packs following the established patterns.
 - **Agent Customization**: Each agent's behavior is defined in readable Markdown files (`.agent.md`), making customization accessible to non-programmers.
 
 ---
@@ -426,7 +445,7 @@ The following challenges have been identified during development, along with mit
 | 3 | **Agent instruction adherence** | Models may not always follow agent instructions precisely | Structured output contracts; mandatory response format; review gates |
 | 4 | **Cross-workflow coordination** | Handoffs between workflow conductors add complexity | Defined handoff protocols; structured artifacts at boundaries |
 | 5 | **VS Code API evolution** | Multi-agent support is an evolving feature | Modular design; settings-based configuration; regular compatibility testing |
-| 6 | **Model deprecation** | Models like Gemini 3 Pro Preview have been deprecated | Monitoring model lifecycle; avoiding deprecated models in configs |
+| 6 | **Model lifecycle changes** | Preferred model tiers can evolve over time | Monitoring model lifecycle; refreshing prompt configs when supported labels change |
 | 7 | **Enterprise adoption barriers** | Organizations may have security or compliance requirements | Open-source transparency; no external dependencies; local-first architecture |
 | 8 | **Quality consistency** | Different LLM models produce varying quality | Quality gates enforce minimum standards regardless of underlying model |
 

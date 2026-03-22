@@ -4,9 +4,9 @@ description: State management patterns specialist for frontend applications.
 user-invocable: false
 argument-hint: Research and implement state management patterns for this feature.
 model:
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
   - Gemini 3 Flash (Preview) (copilot)
+  - Claude Haiku 4.5 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - fetch

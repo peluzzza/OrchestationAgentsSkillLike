@@ -4,9 +4,10 @@ description: CI/CD pipeline design and implementation specialist.
 user-invocable: false
 argument-hint: Design and implement CI/CD pipelines for automated testing and deployment.
 model:
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
+  - Claude Opus 4.6 (copilot)
+  - Claude Sonnet 4.6 (copilot)
+  - GPT-5.4 (copilot)
+  - GPT-5.3-Codex (copilot)
 tools:
   - search
   - edit

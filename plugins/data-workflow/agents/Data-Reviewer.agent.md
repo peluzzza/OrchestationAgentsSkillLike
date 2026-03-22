@@ -4,8 +4,9 @@ description: Code review specialist for data pipelines and analytics.
 user-invocable: false
 argument-hint: Review data pipeline code for quality and best practices.
 model:
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
+  - GPT-5.3-Codex (copilot)
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - runCommands

@@ -5,6 +5,7 @@ argument-hint: Find files, usages, dependencies, and context related to: <resear
 model:
   - Gemini 3 Flash (Preview) (copilot)
   - Claude Haiku 4.5 (copilot)
+  - GPT-5.2 (copilot)
 user-invocable: false
 tools:
   - search

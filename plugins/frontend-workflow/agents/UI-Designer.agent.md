@@ -4,9 +4,9 @@ description: Component architecture and layout specialist for frontend workflows
 user-invocable: false
 argument-hint: Design component hierarchy and layout structure for this UI requirement.
 model:
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-5.2 (copilot)
   - Gemini 3 Flash (Preview) (copilot)
+  - Claude Haiku 4.5 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - fetch

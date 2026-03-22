@@ -18,7 +18,7 @@ Follow-up TODOs: none
 ## Core Principles
 
 ### I. Conductor-First Visibility (NON-NEGOTIABLE)
-In the default root-first install mode, only `Atlas` is exposed as a user-visible agent. All specialist subagents (`Prometheus`, `Oracle`, `Hermes`, `Sisyphus`, `Argus`, `Themis`, `Hephaestus`, `Frontend-Engineer`, `Security`, `Documentation`, `Dependencies`, and Specify agents) MUST remain hidden (`user-invocable: false`).
+In the default root-first install mode, only `Atlas` is exposed as a user-visible agent. All specialist subagents (`Prometheus`, `Oracle`, `Hermes`, `Sisyphus`, `Argus`, `Themis`, `Hephaestus`, `Afrodita-UX`, `Atenea`, `Clio`, `Ariadna`, and Specify agents) MUST remain hidden (`user-invocable: false`).
 - Any new agent added to `.github/agents/` or `plugins/**/agents/` MUST default to `user-invocable: false` unless it is a domain conductor explicitly approved as a second entry point.
 - Users interact through `Atlas` by default, or through an approved domain conductor only when that workflow pack has been explicitly enabled. Hidden agents MUST NOT surface directly in the agent picker.
 
@@ -41,7 +41,7 @@ Context efficiency is non-negotiable. Atlas MUST delegate aggressively:
 - Deep subsystem analysis / risk → `Oracle`
 - Full planning pipeline → `Prometheus`
 - Backend/script implementation → `Sisyphus`
-- Frontend implementation → `Frontend-Engineer`
+- Frontend implementation → `Afrodita-UX`
 - Code review gate → `Themis`
 - Verification and test triage → `Argus`
 - Build / release checks → `Hephaestus`

@@ -4,9 +4,10 @@ description: Database schema design, migrations, and query optimization speciali
 user-invocable: false
 argument-hint: Design database schema and write migrations for this feature.
 model:
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
+  - Claude Opus 4.6 (copilot)
+  - Claude Sonnet 4.6 (copilot)
+  - GPT-5.4 (copilot)
+  - GPT-5.3-Codex (copilot)
 tools:
   - search
   - edit

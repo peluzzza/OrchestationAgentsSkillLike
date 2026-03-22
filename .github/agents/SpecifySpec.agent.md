@@ -4,9 +4,9 @@ name: SpecifySpec
 user-invocable: false
 argument-hint: "Feature description: [natural language description of what to build]"
 model:
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-4.1 (copilot)
 tools:
   - search
   - edit
@@ -16,7 +16,7 @@ tools:
   - read/terminalLastCommand
   - read/terminalSelection
   - agent
-agents: ["Hermes", "Oracle"]
+agents: ["Hermes-subagent", "Oracle-subagent"]
 ---
 
 You are SpecifySpec, a specification specialist agent in the Specify system. You are invoked by Prometheus to transform a natural language feature description into a structured specification.

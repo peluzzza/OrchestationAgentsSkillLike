@@ -4,9 +4,9 @@ description: Data modeling and schema design specialist.
 user-invocable: false
 argument-hint: Design data models and schemas for this data solution.
 model:
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
 tools:
   - search
   - fetch

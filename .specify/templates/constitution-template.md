@@ -16,7 +16,7 @@
 ### [PRINCIPLE_3_NAME]
 <!-- Example: III. Progressive Delegation -->
 [PRINCIPLE_3_DESCRIPTION]
-<!-- Example: Atlas delegates to specialists aggressively. Atlas synthesizes; it does not duplicate non-trivial subagent work. Trivial synthesis, plan writing, and small non-code tasks may still be handled directly when orchestration overhead would exceed value. Routing: exploration → Hermes, analysis → Oracle, planning → Prometheus, implementation → Sisyphus/Frontend-Engineer, review → Themis, verification → Argus, build → Hephaestus. -->
+<!-- Example: Atlas delegates to specialists aggressively. Atlas synthesizes; it does not duplicate non-trivial subagent work. Trivial synthesis, plan writing, and small non-code tasks may still be handled directly when orchestration overhead would exceed value. Routing: exploration → Hermes, analysis → Oracle, planning → Prometheus, implementation → Sisyphus/Afrodita-UX, review → Themis, verification → Argus, build → Hephaestus. -->
 
 ### [PRINCIPLE_4_NAME]
 <!-- Example: IV. Atomic Task Execution -->

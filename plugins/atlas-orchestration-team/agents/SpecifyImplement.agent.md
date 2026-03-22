@@ -4,9 +4,10 @@ name: SpecifyImplement
 user-invocable: false
 argument-hint: Implement all tasks in tasks.md for feature [feature-id].
 model:
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-4.1 (copilot)
+  - Claude Opus 4.6 (copilot)
+  - Claude Sonnet 4.6 (copilot)
+  - GPT-5.4 (copilot)
+  - GPT-5.3-Codex (copilot)
 tools:
   - search
   - edit
@@ -31,8 +32,8 @@ Consider any additional context provided by Sisyphus (e.g., "focus on Phase 2" o
 - If it exists, read it and look for entries under the `hooks.before_implement` key, filtering to only `enabled: true` hooks.
 - For hooks with no `condition` or empty condition: treat as executable.
 - For hooks with a non-empty `condition`, skip (leave condition evaluation to HookExecutor).
-- **Optional hook** (`optional: true`): display prompt and command, ask user to run manually.
-- **Mandatory hook** (`optional: false`): display `EXECUTE_COMMAND: {command}` and wait for result before proceeding.
+- **Optional hook** (`optional: true`): display prompt and command, escalate to Sisyphus for a manual run decision.
+- **Mandatory hook** (`optional: false`): display `EXECUTE_COMMAND: {command}` and wait for the parent conductor to provide the result before proceeding.
 - If `.specify/extensions.yml` does not exist or has no before_implement hooks, skip silently.
 
 ## Outline
@@ -49,7 +50,7 @@ Consider any additional context provided by Sisyphus (e.g., "focus on Phase 2" o
      | ux.md       | 12    | 12        | 0          | ✓ PASS |
      | security.md | 6     | 5         | 1          | ✗ FAIL |
      ```
-   - **FAIL**: If any checklist has incomplete items — STOP and ask: *"Some checklists are incomplete. Proceed with implementation anyway? (yes/no)"* Wait for user before continuing.
+   - **FAIL**: If any checklist has incomplete items — STOP and escalate to Sisyphus/Atlas with the failing checklist summary before continuing.
    - **PASS**: All checklists complete — proceed automatically.
 
 3. **Load implementation context**:
@@ -127,85 +128,3 @@ TESTS_STATUS: PASS | FAIL | NOT_RUN
 BLOCKERS: [list of blocking issues, or "none"]
 NEXT_STEP: [recommendation for Sisyphus]
 ```
-4. `.specify/specs/<feature>/contracts/` — interfaces a respetar (si existe)
-5. `.specify/memory/constitution.md` — principios de calidad y restricciones
-
-### 2) Determinar la fase a ejecutar
-
-Sisyphus te pasará:
-- **FEATURE_ID**: identificador de la feature
-- **PHASE**: número de fase a ejecutar (ej. "Fase 3: User Story 1")
-- **TASK_RANGE**: opcionalmente un rango de tareas (ej. T010-T025)
-
-Si no se especifica phase, ejecuta la siguiente fase pendiente (primera con todas las tareas en `- [ ]`).
-
-### 3) Pre-checks antes de implementar
-
-Verifica:
-- [ ] La fase anterior está 100% completada (todas las tareas en `- [x]`)
-- [ ] No hay bloqueantes en el reporte de análisis (`.specify/specs/<feature>/analysis-report.md`)
-- [ ] Los archivos de dependencia mencionados en las tareas existen
-
-Si algún pre-check falla: reporta el bloqueo a Sisyphus sin implementar.
-
-### 4) Ejecutar tareas de la fase
-
-Para cada tarea `- [ ] [Tnnn]` en la fase:
-
-1. **Lee la tarea** — entiende exactamente qué archivo/función crear o modificar.
-2. **Verifica contexto** — lee el archivo si ya existe para entender el patrón.
-3. **Implementa** — aplica el cambio mínimo necesario.
-4. **Marca completada** — cambia `- [ ]` a `- [x]` en `tasks.md`.
-5. **Sigue al siguiente** — sin pausas innecesarias entre tareas sin dependencias.
-
-Para tareas marcadas `[P]` (paralelizables): puedes indicar que serían ejecutables en paralelo, pero ejecútalas secuencialmente dentro del mismo agente.
-
-### 5) Disciplina de implementación
-
-- **Mínimo diff**: Solo cambia lo necesario para la tarea. Sin refactors no solicitados.
-- **Patrones existentes**: Usa los mismos patrones del codebase. No inventes nuevas convenciones.
-- **Tests primero**: Si la tarea incluye tests (`- [ ] T012 [US1] Test para UserService`), escríbelos antes de la implementación del código de producción.
-- **Sin implementar features futuras**: Solo la tarea actual.
-
-### 6) Manejo de bloqueos
-
-Si durante la implementación encuentras:
-- **Ambigüedad técnica**: No asumas. Reporta a Sisyphus con 2-3 opciones.
-- **Conflicto con constitution.md**: Para implementación y escala el conflicto.
-- **Archivo inesperadamente complejo**: Realiza la tarea solo hasta donde tienes contexto, documenta lo pendiente.
-
-### 7) Actualizar progreso
-
-Al completar cada tarea en `tasks.md`, actualiza el checkbox. Al completar la fase completa, añade al final del archivo:
-
-```markdown
----
-## Progreso de Ejecución
-
-| Fase | Estado | Completado | Fecha |
-|------|--------|------------|-------|
-| Fase 1: Setup | ✅ COMPLETA | 5/5 tareas | YYYY-MM-DD |
-| Fase 3: US1 | ✅ COMPLETA | 8/8 tareas | YYYY-MM-DD |
-| Fase 4: US2 | 🔄 EN PROGRESO | 3/6 tareas | YYYY-MM-DD |
-```
-
-## Formato de Retorno a Sisyphus
-
-```
-IMPLEMENT_STATUS: COMPLETE | PARTIAL | BLOCKED
-FEATURE_ID: <feature-id>
-PHASE_COMPLETED: [nombre de la fase]
-TASKS_COMPLETED: N/M
-FILES_CHANGED: [lista de archivos modificados/creados]
-TESTS_ADDED: [lista de archivos de test, o "ninguno"]
-NEXT_PHASE: [nombre de la siguiente fase pendiente, o "TODAS COMPLETAS"]
-BLOCKERS: [descripción del bloqueo si PARTIAL/BLOCKED, o "ninguno"]
-RISKS: [riesgos identificados durante implementación]
-```
-
-## Reglas
-
-- No saltes fases aunque parezcan triviales.
-- Marca SIEMPRE las tareas como `[x]` al completarlas en `tasks.md`.
-- Si encuentras un bug en una tarea anterior al ejecutar la actual, repórtalo pero no lo arregles sin autorización de Sisyphus.
-- La constitución es ley. Si una decisión técnica viola un principio, escala antes de implementar.

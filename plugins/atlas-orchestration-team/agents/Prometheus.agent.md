@@ -5,8 +5,8 @@ user-invocable: false
 argument-hint: Research this task deeply and produce a phased execution plan for Atlas.
 model:
   - GPT-5.4 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-4.1 (copilot)
+  - Claude Sonnet 4.6 (copilot)
+  - GPT-5.2 (copilot)
 tools:
   - agent
   - search
@@ -69,6 +69,19 @@ Tu diferencial clave: orquestas el **pipeline de especificación Specify** antes
 | Compleja | Múltiples Hermes (dominios distintos) + múltiples Oracle en paralelo → síntesis → plan |
 
 **Límite:** máximo 10 subagentes paralelos por fase de investigación.
+
+### Skills routing (genérico)
+
+Cuando redactes el plan, incluye en **Notas para Atlas** los skills que los subagentes ejecutores deben cargar:
+- `python-dev`: servicios Python, scripts, CLIs.
+- `python-testing-patterns`: solo cuando Atlas scope explícitamente implementación de tests.
+- `python-performance-optimization`: latencia, CPU, memoria, profiling.
+- `golang-patterns`: paquetes Go idiomáticos, interfaces, manejo de errores.
+- `golang-testing`, `golang-pro`: rigor de testing Go, concurrencia, gRPC, generics.
+- `claude-api`: integraciones Anthropic/Claude API o Agent SDK.
+- `find-skills`: solo cuando Atlas pide descubrir una capacidad nueva, no de forma especulativa.
+
+No incluyas un skill a menos que sea claramente relevante para la fase. Mantén el contexto reducido.
 
 ### Regla de confianza: para en el 90 %
 

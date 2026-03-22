@@ -4,9 +4,10 @@ description: ETL/ELT pipeline development specialist.
 user-invocable: false
 argument-hint: Build data pipelines for extraction, transformation, and loading.
 model:
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-5.2 (copilot)
-  - GPT-5.3-Codex (Preview) (copilot)
+  - Claude Opus 4.6 (copilot)
+  - Claude Sonnet 4.6 (copilot)
+  - GPT-5.4 (copilot)
+  - GPT-5.3-Codex (copilot)
 tools:
   - search
   - edit

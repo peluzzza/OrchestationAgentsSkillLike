@@ -4,8 +4,9 @@ description: Code review specialist for frontend components.
 user-invocable: false
 argument-hint: Review these frontend changes for quality and best practices.
 model:
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
+  - Gemini 3 Flash (Preview) (copilot)
+  - Claude Haiku 4.5 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - runCommands

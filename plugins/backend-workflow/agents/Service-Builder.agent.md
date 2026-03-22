@@ -4,9 +4,10 @@ description: TDD-focused backend service implementation specialist.
 user-invocable: false
 argument-hint: Implement these backend services following TDD with proper tests.
 model:
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-5.3-Codex (Preview) (copilot)
-  - Claude Haiku 4.5 (copilot)
+  - Claude Opus 4.6 (copilot)
+  - Claude Sonnet 4.6 (copilot)
+  - GPT-5.4 (copilot)
+  - GPT-5.3-Codex (copilot)
 tools:
   - search
   - edit

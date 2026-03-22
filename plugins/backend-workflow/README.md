@@ -21,14 +21,14 @@ Backend-Atlas (Conductor - User Visible)
 
 | Agent | Role | Model |
 |-------|------|-------|
-| **Backend-Atlas** | Conductor - orchestrates the team | Claude Opus 4.5 |
-| **Backend-Planner** | Autonomous planning for complex tasks | GPT-5.2 |
-| **API-Designer** | REST/GraphQL endpoint design | GPT-5.2 |
-| **Database-Engineer** | Schema, migrations, queries | GPT-5.2 |
-| **Security-Guard** | Auth, authz, OWASP compliance | GPT-5.2 |
-| **Service-Builder** | TDD service implementation | Claude Sonnet 4.5 |
-| **Performance-Tuner** | Query optimization, caching | GPT-5.2 |
-| **Backend-Reviewer** | Code review gate | GPT-5.2 |
+| **Backend-Atlas** | Conductor - orchestrates the team | GPT-5.4 |
+| **Backend-Planner** | Autonomous planning for complex tasks | GPT-5.4 |
+| **API-Designer** | REST/GraphQL endpoint design | GPT-5.4 |
+| **Database-Engineer** | Schema, migrations, queries | Claude Opus 4.6 |
+| **Security-Guard** | Auth, authz, OWASP compliance | Claude Opus 4.6 |
+| **Service-Builder** | TDD service implementation | Claude Opus 4.6 |
+| **Performance-Tuner** | Query optimization, caching | Claude Opus 4.6 |
+| **Backend-Reviewer** | Code review gate | GPT-5.3-Codex |
 
 ## Workflow
 

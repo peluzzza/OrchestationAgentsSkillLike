@@ -4,9 +4,9 @@ description: Autonomous planner that researches API/database requirements and wr
 user-invocable: false
 argument-hint: Research this backend task deeply and produce a phased implementation plan.
 model:
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-4.1 (copilot)
 tools:
   - agent
   - search

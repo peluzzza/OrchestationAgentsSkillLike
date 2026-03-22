@@ -4,9 +4,9 @@ description: Autonomous planner that researches infrastructure requirements and 
 user-invocable: false
 argument-hint: Research this infrastructure task deeply and produce a phased DevOps plan.
 model:
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-4.1 (copilot)
 tools:
   - agent
   - search

@@ -4,9 +4,9 @@ description: REST/GraphQL API design and specification specialist.
 user-invocable: false
 argument-hint: Design API endpoints and contracts for this backend feature.
 model:
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
 tools:
   - search
   - fetch

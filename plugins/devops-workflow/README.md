@@ -21,14 +21,14 @@ DevOps-Atlas (Conductor - User Visible)
 
 | Agent | Role | Model |
 |-------|------|-------|
-| **DevOps-Atlas** | Conductor - orchestrates the team | Claude Opus 4.5 |
-| **DevOps-Planner** | Autonomous planning for complex tasks | GPT-5.2 |
-| **Infra-Architect** | IaC with Terraform/Pulumi | GPT-5.2 |
-| **Pipeline-Engineer** | CI/CD pipelines | GPT-5.2 |
-| **Container-Master** | Docker & Kubernetes | Claude Sonnet 4.5 |
-| **Monitor-Sentinel** | Monitoring & alerting | GPT-5.2 |
-| **Security-Ops** | Security scanning & compliance | GPT-5.2 |
-| **Deploy-Strategist** | Deployment strategies | GPT-5.2 |
+| **DevOps-Atlas** | Conductor - orchestrates the team | GPT-5.4 |
+| **DevOps-Planner** | Autonomous planning for complex tasks | GPT-5.4 |
+| **Infra-Architect** | IaC with Terraform/Pulumi | GPT-5.4 |
+| **Pipeline-Engineer** | CI/CD pipelines | Claude Opus 4.6 |
+| **Container-Master** | Docker & Kubernetes | Claude Opus 4.6 |
+| **Monitor-Sentinel** | Monitoring & alerting | Claude Opus 4.6 |
+| **Security-Ops** | Security scanning & compliance | Claude Opus 4.6 |
+| **Deploy-Strategist** | Deployment strategies | GPT-5.4 |
 
 ## Workflow
 

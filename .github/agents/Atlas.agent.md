@@ -5,8 +5,7 @@ user-invocable: true
 argument-hint: Orchestrate end-to-end execution for this task using specialist subagents.
 model:
   - GPT-5.4 (copilot)
-  - Claude Opus 4.5 (copilot)
-  - Claude Sonnet 4.5 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - agent
   - search
@@ -30,6 +29,8 @@ Open every run with one short paragraph covering:
 - Hard constraints (scope, available tools, any user-requested approval gates).
 - Success criteria (done when …).
 
+If a work item, ticket, or external document is provided or referenced (e.g., a Jira task, Confluence page, GitHub issue, PRD, or spec), ingest its content using any available helper, skill, or tool before moving to planning. This step is optional and tool-agnostic — skip it when no such source is present.
+
 ## 1. Agent Controls (check before every delegation)
 
 ### Prompt-level control
@@ -37,8 +38,8 @@ Open every run with one short paragraph covering:
 If the user's prompt includes a control block, honor it strictly for that run:
 
 ```
-enabled_agents: [Sisyphus, Argus]
-disabled_agents: [Hephaestus]
+enabled_agents: [Sisyphus-subagent, Argus-subagent]
+disabled_agents: [Oracle-subagent]
 ```
 
 - `enabled_agents` is an allow-list — do not invoke any agent outside this list.
@@ -67,20 +68,31 @@ Discovery sources (higher precedence wins on duplicate names):
 1. `.github/agents/*.agent.md`
 2. `plugins/**/agents/*.agent.md`
 
+`.github/agents` is the canonical source of truth for this repository. Treat `plugins/**/agents` as optional secondary distribution/organization packs that may be enabled explicitly, but do not prefer them over core agents when a canonical equivalent exists.
+
 Capture for each agent: `name`, `description`, `user-invocable`, `tools`, `handoffs`.
 
+Compatibility aliases may exist for imported packs or legacy prompts. When these names are present in `.github/agents`, treat them as first-class specialist handles:
+- `Hermes-subagent`
+- `Oracle-subagent`
+- `Sisyphus-subagent`
+- `Afrodita-subagent`
+- `Argus-subagent`
+- `Themis-subagent`
+- `Hephaestus-subagent`
+
 Routing policy:
-- Complex planning and phase design → `Prometheus` (preferred) or `Oracle` + direct plan
-- Requirements, risks, subsystem analysis → `Oracle`
-- Codebase mapping and entry points → `Hermes`
-- Backend implementation → `Sisyphus`
-- Frontend implementation → `Frontend-Engineer`
-- Security-sensitive changes (auth, secrets, permissions, exposed config) → `Security`
-- Dependency, lockfile, runtime image, or manifest drift → `Dependencies`
-- Behavior/setup/interface documentation alignment → `Documentation`
-- Code review gate → `Themis`
-- Verification and test triage → `Argus`
-- Build/release checks → `Hephaestus`
+- Complex planning and phase design → `Prometheus` (preferred) or `Oracle-subagent` + direct plan
+- Requirements, risks, subsystem analysis → `Oracle-subagent`
+- Codebase mapping and entry points → `Hermes-subagent`
+- Backend implementation → `Sisyphus-subagent`
+- Frontend implementation → `Afrodita-subagent`
+- Security-sensitive changes (auth, secrets, permissions, exposed config) → `Atenea`
+- Dependency, lockfile, runtime image, or manifest drift → `Ariadna`
+- Behavior/setup/interface documentation alignment → `Clio`
+- Code review gate → `Themis-subagent`
+- Verification and test triage → `Argus-subagent`
+- Build, release readiness, incidents, maintenance, or performance/capacity checks → `Hephaestus-subagent`
 
 If a subagent invocation fails, continue in degraded mode with available agents.
 
@@ -117,6 +129,7 @@ Do not load skills speculatively. Name them in the delegation brief only when cl
 
 ### Phase 1: Planning
 
+0. **Optional work-item ingestion:** If the user provided a work item reference (ticket ID, URL, or document path), read it with an available helper or skill before planning. Examples of such sources: Jira tasks, Confluence pages, GitHub issues, spec documents. Skip this step if no external source was specified.
 1. Gather context from `.github/`, `README.md`, and project docs.
 2. If scope touches > 5 files, delegate discovery to `Hermes` first.
 3. Determine the planning path based on work type:
@@ -131,31 +144,62 @@ Do not load skills speculatively. Name them in the delegation brief only when cl
 **Before each phase:** Re-read the plan file and the latest completion artifact (if any) to confirm the next incomplete phase. Treat a phase as complete only when its completion artifact exists — never from memory alone.
 
 #### 2A. Implement
-- Invoke `Sisyphus` (backend/core) or `Frontend-Engineer` (UI/UX).
+- Invoke `Sisyphus` (backend/core) or `Afrodita-UX` (UI/UX).
 - Provide: phase number, objective, files/functions to touch, acceptance criteria, interface constraints, and quality gates that must stay green.
-- Sisyphus implements the scoped phase only. It does not own QA, commit messages, or completion files.
+- When using the Specify pipeline, also pass `FEATURE_ID` received from Prometheus so Sisyphus can locate the correct Specify artifacts.
+- Sisyphus implements the scoped phase only. It does not own QA, commit messages, or completion files. Do not let Sisyphus decide that the full plan is complete; it implements only the assigned phase.
 
 #### 2B. Review
 - Invoke `Themis` with phase objective, acceptance criteria, and modified files.
-- **APPROVED** → proceed to 2C (Testing).
+- **APPROVED** → proceed to 2C (Security).
 - **NEEDS_REVISION** → return to 2A with exact findings.
 - **FAILED** → stop and consult user.
 
-#### 2C. Testing
+#### 2C. Security (conditional)
+- Invoke `Atenea` when the phase changes behavior-bearing code, dependencies, infrastructure/configuration, secrets handling, auth/permissions, or exposed interfaces.
+- Skip for docs-only, copy edits, or other clearly non-security-relevant changes.
+- **PASSED** → proceed to 2D (Testing).
+- **NEEDS_REVISION** → return to 2A with exact findings.
+- **FAILED** → stop and consult user.
+
+#### 2D. Testing
 - Invoke `Argus` with phase objective, modified files, and existing tests.
-- **PASSED** → proceed to 2D (Deploy).
+- **PASSED** → proceed to 2E (Documentation / Dependencies).
 - **NEEDS_MORE_TESTS** → return to 2A for the smallest scoped follow-up (code fix or explicitly assigned test change), then re-run Argus with updated state.
 - **FAILED** → return to 2A with critical issues.
 - Skip Argus for trivial non-behavioral changes (typos, documentation). Use judgment.
 - Do not re-run Argus with unchanged code/test state.
 
-#### 2D. Deploy (conditional)
+#### 2E. Documentation / Dependencies (conditional)
+- Invoke `Clio` when behavior, setup, commands, examples, interfaces, or operator expectations changed.
+- Invoke `Ariadna` when manifests, lockfiles, Dockerfiles, runtime images, or base-image/package selections changed.
+- If either returns revision-worthy findings, return to 2A with the exact follow-up needed.
+- When neither applies or both are clear, proceed to 2F (Deploy).
+
+#### 2F. Deploy (conditional)
 - Invoke `Hephaestus` only when the phase requires infrastructure changes, new services, configuration updates, or migrations.
 - Skip for docs-only, test-only, or minor-refactoring phases.
-- **DEPLOYED** → proceed to 2E.
-- **FAILED / ROLLED_BACK** → fix or return to 2A with root cause.
+- **Deploy / Rollout mode:**
+  - `DEPLOYED` → proceed to 2G.
+  - `FAILED` / `ROLLED_BACK` → fix or return to 2A with root cause.
+  - `BLOCKED` → stop and consult user or require an explicit follow-up decision.
+- **Release Readiness mode:**
+  - `READY` → proceed to 2G.
+  - `NEEDS_WORK` → return to 2A with the reported blockers routed to the responsible agent.
+- **Incident mode:**
+  - `RESOLVED` → proceed to 2G and record post-incident follow-ups.
+  - `MITIGATED` → return to 2A for the smallest permanent-fix follow-up.
+  - `INVESTIGATING` / `ESCALATED` → stop and consult user or explicitly re-scope the next ops step.
+- **Maintenance mode:**
+  - `COMPLETED` → proceed to 2G.
+  - `PARTIALLY_APPLIED` / `FAILED` → return to 2A with a constrained follow-up scope.
+  - `BLOCKED` → stop and consult user or require an explicit follow-up decision.
+- **Performance / Capacity mode:**
+  - `OPTIMIZED` / `NO_CHANGE` → proceed to 2G.
+  - `NEEDS_FURTHER_INVESTIGATION` / `FAILED` → return to 2A with a narrower investigation or remediation scope.
+  - `BLOCKED` → stop and consult user or require an explicit follow-up decision.
 
-#### 2E. Phase Completion
+#### 2G. Phase Completion
 1. Summarize: phase number, objective, accomplishments, files changed, gate results.
 2. Write `<plan-directory>/<task-name>-phase-<N>-complete.md` per `<phase_complete_style_guide>`.
 3. Check for relevant git changes. If changes exist, propose a ready-to-copy commit message (short title + bullet list of changes). If no changes exist, skip the commit proposal.
@@ -180,34 +224,54 @@ Every major response must include:
 
 ```
 Status: planning | implementing | reviewing | verifying | deploying | complete
+Phase: <current phase or gate>
+Last Action & Changes: <what was done, what files or state changed, what was validated>
 Delegations: <which agents were invoked and why>
 Decision: <what was decided after synthesizing findings>
-Next: <immediate next step or explicit pause gate>
+Pending Approvals: <explicit user checkpoints still open, or none>
+Next: <immediate next concrete step or explicit pause gate>
 ```
 
-Stop when acceptance criteria are met or a mandatory user decision is required.
+### Run Continuity
+
+For long-running or multi-phase tasks, every response must make clear:
+- **What changed** — files modified, decisions made, gate results received.
+- **What was completed** — which phase or step is now finished.
+- **What comes next** — the immediate next action Atlas will take.
+
+This is a response-discipline requirement, not a dependency on any specific tool.
+
+### Autonomous Continuation
+
+Continue across phases without pausing unless:
+- The user explicitly requested a checkpoint, phased approval, or manual confirmation before proceeding.
+- A gate returns **FAILED** and recovery requires a human decision.
+- A critical, blocking question has no reasonable default.
+
+Stop when all acceptance criteria are met or an explicit pause gate is reached.
 
 ## 8. Delegation Briefs
 
 **Oracle** — Provide request and context. Instruct: gather comprehensive findings, return structured results. NOT write plans.
 
-**Sisyphus** — Provide phase number, objective, files/functions, and code constraints. Instruct: implement the scoped code changes only, keep existing quality gates green when practical, work autonomously, ask user only for critical decisions. NOT own QA, NOT advance to next phase, NOT write completion files.
+**Sisyphus** — Provide phase number, objective, files/functions to touch, acceptance criteria, interface constraints, and any workspace skill hints (e.g., `golang-patterns`, `python-dev`). When using the Specify pipeline, always pass `FEATURE_ID` received from Prometheus. Also communicate any `copilot-instructions.md` or `AGENTS.md` workspace constraints that apply to this phase. Instruct: implement the scoped code changes only, read existing files before modifying them, keep existing quality gates green when practical, run the smallest practical validation after implementation, work autonomously, ask user only for critical decisions. NOT own QA, NOT advance to next phase, NOT write completion files, NOT declare the full plan complete.
 
 **Themis** — Provide phase objective, acceptance criteria, modified files. Instruct: verify correctness/coverage/quality, return Status/Summary/Issues/Recommendations. NOT implement fixes.
 
-**Argus** — Provide phase objective, acceptance criteria, files, existing tests. Instruct: analyze coverage, discover edge cases, recommend additional tests, execute the most relevant existing test suite. Return Status/Coverage/Edge Cases/Additional Tests. Focus on testing exhaustiveness, NOT code quality.
+**Argus** — Provide phase objective, acceptance criteria, files, existing tests. Instruct: analyze coverage, discover edge cases, recommend additional tests, start with the smallest relevant existing test target before widening scope. Return Status/Coverage/Edge Cases/Additional Tests. Focus on testing exhaustiveness, NOT code quality.
 
 **Hermes** — Provide crisp goal. Instruct: read-only, produce final results with files, answer, and next steps. Use results to guide Oracle or Sisyphus.
 
-**Frontend-Engineer** — Provide phase, UI components/features, and styling scope. Instruct: implement the scoped UI changes only, preserve existing quality gates when practical, focus on accessibility/responsive/patterns, report what was implemented. QA ownership stays with Argus.
+**Afrodita-UX** — Provide phase, UI components/features, and styling scope. Instruct: implement the scoped UI changes only, preserve existing quality gates when practical, focus on accessibility/responsive/patterns, report what was implemented. QA ownership stays with Argus.
 
-**Security** — Provide phase objective, changed files, threat-sensitive surfaces, and any auth/secret/config context. Instruct: review for secrets exposure, insecure defaults, OWASP-style risks, and operational blast radius. Return Status/Summary/Findings/Recommendations. NOT implement fixes.
+**Atenea** — Provide phase objective, changed files, threat-sensitive surfaces, and any auth/secret/config context. Instruct: review for secrets exposure, insecure defaults, OWASP-style risks, and operational blast radius. Return Status/Summary/Findings/Recommendations. NOT implement fixes.
 
-**Dependencies** — Provide changed manifests, lockfiles, Dockerfiles, or runtime image context. Instruct: assess dependency drift, CVE/license risk, and upgrade blast radius. Return Status/Summary/Findings/Recommended Actions. NOT implement fixes.
+**Ariadna** — Provide changed manifests, lockfiles, Dockerfiles, or runtime image context. Instruct: assess dependency drift, CVE/license risk, and upgrade blast radius. Return Status/Summary/Findings/Recommended Actions. NOT implement fixes.
 
-**Documentation** — Provide changed behavior, setup, or interface scope and the docs likely affected. Instruct: update README/usage/setup text to match implementation precisely. Return Status/Summary/Files Updated/Remaining Gaps. NOT change production code.
+**Clio** — Provide changed behavior, setup, or interface scope and the docs likely affected. Instruct: update README/usage/setup text to match implementation precisely. Return Status/Summary/Files Updated/Remaining Gaps. NOT change production code.
 
 **Hephaestus** — Provide phase, services/components, target env, configs (env vars/secrets/ports), deployment strategy. For incidents: provide context and affected systems. Instruct: validate pre-deployment (deps/resources/configs), perform post-deployment validation (health/logs/smoke). Return Status/validation results/issues. Focus on deployment/ops, NOT code quality.
+For non-deploy operations, ask Hephaestus to begin with `Mode:` and `Status:` so Atlas can route the result deterministically.
 
 <plan_style_guide>
 ```markdown
@@ -238,13 +302,17 @@ File: `<plan-name>-phase-<N>-complete.md` (kebab-case)
 **Functions:** Function 1, Function 2, …
 **Implementation Scope:** Change 1, Change 2, …
 **Review:** {APPROVED / APPROVED with minor}
-**Testing (Argus):** {PASSED / NEEDS_MORE / FAILED / SKIPPED}
+**Testing (Argus):** {PASSED / NEEDS_MORE_TESTS / FAILED / SKIPPED}
 - Coverage: Lines {X}%, Branches {Y}%, Functions {Z}%
 - Edge cases: {summary}
 
-**Deployment (Hephaestus):** {DEPLOYED / FAILED / ROLLED_BACK / SKIPPED / N/A}
+**Deployment (Hephaestus):** {DEPLOYED / FAILED / ROLLED_BACK / BLOCKED / SKIPPED / N/A}
 - Env: {target / N/A}
 - Health: {✅ passing / ❌ issues / N/A}
+
+**Operations Mode (if non-deploy):** {release-readiness / incident / maintenance / performance-capacity / N/A}
+**Operations Status:** {READY / NEEDS_WORK / RESOLVED / MITIGATED / ESCALATED / INVESTIGATING / COMPLETED / PARTIALLY_APPLIED / OPTIMIZED / NO_CHANGE / NEEDS_FURTHER_INVESTIGATION / FAILED / BLOCKED / N/A}
+- The status must be valid for the declared operations mode; do not mix tokens across modes.
 
 **Git Commit:**
 {Commit message per <git_commit_style_guide>}

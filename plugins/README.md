@@ -6,7 +6,7 @@ This directory contains specialized multi-agent workflow packs following the big
 
 | Workflow | Conductor | Specialists | Purpose |
 |----------|-----------|-------------|---------|
-| [atlas-orchestration-team](./atlas-orchestration-team/) | Atlas | 19 agents | General-purpose orchestration, Specify pipeline, governance specialists (Security, Documentation, Dependencies) |
+| [atlas-orchestration-team](./atlas-orchestration-team/) | Atlas | 19 agents | General-purpose orchestration, Specify pipeline, governance specialists (Atenea, Clio, Ariadna) |
 | [frontend-workflow](./frontend-workflow/) | Afrodita | 8 agents | UI/UX development |
 | [backend-workflow](./backend-workflow/) | Backend-Atlas | 8 agents | API & database development |
 | [devops-workflow](./devops-workflow/) | DevOps-Atlas | 8 agents | Infrastructure & CI/CD |
@@ -39,7 +39,7 @@ Workflows can hand off to each other for complex multi-domain tasks:
 
 ## Architecture Pattern
 
-Each workflow follows the **conductor + planner + hidden specialists** pattern:
+Each workflow follows the **conductor + planner + hidden specialists** pattern, with an optional final gate for review, verification, accessibility, or release strategy depending on the domain:
 
 ```
 [Workflow]-Atlas (Conductor - User Visible)
@@ -47,7 +47,7 @@ Each workflow follows the **conductor + planner + hidden specialists** pattern:
     ├── Specialist-1 (Hidden)
     ├── Specialist-2 (Hidden)
     ├── ...
-    └── [Workflow]-Reviewer (Code Review Gate)
+  └── Final-Gate Specialist (Review / Verification / Release)
     
     Handoffs → Other workflow conductors
 ```
@@ -61,7 +61,7 @@ Each workflow follows the **conductor + planner + hidden specialists** pattern:
 5. **Routing Policies**: Clear rules for which specialist handles what
 6. **Output Contracts**: Structured responses from all agents
 7. **TDD Discipline**: Tests-first approach in implementation agents
-8. **Review Gates**: Code review before completion
+8. **Final Gates**: Domain-appropriate review, verification, accessibility, or release checks before completion
 9. **Cross-Workflow Handoffs**: Seamless delegation between domains
 
 ## Quick Reference
@@ -142,11 +142,12 @@ Each workflow uses optimized model selection:
 
 | Role | Default Model | Rationale |
 |------|---------------|-----------|
-| Conductor | Claude Opus 4.5 | Complex orchestration |
-| Research | GPT-5.2 | Broad knowledge retrieval |
-| Implementation | Claude Sonnet 4.5 | High-quality code |
-| Fast Tasks | Gemini 3 Flash | Speed optimization |
-| Reviewer | GPT-5.2 | Analytical review |
+| Conductor | GPT-5.4 | Strong orchestration and decision synthesis |
+| Planning / research | GPT-5.4 → Claude Sonnet 4.6 → GPT-5.2 | Deep planning with reliable fallback |
+| Implementation | Claude Opus 4.6 → Claude Sonnet 4.6 → GPT-5.4 → GPT-5.3-Codex | High-quality delivery with coding-oriented fallback |
+| Exploration / fast discovery | Gemini 3 Flash (Preview) → Claude Haiku 4.5 → GPT-5.2 | Fast reconnaissance with supported fallback |
+| Frontend specialists | Gemini 3 Flash (Preview) → Claude Haiku 4.5 → Claude Sonnet 4.6 | Lightweight-first UI work with quality fallback |
+| Review / QA | GPT-5.3-Codex or Claude Sonnet 4.6 | Analytical review and verification |
 
 ## Creating Custom Workflows
 

@@ -4,9 +4,9 @@ name: SpecifySpec
 user-invocable: false
 argument-hint: "Feature description: [natural language description of what to build]"
 model:
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-4.1 (copilot)
 tools:
   - search
   - edit

@@ -4,9 +4,9 @@ description: TDD-focused component implementation specialist.
 user-invocable: false
 argument-hint: Implement these components following TDD with proper tests.
 model:
-  - Claude Sonnet 4.5 (copilot)
-  - GPT-5.3-Codex (Preview) (copilot)
+  - Gemini 3 Flash (Preview) (copilot)
   - Claude Haiku 4.5 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - edit

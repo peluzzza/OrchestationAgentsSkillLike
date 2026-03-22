@@ -4,9 +4,9 @@ description: Deployment strategy specialist for zero-downtime releases.
 user-invocable: false
 argument-hint: Design and implement deployment strategies for safe releases.
 model:
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
 tools:
   - search
   - edit

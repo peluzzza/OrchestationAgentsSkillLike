@@ -21,14 +21,14 @@ Afrodita (Conductor - User Visible)
 
 | Agent | Role | Model |
 |-------|------|-------|
-| **Afrodita** | Conductor - orchestrates the team | Claude Opus 4.5 |
-| **Frontend-Planner** | Autonomous planning for complex tasks | GPT-5.2 |
-| **UI-Designer** | Component architecture & layout | Claude Sonnet 4.5 |
-| **Style-Engineer** | CSS, animations, responsive | Claude Sonnet 4.5 |
-| **State-Manager** | State management patterns | GPT-5.2 |
-| **Component-Builder** | TDD component implementation | Claude Sonnet 4.5 |
-| **A11y-Auditor** | Accessibility compliance | GPT-5.2 |
-| **Frontend-Reviewer** | Code review gate | GPT-5.2 |
+| **Afrodita** | Conductor - orchestrates the team | GPT-5.4 |
+| **Frontend-Planner** | Autonomous planning for complex tasks | GPT-5.4 |
+| **UI-Designer** | Component architecture & layout | Gemini 3 Flash (Preview) |
+| **Style-Engineer** | CSS, animations, responsive | Gemini 3 Flash (Preview) |
+| **State-Manager** | State management patterns | Gemini 3 Flash (Preview) |
+| **Component-Builder** | TDD component implementation | Gemini 3 Flash (Preview) |
+| **A11y-Auditor** | Accessibility compliance | Gemini 3 Flash (Preview) |
+| **Frontend-Reviewer** | Code review gate | Gemini 3 Flash (Preview) |
 
 ## Workflow
 

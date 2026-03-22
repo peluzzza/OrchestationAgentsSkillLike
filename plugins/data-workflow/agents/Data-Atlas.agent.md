@@ -4,10 +4,8 @@ description: Conductor orchestrator for data engineering and ML workflows.
 user-invocable: true
 argument-hint: Orchestrate data pipelines and ML workflows with data specialists.
 model:
-  - Claude Opus 4.5 (copilot)
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - agent
   - search

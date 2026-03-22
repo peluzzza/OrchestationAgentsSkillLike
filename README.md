@@ -5,6 +5,8 @@ This repo is set up so you can start from zero with a simple experience:
 - In the default zero-setup mode, you see only `Atlas` in the agent picker.
 - `Atlas` delegates internally to hidden specialist subagents when needed.
 - For implementation or code-changing work, `Atlas` routes planning through hidden `Prometheus` so the Specify pipeline runs before execution.
+- `.github/agents/` is the canonical source of truth for the agent system.
+- `plugins/` is optional secondary distribution/organization for future agent packs and domain-specific conductors.
 - No plugin marketplace setup is required for the default flow.
 
 ## Install From Zero (60 seconds)
@@ -31,10 +33,10 @@ Done. No extra installation steps are needed.
 ## What You Should See
 
 - Default mode visible agent: `Atlas` only.
-- Hidden agents: `Prometheus`, `Oracle`, `Hermes`, `Sisyphus`, `Argus`, `Themis`, `Hephaestus`, `Frontend-Engineer`, `Security`, `Documentation`, `Dependencies`, and the Specify specialists (`SpecifyConstitution`, `SpecifySpec`, `SpecifyClarify`, `SpecifyPlan`, `SpecifyTasks`, `SpecifyAnalyze`, `SpecifyImplement`).
+- Hidden agents: `Prometheus`, `Oracle`, `Hermes`, `Sisyphus`, `Argus`, `Themis`, `Hephaestus`, `Afrodita-UX`, `Atenea`, `Clio`, `Ariadna`, and the Specify specialists (`SpecifyConstitution`, `SpecifySpec`, `SpecifyClarify`, `SpecifyPlan`, `SpecifyTasks`, `SpecifyAnalyze`, `SpecifyImplement`).
 - `Atlas` chooses and calls subagents internally.
 
-If you explicitly enable domain workflow packs, additional approved conductors such as `Afrodita`, `Backend-Atlas`, `DevOps-Atlas`, and `Data-Atlas` can also appear in the agent picker.
+If you explicitly enable optional distribution packs, additional approved conductors such as `Afrodita`, `Backend-Atlas`, `DevOps-Atlas`, and `Data-Atlas` can also appear in the agent picker.
 
 ## Orchestration Style (Merged)
 
@@ -45,9 +47,9 @@ This setup blends two ideas:
 
 For implementation or code-changing tasks, Atlas routes planning through `Prometheus` so the Specify pipeline runs before execution. For docs-only, meta, or orchestration-only work, Atlas can take a lighter planning path when that is the simpler fit.
 
-## Domain-Specific Workflows (NEW)
+## Optional Distribution Packs
 
-In addition to the general-purpose `Atlas`, we now have specialized conductors for different domains:
+In addition to the canonical `.github/agents` pack, the repo also ships optional distribution packs for future expansion, alternative organization, or explicitly enabled domain conductors. They are not required for the normal Atlas-first workflow.
 
 | Workflow | Conductor | Agents | Purpose |
 |----------|-----------|--------|---------|
@@ -57,7 +59,7 @@ In addition to the general-purpose `Atlas`, we now have specialized conductors f
 | DevOps | `DevOps-Atlas` | 8 | Infrastructure & CI/CD (Terraform, K8s, GitHub Actions) |
 | Data | `Data-Atlas` | 8 | Data engineering & ML (dbt, Spark, ML pipelines) |
 
-### Enable Domain Workflows
+### Enable Optional Domain Conductors
 
 Add to `.vscode/settings.json`:
 
@@ -88,7 +90,7 @@ Workflows can hand off to each other:
 - `DevOps-Atlas` → `Afrodita`, `Backend-Atlas`, `Data-Atlas`
 - `Data-Atlas` → `Backend-Atlas`, `DevOps-Atlas`
 
-See [plugins/README.md](plugins/README.md) for detailed documentation.
+See [plugins/README.md](plugins/README.md) only if you intentionally want distribution-pack mode.
 
 ## Specify Pipeline — Spec-Driven Development (NEW)
 
@@ -149,9 +151,9 @@ Specify agents are already included in `.github/agents/` — no extra plugin sou
 
 ---
 
-## Optional: Marketplace / Plugin Packs
+## Optional: Distribution / Marketplace Packs
 
-Use this only if you want distribution through plugin packs. It is not required for normal use.
+Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use, and future core improvements should land in `.github/agents` first.
 
 - Marketplace definition: `.github/plugin/marketplace.json`
 - Plugin packs: `plugins/atlas-orchestration-team`, `plugins/agent-pack-catalog`
@@ -164,9 +166,9 @@ Example (optional):
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1
 ```
 
-## Keep Setup Simple (Recommended)
+## Keep Setup Agents-First (Recommended)
 
-If you are testing the default Atlas-only UX, remove `plugins/` to avoid duplicate sources:
+If you want the clean canonical experience, keep `.github/agents` active and ignore or remove `plugins/` to avoid duplicate sources:
 
 ```powershell
 Remove-Item -Recurse -Force "plugins"
@@ -176,7 +178,7 @@ Then reload VS Code.
 
 ## Optional: Flow Source Selection Demo
 
-This repo includes demos and reference logic for **intelligent flow source selection** in multi-workflow setups. That logic is useful if you build a custom Atlas variant or explicitly enable workflow packs, but it is **not** the default root-only `.github/agents` behavior documented above.
+This repo includes demos and reference logic for **intelligent flow source selection** in multi-workflow setups. That logic is useful if you build a custom Atlas variant or explicitly enable optional distribution packs, but it is **not** the default root-only `.github/agents` behavior documented above.
 
 In the demo/reference model, a conductor can:
 

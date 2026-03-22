@@ -4,9 +4,10 @@ description: Observability specialist for monitoring, logging, and alerting.
 user-invocable: false
 argument-hint: Set up monitoring, logging, and alerting for this infrastructure.
 model:
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
+  - Claude Opus 4.6 (copilot)
+  - Claude Sonnet 4.6 (copilot)
+  - GPT-5.4 (copilot)
+  - GPT-5.3-Codex (copilot)
 tools:
   - search
   - edit

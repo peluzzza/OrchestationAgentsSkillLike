@@ -4,10 +4,8 @@ description: Conductor orchestrator for frontend development with UI/UX speciali
 user-invocable: true
 argument-hint: Orchestrate frontend feature implementation with UI/UX specialists.
 model:
-  - Claude Opus 4.5 (copilot)
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
 tools:
   - agent
   - search

@@ -4,9 +4,10 @@ description: Backend performance optimization and profiling specialist.
 user-invocable: false
 argument-hint: Analyze and optimize performance for these backend services.
 model:
-  - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
+  - Claude Opus 4.6 (copilot)
+  - Claude Sonnet 4.6 (copilot)
+  - GPT-5.4 (copilot)
+  - GPT-5.3-Codex (copilot)
 tools:
   - search
   - runCommands

@@ -4,9 +4,9 @@ description: Infrastructure-as-code specialist for cloud and on-prem environment
 user-invocable: false
 argument-hint: Design and implement infrastructure using Terraform, Pulumi, or CloudFormation.
 model:
+  - GPT-5.4 (copilot)
+  - Claude Sonnet 4.6 (copilot)
   - GPT-5.2 (copilot)
-  - Claude Sonnet 4.5 (copilot)
-  - Gemini 3 Flash (Preview) (copilot)
 tools:
   - search
   - edit
