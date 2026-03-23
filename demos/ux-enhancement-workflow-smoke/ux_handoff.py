@@ -77,6 +77,15 @@ class HandoffSpec:
             and self._accessibility_passed
         )
 
+    def checklist(self) -> list[str]:
+        """Return an ordered checklist of flow descriptions.
+
+        Each item is prefixed with ``[x]`` when ``is_ready()`` is True,
+        or ``[ ]`` otherwise.
+        """
+        prefix = "[x]" if self.is_ready() else "[ ]"
+        return [f"{prefix} {flow}" for flow in self._flows]
+
     def summary(self) -> str:
         """Return a one-line readiness summary for the handoff report."""
         status = "READY" if self.is_ready() else "NOT_READY"

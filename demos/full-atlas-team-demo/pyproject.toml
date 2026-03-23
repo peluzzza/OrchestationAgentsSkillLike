@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "task-service"
+version = "1.0.0"
+description = "Task management micro-service — Atlas demo"
+requires-python = ">=3.10"
+
+# NOTE: estas versiones son intencionalmente antiguas para que Ariadna las detecte
+dependencies = [
+    "fastapi==0.95.2",          # outdated: 0.115.x available
+    "uvicorn==0.20.0",          # outdated: 0.34.x available
+    "pydantic==1.10.7",         # outdated + EOL v1 branch
+    "python-multipart==0.0.5",  # known CVE in older versions
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.3.1",            # outdated: 8.x available
+    "httpx==0.24.0",            # outdated: 0.28.x available
+    "coverage==7.2.5",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "."]
+python_files = ["test_*.py"]

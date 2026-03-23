@@ -101,6 +101,20 @@ class TestHandoffSpec(unittest.TestCase):
         self.spec.add_flow("step B")
         self.assertEqual(len(self.spec.flows()), 2)
 
+    def test_checklist_not_ready_uses_unchecked_prefix(self) -> None:
+        self.spec.add_flow("User enters credentials")
+        self.spec.add_flow("Forgot-password link")
+        result = self.spec.checklist()
+        self.assertEqual(result, ["[ ] User enters credentials", "[ ] Forgot-password link"])
+
+    def test_checklist_ready_uses_checked_prefix(self) -> None:
+        self.spec.add_flow("User enters credentials")
+        self.spec.add_flow("Forgot-password link")
+        self.spec.mark_heuristics_passed()
+        self.spec.mark_accessibility_passed()
+        result = self.spec.checklist()
+        self.assertEqual(result, ["[x] User enters credentials", "[x] Forgot-password link"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -96,6 +96,14 @@ Routing policy:
 
 If a subagent invocation fails, continue in degraded mode with available agents.
 
+### Pack Registry (activation map)
+
+If `.github/plugin/pack-registry.json` exists, read it during discovery to build an activation map:
+- `defaultActive: true` → agents from that pack are active in this runtime.
+- `shipped: true, defaultActive: false` → pack is available but not yet active.
+
+When the task domain clearly maps to an inactive pack, emit a one-line recommendation before planning (example: Spring Boot work → `backend-workflow`; infrastructure/CI → `devops-workflow`; UX research → `ux-enhancement-workflow`). Do not block execution on it.
+
 ## 3. Context Conservation
 
 **Delegate when:**
@@ -135,6 +143,7 @@ Do not load skills speculatively. Name them in the delegation brief only when cl
 3. Determine the planning path based on work type:
    - **Implementation / code work** (any scope): If `Prometheus` is available, always delegate planning to it — this ensures the Specify pipeline (constitution → spec → plan → consistency check) runs before any code is implemented. If `Prometheus` is unavailable, fall back to parallel `Oracle` instances and produce a phased plan directly.
    - **Docs-only, meta, or orchestration-only work** (no code changes): If `Prometheus` is available and scope is medium/large, delegate; otherwise handle with `Oracle` instances or produce a plan directly.
+3a. **SP-5 gate (when Prometheus runs the Specify pipeline):** Prometheus invokes `SpecifyAnalyze` at the end of planning (SP-5 gate). Before delegating to Sisyphus, confirm that Prometheus reports SP-5 `PASSED`. If SP-5 has blockers, resolve them with Prometheus — do not invoke Sisyphus with unresolved SP-5 findings.
 4. Draft plan with phases, risks, and open questions.
 5. Present synopsis to the user. Pause for approval only if the user explicitly requested a checkpoint or a key decision is blocked.
 6. Save plan to `<plan-directory>/<task-name>-plan.md`.
@@ -255,6 +264,7 @@ Stop when all acceptance criteria are met or an explicit pause gate is reached.
 **Oracle** — Provide request and context. Instruct: gather comprehensive findings, return structured results. NOT write plans.
 
 **Sisyphus** — Provide phase number, objective, files/functions to touch, acceptance criteria, interface constraints, and any workspace skill hints (e.g., `golang-patterns`, `python-dev`). When using the Specify pipeline, always pass `FEATURE_ID` received from Prometheus. Also communicate any `copilot-instructions.md` or `AGENTS.md` workspace constraints that apply to this phase. Instruct: implement the scoped code changes only, read existing files before modifying them, keep existing quality gates green when practical, run the smallest practical validation after implementation, work autonomously, ask user only for critical decisions. NOT own QA, NOT advance to next phase, NOT write completion files, NOT declare the full plan complete.
+When `tasks.md` exists, Sisyphus runs the **EX-1 gate** via `SpecifyAnalyze` before writing any implementation code. Require Sisyphus to report `EX-1: PASSED` or `EX-1: BLOCKERS — <list>` at the top of its response. If EX-1 has blockers, resolve them before continuing.
 
 **Themis** — Provide phase objective, acceptance criteria, modified files. Instruct: verify correctness/coverage/quality, return Status/Summary/Issues/Recommendations. NOT implement fixes.
 
@@ -270,8 +280,14 @@ Stop when all acceptance criteria are met or an explicit pause gate is reached.
 
 **Clio** — Provide changed behavior, setup, or interface scope and the docs likely affected. Instruct: update README/usage/setup text to match implementation precisely. Return Status/Summary/Files Updated/Remaining Gaps. NOT change production code.
 
-**Hephaestus** — Provide phase, services/components, target env, configs (env vars/secrets/ports), deployment strategy. For incidents: provide context and affected systems. Instruct: validate pre-deployment (deps/resources/configs), perform post-deployment validation (health/logs/smoke). Return Status/validation results/issues. Focus on deployment/ops, NOT code quality.
-For non-deploy operations, ask Hephaestus to begin with `Mode:` and `Status:` so Atlas can route the result deterministically.
+**Hephaestus** — Always specify `Mode` explicitly (one of five) and tailor context:
+- **`deploy`** — image/manifest changes, rollout strategy, target env, expected health endpoints. Returns `DEPLOYED` / `FAILED` / `ROLLED_BACK` / `BLOCKED`.
+- **`release-readiness`** — release tag/version, scope, known risks. Returns `READY` / `NEEDS_WORK` + blockers list.
+- **`incident`** — symptoms, severity hint (P0–P3), affected services, recent changes. Returns `RESOLVED` / `MITIGATED` / `ESCALATED` / `INVESTIGATING`.
+- **`maintenance`** — work item (cert rotation, IaC drift, DB maintenance, cleanup, patches), before-state snapshot. Returns `COMPLETED` / `PARTIALLY_APPLIED` / `FAILED` / `BLOCKED`.
+- **`performance-capacity`** — latency/saturation signal, relevant metrics, scaling hints. Returns `OPTIMIZED` / `NO_CHANGE` / `NEEDS_FURTHER_INVESTIGATION` / `FAILED` / `BLOCKED`.
+
+Always instruct Hephaestus to start its response with `Mode: <mode>` then `Status: <token>` so Atlas can route deterministically. Focus on ops only, NOT code quality.
 
 <plan_style_guide>
 ```markdown

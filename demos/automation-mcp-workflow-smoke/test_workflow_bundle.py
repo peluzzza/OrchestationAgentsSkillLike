@@ -97,6 +97,16 @@ class TestWorkflowBundle(unittest.TestCase):
         with self.assertRaises(ValueError):
             wb.WorkflowBundle("   ")
 
+    def test_dry_run_bundle_always_safe_with_irreversible_step(self) -> None:
+        bundle = wb.WorkflowBundle("dry", dry_run=True)
+        bundle.add_step("clean", "rm -rf /tmp/cache", reversible=False)
+        self.assertTrue(bundle.is_safe())
+
+    def test_dry_run_false_respects_reversibility(self) -> None:
+        bundle = wb.WorkflowBundle("risky", dry_run=False)
+        bundle.add_step("clean", "rm -rf /tmp/cache", reversible=False)
+        self.assertFalse(bundle.is_safe())
+
 
 if __name__ == "__main__":
     unittest.main()

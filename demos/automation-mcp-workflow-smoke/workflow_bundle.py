@@ -24,11 +24,12 @@ class WorkflowBundle:
         name: Human-readable bundle identifier.
     """
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, dry_run: bool = False) -> None:
         """Initialise the bundle.
 
         Args:
             name: Bundle name.  Must not be empty or blank.
+            dry_run: When True, is_safe() always returns True.
 
         Raises:
             ValueError: if *name* is empty or blank.
@@ -36,6 +37,7 @@ class WorkflowBundle:
         if not name or not name.strip():
             raise ValueError("bundle name must not be empty")
         self.name = name.strip()
+        self.dry_run = dry_run
         self._steps: list[WorkflowStep] = []
 
     def add_step(
@@ -66,7 +68,9 @@ class WorkflowBundle:
         return list(self._steps)
 
     def is_safe(self) -> bool:
-        """Return True only if every step is marked reversible."""
+        """Return True only if every step is marked reversible (or dry_run is True)."""
+        if self.dry_run:
+            return True
         return all(s.reversible for s in self._steps)
 
     def step_count(self) -> int:

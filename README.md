@@ -1,17 +1,8 @@
 # Atlas Agents For VS Code
 
-This repo is set up so you can start from zero with a simple experience:
+A multi-agent team for VS Code Copilot Chat. You talk to `@Atlas`; it orchestrates a hidden team of 25 specialists covering planning, implementation, security, testing, documentation, and ops.
 
-- In the default zero-setup mode, you see only `Atlas` in the agent picker.
-- `Atlas` delegates internally to hidden specialist subagents when needed.
-- For implementation or code-changing work, `Atlas` routes planning through hidden `Prometheus` so the Specify pipeline runs before execution.
-- `plugins/atlas-orchestration-team/agents/` is the canonical shared source for the 19-agent Atlas orchestration pack.
-- `.github/agents/` is the default-active workspace runtime surface: a synced copy of that shared pack plus 7 root-only compatibility aliases.
-- All supported capability packs can ship in-repo, but only a curated subset is active by default.
-- `plugins/` is the secondary distribution/organization surface for shipped packs that stay available-but-inactive until explicitly enabled.
-- No plugin marketplace setup is required for the default flow.
-
-## Install From Zero (60 seconds)
+## Install (60 seconds)
 
 1. Clone this repository.
 2. Open the repository folder in VS Code.
@@ -32,99 +23,65 @@ This repo is set up so you can start from zero with a simple experience:
 
 Done. No extra installation steps are needed.
 
-## What You Should See
+## Global Install (available in any workspace)
 
-- Default mode visible agent: `Atlas` only.
-- Hidden agents: `Prometheus`, `Oracle`, `Hermes`, `Sisyphus`, `Argus`, `Themis`, `Hephaestus`, `Afrodita-UX`, `Atenea`, `Clio`, `Ariadna`, and the Specify specialists (`SpecifyConstitution`, `SpecifySpec`, `SpecifyClarify`, `SpecifyPlan`, `SpecifyTasks`, `SpecifyAnalyze`, `SpecifyImplement`).
-- `Atlas` chooses and calls subagents internally.
+To use Atlas in any project on your machine, without cloning this repo:
 
-If you explicitly enable optional distribution packs, additional approved conductors such as `Afrodita`, `Backend-Atlas`, `DevOps-Atlas`, and `Data-Atlas` can also appear in the agent picker.
-
-With the Phase 3 merge lane delivered, optional conductors can also include `Automation-Atlas` and `UX-Atlas` when those packs are enabled.
-
-## Orchestration Style (Merged)
-
-This setup blends two ideas:
-
-- Skill-style progressive activation: only activate specialist agents when needed.
-- Conductor lifecycle: plan -> implement -> review -> verify, with explicit routing by agent specialty.
-
-For implementation or code-changing tasks, Atlas routes planning through `Prometheus` so the Specify pipeline runs before execution. For docs-only, meta, or orchestration-only work, Atlas can take a lighter planning path when that is the simpler fit.
-
-## Shipped Capability Packs
-
-In addition to the default-active `.github/agents` runtime surface, the repo also ships additional capability packs for future expansion, alternative organization, or explicitly enabled domain conductors. The shared 19-agent Atlas pack is authored canonically under `plugins/atlas-orchestration-team/agents/`, then synced into `.github/agents/` for the zero-setup workflow. These packs are part of the repository distribution, but they are not active in the default Atlas-first workflow.
-
-| Workflow | Conductor | Agents | Purpose |
-|----------|-----------|--------|---------|
-| General | `Atlas` | 19 | General development orchestration |
-| Frontend | `Afrodita` | 8 | UI/UX **implementation** (React, Vue, Angular, TDD, styling) |
-| Backend | `Backend-Atlas` | 8 | API & database development (Spring, Express, FastAPI) |
-| DevOps | `DevOps-Atlas` | 8 | Infrastructure & CI/CD (Terraform, K8s, GitHub Actions) |
-| Data | `Data-Atlas` | 8 | Data engineering & ML (dbt, Spark, ML pipelines) |
-| Automation & MCP | `Automation-Atlas` | 5 | Automation & MCP workflow orchestration (opt-in) |
-| UX Enhancement | `UX-Atlas` | 6 | UX research, flow critique, spec handoff (opt-in; upstream of Frontend) |
-
-> **Core memory (Claude-Mem-inspired):** Session and decision continuity live in `.specify/memory/` — this is the canonical store for all packs. Plugin packs consume it; they do not create a duplicate. Files: `session-memory.md`, `decision-log.md`, `constitution.md`.
-
-## Integrated Capability Lanes
-
-This repository now includes the validated capability lanes that were folded into the orchestration model without weakening the default root-first experience.
-
-The merge policy is:
-
-- author the shared Atlas orchestration pack canonically in `plugins/atlas-orchestration-team/agents`
-- keep `.github/agents` as the default-active root runtime surface
-- ship supported packs in-repo, but keep only the root runtime surface default-active
-- keep `plugins/` available-but-inactive until explicitly enabled
-- import capabilities, not donor-specific product logic
-- prefer lightweight file-backed memory before adding infrastructure
-- validate new capabilities through small demos before broad rollout
-
-Current lanes are:
-
-| Lane | Target folders | Intended outcome |
-|------|----------------|------------------|
-| Core orchestration ergonomics | `.github/agents/`, `README.md` | Better delegation contracts and conductor clarity |
-| Memory lite | `.specify/memory/`, `docs/` | Session and decision continuity without heavy persistence |
-| Optional UX specialization | `plugins/ux-enhancement-workflow/` | **Delivered:** UX-Atlas + research/critique/handoff pack |
-| Optional MCP / automation | `plugins/automation-mcp-workflow/` | **Delivered:** Automation-Atlas + MCP specialist pack |
-| Catalog and parity hygiene | `.github/plugin/`, `scripts/`, `plans/` | Clear canonical-vs-plugin boundaries and healthier pack distribution |
-
-For the implementation report and phased roadmap, see:
-
-- `plans/external-ecosystem-orchestration-investigation.md`
-- `plans/external-ecosystem-orchestration-merge-plan.md`
-- `plans/external-ecosystem-orchestration-merge-complete.md`
-
-### Repository Validation Snapshot
-
-The repository currently ships with:
-
-- canonical shared Atlas orchestration under `plugins/atlas-orchestration-team/agents`
-- default-active root runtime orchestration under `.github/agents`
-- shared bounded memory under `.specify/memory/`
-- two opt-in workflow packs under `plugins/`
-- focused smoke demos under `demos/`
-- parity and catalog validators under `scripts/`
-
-Recommended verification commands from the repo root:
-
-```shell
-python3 scripts/validate_pack_registry.py
-python3 scripts/validate_plugin_packs.py
-python3 scripts/validate_optional_pack_demos.py
-python3 scripts/validate_atlas_pack_parity.py
-python3 -m unittest -v scripts/test_validate_pack_registry.py
-python3 -m unittest -v scripts/test_validate_optional_pack_demos.py
-python3 -m unittest -v scripts/test_validate_atlas_pack_parity.py
-python3 -m unittest -v demos/automation-mcp-workflow-smoke/test_workflow_bundle.py
-python3 -m unittest -v demos/ux-enhancement-workflow-smoke/test_ux_handoff.py
+```powershell
+.\scripts\install-agents-user-level.ps1 -Force
 ```
 
-### Enable Additional Shipped Conductors
+Then `Ctrl+Shift+P` → `Developer: Reload Window`. That's it.
 
-Add to `.vscode/settings.json`:
+## The Agent Team
+
+All 26 agents live in `.github/agents/`. You only need to know about `@Atlas`.
+
+| Role | Agent | Invoked by |
+|---|---|---|
+| Conductor | `Atlas` | **You** |
+| Planner / Specify pipeline | `Prometheus` | Atlas |
+| Code exploration | `Hermes` | Atlas, Prometheus |
+| Deep research | `Oracle` | Atlas, Prometheus |
+| Implementation | `Sisyphus` | Atlas |
+| Frontend / UI | `Afrodita-UX` | Atlas |
+| Code review | `Themis` | Atlas |
+| Security review | `Atenea` | Atlas |
+| Testing / QA | `Argus` | Atlas |
+| Documentation | `Clio` | Atlas |
+| Dependencies | `Ariadna` | Atlas |
+| Ops / Deploy / Incidents | `Hephaestus` | Atlas |
+| Specify: Constitution | `SpecifyConstitution` | Prometheus |
+| Specify: Spec | `SpecifySpec` | Prometheus |
+| Specify: Clarify | `SpecifyClarify` | Prometheus |
+| Specify: Plan | `SpecifyPlan` | Prometheus |
+| Specify: Tasks | `SpecifyTasks` | Prometheus |
+| Specify: Consistency | `SpecifyAnalyze` | Prometheus, Sisyphus |
+| Specify: Implement | `SpecifyImplement` | Sisyphus |
+
+## How Atlas Works
+
+```
+You → @Atlas
+         ├── Prometheus (planning + Specify pipeline: SP-5 gate)
+         │       ├── Hermes (explore)
+         │       ├── Oracle (research)
+         │       └── SpecifyAnalyze (SP-5 consistency gate)
+         ├── Sisyphus (implement, phase by phase)
+         │       └── SpecifyAnalyze (EX-1 gate pre-implementation)
+         ├── Themis (review)
+         ├── Atenea (security — auto on any auth/secrets/permissions change)
+         ├── Argus (testing)
+         ├── Hephaestus (ops: deploy / release-readiness / incident / maintenance / performance)
+         ├── Clio (docs)
+         └── Ariadna (dependencies)
+```
+
+Atlas reads `.github/plugin/pack-registry.json` at startup to know which optional packs are shipped but inactive. If your task domain clearly matches one (e.g. Spring Boot → `backend-workflow`), Atlas will recommend activating it.
+
+## Enable Optional Conductors
+
+Optional domain conductors are shipped in `plugins/` but inactive by default. Add to `.vscode/settings.json` to activate:
 
 ```json
 {
@@ -140,14 +97,45 @@ Add to `.vscode/settings.json`:
 }
 ```
 
-Then reload VS Code. You'll keep the core default-active set and also see these additional shipped conductors in the agent picker:
-- `@Atlas` - General orchestration
-- `@Afrodita` - UI/UX tasks
-- `@Backend-Atlas` - API/Database tasks
-- `@DevOps-Atlas` - Infrastructure/CI-CD tasks
-- `@Data-Atlas` - Data pipelines/ML tasks
-- `@Automation-Atlas` - MCP integrations and workflow orchestration
-- `@UX-Atlas` - UX research, flow critique, and handoff packaging
+| Conductor | Domain |
+|---|---|
+| `@Afrodita` | UI/UX implementation (React, Vue, Angular) |
+| `@Backend-Atlas` | API & database (Spring, Express, FastAPI) |
+| `@DevOps-Atlas` | Infrastructure & CI/CD |
+| `@Data-Atlas` | Data engineering & ML |
+| `@Automation-Atlas` | MCP integrations & workflow automation |
+| `@UX-Atlas` | UX research, flow critique, spec handoff |
+
+## Spec-Driven Development (Specify pipeline)
+
+For any implementation task, Atlas routes through Prometheus which runs the full Specify pipeline before writing code:
+
+```
+Constitution → Spec → Clarify → Plan → SP-5 gate → Tasks → EX-1 gate → Implement
+```
+
+Artifacts land in `.specify/specs/<feature-slug>/`. The SP-5 gate (pre-tasks) and EX-1 gate (pre-implementation) are consistency checkpoints that Atlas enforces before allowing Sisyphus to write code.
+
+## Repository Layout
+
+```
+.github/agents/          ← 26 agent files (the only thing VS Code reads)
+.github/plugin/
+  pack-registry.json     ← activation map: which packs are shipped vs active
+plugins/                 ← optional domain packs (inactive unless enabled above)
+spec-kit/                ← Specify pipeline reference docs
+demos/                   ← smoke tests per capability lane
+scripts/                 ← sync and validation utilities
+plans/                   ← Atlas orchestration artifacts
+```
+
+## Validation
+
+```shell
+py -m unittest -v scripts/test_validate_pack_registry.py
+py -m unittest -v scripts/test_validate_atlas_pack_parity.py
+py -m unittest -v demos/specify-rbac-springboot-demo/test_rbac_harness.py
+```
 
 ### Cross-Workflow Handoffs
 
