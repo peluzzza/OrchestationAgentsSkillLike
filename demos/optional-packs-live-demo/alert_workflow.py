@@ -40,8 +40,11 @@ class AlertWorkflow:
     # ------------------------------------------------------------------ #
 
     def is_triggered(self, total_dispatched: int) -> bool:
-        raise NotImplementedError("is_triggered() not yet implemented")
+        return total_dispatched > self.threshold
 
     def execute(self, total_dispatched: int, handler: Callable[[int], None]) -> bool:
         """Calls handler if triggered. Returns True when handler was called."""
-        raise NotImplementedError("execute() not yet implemented")
+        if self.is_triggered(total_dispatched):
+            handler(total_dispatched)
+            return True
+        return False

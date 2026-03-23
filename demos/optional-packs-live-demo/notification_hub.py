@@ -61,4 +61,8 @@ class NotificationHub:
     # TODO — implement this method                                         #
     # ------------------------------------------------------------------ #
     def get_stats(self) -> dict:
-        raise NotImplementedError("get_stats() not yet implemented")
+        return {
+            "total_dispatched": self._total,
+            "channels": {ch.name: ch.dispatch_count for ch in self._channels.values()},
+            "last_activity": self._last_activity.isoformat() if self._last_activity is not None else None,
+        }
