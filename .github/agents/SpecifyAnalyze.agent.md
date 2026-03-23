@@ -6,7 +6,6 @@ argument-hint: Analyze the consistency of Specify artifacts for feature [feature
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 tools:
   - search
   - edit

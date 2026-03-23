@@ -3,9 +3,9 @@ description: Fast read-only scout for locating files, usages, and dependencies a
 name: Hermes
 argument-hint: Find files, usages, dependencies, and context related to: <research goal or problem statement>
 model:
-  - Gemini 3 Flash (Preview) (copilot)
+  - Gemini Flash 3.1 (copilot)
+  - Claude Haiku 4.6 (copilot)
   - Claude Haiku 4.5 (copilot)
-  - GPT-5.2 (copilot)
 user-invocable: false
 tools:
   - search

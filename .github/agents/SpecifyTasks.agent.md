@@ -6,7 +6,6 @@ argument-hint: Generate the task breakdown for feature [feature-id] from the ava
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 tools:
   - search
   - edit

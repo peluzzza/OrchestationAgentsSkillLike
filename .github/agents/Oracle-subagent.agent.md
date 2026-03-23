@@ -5,7 +5,6 @@ argument-hint: Research this subsystem or problem deeply and return structured f
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 user-invocable: false
 tools:
   - agent

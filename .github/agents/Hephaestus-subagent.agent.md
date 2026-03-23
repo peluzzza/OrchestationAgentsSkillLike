@@ -2,10 +2,7 @@
 description: Compatibility alias for the Hephaestus DevOps/SRE specialist. Handles deployment, release readiness, incident response, maintenance, and performance/capacity. Invoked by Atlas for infrastructure-facing work only.
 name: Hephaestus-subagent
 argument-hint: Specify mode (deploy/release-readiness/incident/maintenance/performance) and the service, environment, or infrastructure scope.
-model:
-  - Claude Sonnet 4.6 (copilot)
-  - GPT-5.4 (copilot)
-  - GPT-5.2 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:
   - search

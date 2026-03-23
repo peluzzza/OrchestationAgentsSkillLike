@@ -6,7 +6,6 @@ argument-hint: Create the technical implementation plan for the spec. I am build
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 tools:
   - search
   - edit

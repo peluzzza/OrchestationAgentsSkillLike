@@ -5,9 +5,9 @@ argument-hint: Review a completed phase for secrets exposure, insecure code path
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 user-invocable: false
 tools:
+  - agent
   - search
   - changes
   - problems

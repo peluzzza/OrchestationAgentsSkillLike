@@ -6,7 +6,6 @@ argument-hint: "Feature description: [natural language description of what to bu
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 tools:
   - search
   - edit

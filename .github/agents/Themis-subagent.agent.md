@@ -3,7 +3,7 @@ description: Compatibility alias for the Themis code review specialist. Validate
 name: Themis-subagent
 argument-hint: Provide phase objective, acceptance criteria, and the files changed. Return APPROVED, NEEDS_REVISION, or FAILED with specific findings.
 model:
-  - GPT-5.3-Codex (copilot)
+  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:

@@ -6,7 +6,6 @@ argument-hint: Research this task deeply and produce a phased execution plan for
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 tools:
   - agent
   - search

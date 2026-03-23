@@ -2,12 +2,10 @@
 description: DevOps/SRE specialist for build, deploy, validate, troubleshoot, rollback, incident response, performance optimization, and system maintenance.
 name: Hephaestus
 argument-hint: Build, deploy, validate, troubleshoot, or tune infrastructure. Modes: deploy/rollout, release readiness, incident response, maintenance, performance/capacity. Specify target and scope (e.g. "deploy staging", "release readiness for v1.2", "investigate pod crash", "maintenance: rotate certs", "tune p99 latency").
-model:
-  - Claude Sonnet 4.6 (copilot)
-  - GPT-5.4 (copilot)
-  - GPT-5.2 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:
+  - agent
   - search
   - execute
   - read

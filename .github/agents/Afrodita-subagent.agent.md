@@ -2,10 +2,7 @@
 description: Compatibility alias for the Afrodita frontend/UI specialist. Implements user interfaces, components, styling, and responsive layouts. Invoked by Atlas for frontend-scoped phases; QA ownership stays with Argus.
 name: Afrodita-subagent
 argument-hint: Provide UI scope, existing component patterns, design tokens or references, and acceptance criteria.
-model:
-  - Gemini 3 Flash (Preview) (copilot)
-  - Claude Haiku 4.5 (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: Gemini Pro 3.1 (copilot)
 user-invocable: false
 tools:
   - edit

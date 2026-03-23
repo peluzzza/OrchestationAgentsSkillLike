@@ -6,7 +6,6 @@ argument-hint: Clarify the pending ambiguities in the spec for feature [feature-
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 tools:
   - search
   - edit

@@ -5,7 +5,6 @@ argument-hint: Audit dependency health for the changed manifests, lock files, or
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 user-invocable: false
 tools:
   - search

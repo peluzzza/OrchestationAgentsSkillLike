@@ -5,9 +5,9 @@ argument-hint: Update documentation for the changed behavior, setup, or interfac
 model:
   - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
-  - GPT-5.2 (copilot)
 user-invocable: false
 tools:
+  - agent
   - edit
   - search
   - changes
