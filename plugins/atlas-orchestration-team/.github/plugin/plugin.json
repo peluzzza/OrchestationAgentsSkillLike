@@ -1,6 +1,6 @@
 {
   "name": "atlas-orchestration-team",
-  "description": "Atlas coordinator plus focused subagents (research, exploration, implementation, QA, review, deploy, frontend) for an end-to-end delivery loop.",
+  "description": "Optional distribution mirror of the canonical root Atlas pack. Surfaces the shared 19-agent orchestration team (Atlas conductor + focused specialists) for plan → implement → review → verify flows. The authoritative source of truth remains .github/agents in the root repository.",
   "version": "0.1.0",
   "author": {
     "name": "peluzzza"

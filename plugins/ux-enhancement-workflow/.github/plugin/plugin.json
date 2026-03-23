@@ -1,0 +1,22 @@
+{
+  "name": "ux-enhancement-workflow",
+  "description": "Opt-in pack for UX research, flow design, heuristic critique, and frontend handoff. Complements frontend-workflow without replacing it. Inspired by UI UX Pro Max and Everything Claude Code.",
+  "version": "0.1.0",
+  "author": {
+    "name": "peluzzza"
+  },
+  "repository": "https://github.com/peluzzza/OrchestationAgentsSkillLike",
+  "license": "MIT",
+  "keywords": [
+    "ux",
+    "user-research",
+    "flow-design",
+    "accessibility",
+    "heuristics",
+    "spec",
+    "handoff"
+  ],
+  "agents": [
+    "./agents"
+  ]
+}

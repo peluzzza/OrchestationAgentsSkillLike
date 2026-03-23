@@ -18,8 +18,7 @@ tools:
   - problems
   - changes
   - testFailure
-  - fetch
-  - todos
+  - web/fetch
 handoffs:
   - label: Report back to Atlas
     agent: Atlas

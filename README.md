@@ -38,6 +38,8 @@ Done. No extra installation steps are needed.
 
 If you explicitly enable optional distribution packs, additional approved conductors such as `Afrodita`, `Backend-Atlas`, `DevOps-Atlas`, and `Data-Atlas` can also appear in the agent picker.
 
+With the Phase 3 merge lane delivered, optional conductors can also include `Automation-Atlas` and `UX-Atlas` when those packs are enabled.
+
 ## Orchestration Style (Merged)
 
 This setup blends two ideas:
@@ -54,10 +56,64 @@ In addition to the canonical `.github/agents` pack, the repo also ships optional
 | Workflow | Conductor | Agents | Purpose |
 |----------|-----------|--------|---------|
 | General | `Atlas` | 19 | General development orchestration |
-| Frontend | `Afrodita` | 8 | UI/UX development (React, Vue, Angular) |
+| Frontend | `Afrodita` | 8 | UI/UX **implementation** (React, Vue, Angular, TDD, styling) |
 | Backend | `Backend-Atlas` | 8 | API & database development (Spring, Express, FastAPI) |
 | DevOps | `DevOps-Atlas` | 8 | Infrastructure & CI/CD (Terraform, K8s, GitHub Actions) |
 | Data | `Data-Atlas` | 8 | Data engineering & ML (dbt, Spark, ML pipelines) |
+| Automation & MCP | `Automation-Atlas` | 5 | Automation & MCP workflow orchestration (opt-in) |
+| UX Enhancement | `UX-Atlas` | 6 | UX research, flow critique, spec handoff (opt-in; upstream of Frontend) |
+
+> **Core memory (Claude-Mem-inspired):** Session and decision continuity live in `.specify/memory/` — this is the canonical store for all packs. Plugin packs consume it; they do not create a duplicate. Files: `session-memory.md`, `decision-log.md`, `constitution.md`.
+
+## Integrated Capability Lanes
+
+This repository now includes the validated capability lanes that were folded into the orchestration model without weakening the default root-first experience.
+
+The merge policy is:
+
+- keep `.github/agents` as the canonical core
+- keep `plugins/` optional and opt-in
+- import capabilities, not donor-specific product logic
+- prefer lightweight file-backed memory before adding infrastructure
+- validate new capabilities through small demos before broad rollout
+
+Current lanes are:
+
+| Lane | Target folders | Intended outcome |
+|------|----------------|------------------|
+| Core orchestration ergonomics | `.github/agents/`, `README.md` | Better delegation contracts and conductor clarity |
+| Memory lite | `.specify/memory/`, `docs/` | Session and decision continuity without heavy persistence |
+| Optional UX specialization | `plugins/ux-enhancement-workflow/` | **Delivered:** UX-Atlas + research/critique/handoff pack |
+| Optional MCP / automation | `plugins/automation-mcp-workflow/` | **Delivered:** Automation-Atlas + MCP specialist pack |
+| Catalog and parity hygiene | `.github/plugin/`, `scripts/`, `plans/` | Clear canonical-vs-plugin boundaries and healthier pack distribution |
+
+For the implementation report and phased roadmap, see:
+
+- `plans/external-ecosystem-orchestration-investigation.md`
+- `plans/external-ecosystem-orchestration-merge-plan.md`
+- `plans/external-ecosystem-orchestration-merge-complete.md`
+
+### Repository Validation Snapshot
+
+The repository currently ships with:
+
+- canonical root orchestration under `.github/agents`
+- shared bounded memory under `.specify/memory/`
+- two opt-in workflow packs under `plugins/`
+- focused smoke demos under `demos/`
+- parity and catalog validators under `scripts/`
+
+Recommended verification commands from the repo root:
+
+```shell
+python3 scripts/validate_plugin_packs.py
+python3 scripts/validate_optional_pack_demos.py
+python3 scripts/validate_atlas_pack_parity.py
+python3 -m unittest -v scripts/test_validate_optional_pack_demos.py
+python3 -m unittest -v scripts/test_validate_atlas_pack_parity.py
+python3 -m unittest -v demos/automation-mcp-workflow-smoke/test_workflow_bundle.py
+python3 -m unittest -v demos/ux-enhancement-workflow-smoke/test_ux_handoff.py
+```
 
 ### Enable Optional Domain Conductors
 
@@ -70,7 +126,9 @@ Add to `.vscode/settings.json`:
     "plugins/frontend-workflow/agents": true,
     "plugins/backend-workflow/agents": true,
     "plugins/devops-workflow/agents": true,
-    "plugins/data-workflow/agents": true
+    "plugins/data-workflow/agents": true,
+    "plugins/automation-mcp-workflow/agents": true,
+    "plugins/ux-enhancement-workflow/agents": true
   }
 }
 ```
@@ -81,6 +139,8 @@ Then reload VS Code. You'll see these conductors in the agent picker:
 - `@Backend-Atlas` - API/Database tasks
 - `@DevOps-Atlas` - Infrastructure/CI-CD tasks
 - `@Data-Atlas` - Data pipelines/ML tasks
+- `@Automation-Atlas` - MCP integrations and workflow orchestration
+- `@UX-Atlas` - UX research, flow critique, and handoff packaging
 
 ### Cross-Workflow Handoffs
 
@@ -155,10 +215,13 @@ Specify agents are already included in `.github/agents/` — no extra plugin sou
 
 Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use, and future core improvements should land in `.github/agents` first.
 
+Not every directory under `plugins/` is necessarily published in `.github/plugin/marketplace.json` at the same time: some packs can exist as local plugin-path examples, mirrors, or pre-marketplace optional workflows.
+
 - Marketplace definition: `.github/plugin/marketplace.json`
 - Plugin packs: `plugins/atlas-orchestration-team`, `plugins/agent-pack-catalog`
-- Domain workflow packs: `plugins/frontend-workflow`, `plugins/backend-workflow`, `plugins/devops-workflow`, `plugins/data-workflow`
+- Domain workflow packs: `plugins/frontend-workflow`, `plugins/backend-workflow`, `plugins/devops-workflow`, `plugins/data-workflow`, `plugins/automation-mcp-workflow`, `plugins/ux-enhancement-workflow`
 - Sync helper script: `scripts/sync_agent_packs.ps1`
+- Validation helper script: `scripts/validate_plugin_packs.py`
 
 Example (optional):
 

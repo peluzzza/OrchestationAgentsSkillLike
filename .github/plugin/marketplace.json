@@ -18,7 +18,19 @@
     {
       "name": "atlas-orchestration-team",
       "source": "atlas-orchestration-team",
-      "description": "Atlas coordinator plus a small set of focused subagents for plan → implement → review → test → deploy flows.",
+      "description": "Optional distribution mirror of the canonical root Atlas pack. Installs the shared 19-agent orchestration surface (Atlas conductor + focused specialists) via the marketplace. The 7 root-only compatibility aliases are not included; the authoritative source remains .github/agents.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "automation-mcp-workflow",
+      "source": "automation-mcp-workflow",
+      "description": "Opt-in pack for automation, MCP server integration, and multi-step workflow composition. Inspired by n8n-MCP connector patterns and Superpowers modular packaging.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ux-enhancement-workflow",
+      "source": "ux-enhancement-workflow",
+      "description": "Opt-in pack for UX research, flow design, heuristic critique, and frontend handoff. Complements frontend-workflow without replacing it. Inspired by UI UX Pro Max and Everything Claude Code.",
       "version": "0.1.0"
     }
   ]

@@ -38,8 +38,8 @@ If a work item, ticket, or external document is provided or referenced (e.g., a 
 If the user's prompt includes a control block, honor it strictly for that run:
 
 ```
-enabled_agents: [Sisyphus, Argus]
-disabled_agents: [Oracle]
+enabled_agents: [Sisyphus-subagent, Argus-subagent]
+disabled_agents: [Oracle-subagent]
 ```
 
 - `enabled_agents` is an allow-list — do not invoke any agent outside this list.
@@ -72,18 +72,27 @@ Discovery sources (higher precedence wins on duplicate names):
 
 Capture for each agent: `name`, `description`, `user-invocable`, `tools`, `handoffs`.
 
+Compatibility aliases may exist for imported packs or legacy prompts. When these names are present in `.github/agents`, treat them as first-class specialist handles:
+- `Hermes-subagent`
+- `Oracle-subagent`
+- `Sisyphus-subagent`
+- `Afrodita-subagent`
+- `Argus-subagent`
+- `Themis-subagent`
+- `Hephaestus-subagent`
+
 Routing policy:
-- Complex planning and phase design → `Prometheus` (preferred) or `Oracle` + direct plan
-- Requirements, risks, subsystem analysis → `Oracle`
-- Codebase mapping and entry points → `Hermes`
-- Backend implementation → `Sisyphus`
-- Frontend implementation → `Afrodita-UX`
+- Complex planning and phase design → `Prometheus` (preferred) or `Oracle-subagent` + direct plan
+- Requirements, risks, subsystem analysis → `Oracle-subagent`
+- Codebase mapping and entry points → `Hermes-subagent`
+- Backend implementation → `Sisyphus-subagent`
+- Frontend implementation → `Afrodita-subagent`
 - Security-sensitive changes (auth, secrets, permissions, exposed config) → `Atenea`
 - Dependency, lockfile, runtime image, or manifest drift → `Ariadna`
 - Behavior/setup/interface documentation alignment → `Clio`
-- Code review gate → `Themis`
-- Verification and test triage → `Argus`
-- Build, release readiness, incidents, maintenance, or performance/capacity checks → `Hephaestus`
+- Code review gate → `Themis-subagent`
+- Verification and test triage → `Argus-subagent`
+- Build, release readiness, incidents, maintenance, or performance/capacity checks → `Hephaestus-subagent`
 
 If a subagent invocation fails, continue in degraded mode with available agents.
 

@@ -1,0 +1,21 @@
+{
+  "name": "automation-mcp-workflow",
+  "description": "Opt-in pack for automation, MCP server integration, and multi-step workflow composition. Inspired by n8n-MCP connector patterns and Superpowers modular packaging.",
+  "version": "0.1.0",
+  "author": {
+    "name": "peluzzza"
+  },
+  "repository": "https://github.com/peluzzza/OrchestationAgentsSkillLike",
+  "license": "MIT",
+  "keywords": [
+    "automation",
+    "mcp",
+    "workflow",
+    "n8n",
+    "integration",
+    "orchestration"
+  ],
+  "agents": [
+    "./agents"
+  ]
+}

@@ -25,13 +25,24 @@ Before expanding, enumerate untested scenarios:
 - **Boundaries:** min, max, off-by-one
 - **Invalid data:** wrong types, malformed payloads, injection
 - **Error paths:** network failure, timeout, partial write, interrupted transaction
+- **Partial failures:** half-written records, partially committed batches, mid-flight crashes
+- **Resource exhaustion:** disk full, connection pool depleted, OOM, rate-limit exceeded
+- **Invariants:** properties that must always hold (e.g., count ≥ 0, referential integrity, totals balance)
+- **Corruption / malformed state:** invalid persisted rows, broken serialized files, schema-version mismatches
 - **Race conditions:** concurrent access, shared mutable state
 - **State transitions:** invalid sequences, double-submit, interrupted ops
 - **Permissions:** unauthorized caller, missing token, wrong role
 
 Flag any scenario not covered by existing tests.
 
-**Step 3 — Regression pass (only after Step 1 passes):**
+**Optional Advanced Techniques (apply when risk justifies — not default):**
+Use for high-risk surface area: financial logic, auth, concurrent systems, data pipelines.
+- **Mutation testing:** inject small code mutations; verify existing tests catch them
+- **Property-based testing:** generate random valid inputs, assert invariants hold across all
+- **Boundary value / equivalence partitioning:** group inputs into equivalence classes; test class representatives and exact boundaries (0, 1, max−1, max)
+- **State-transition / concurrency testing:** exhaustive valid+invalid transition coverage; race condition and deadlock probes
+
+**Step 3 — Regression pass (only after Step 1 returns `PASSED`):**
 Run a broader suite to detect unintended side effects on neighbouring code.
 
 **Step 4 — Report using the return format below.**
@@ -44,7 +55,7 @@ Run a broader suite to detect unintended side effects on neighbouring code.
 
 ## Return Format
 
-**Status:** `PASS` | `NEEDS_MORE_TESTS` | `FAIL`
+**Status:** `PASSED` | `NEEDS_MORE_TESTS` | `FAILED`
 
 **Coverage (if measurable):**
 - Lines / Branches / Functions: X%
@@ -68,6 +79,6 @@ Run a broader suite to detect unintended side effects on neighbouring code.
 - `{test_name}` — {one-line rationale}
 
 **Next Steps for Atlas:**
-- `PASS` → proceed to commit / code review
+- `PASSED` → proceed to commit / code review
 - `NEEDS_MORE_TESTS` → add listed tests before merging
-- `FAIL` → fix listed failures; re-invoke Argus after fix
+- `FAILED` → fix listed failures; re-invoke Argus after fix

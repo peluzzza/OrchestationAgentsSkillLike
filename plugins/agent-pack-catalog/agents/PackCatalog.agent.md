@@ -6,7 +6,7 @@ model:
   - Claude Haiku 4.5 (copilot)
   - GPT-5.2 (copilot)
   - GPT-4.1 (copilot)
-user-invocable: false
+user-invocable: true
 tools:
   - search
   - web/fetch
@@ -33,6 +33,10 @@ Operating procedure
 - Recommend the smallest set of packs that matches the user goal.
 - If the user wants an end-to-end delivery loop (plan → implement → review → test → deploy), recommend `atlas-orchestration-team`.
 - If the user mainly wants discovery/help choosing packs, recommend `agent-pack-catalog`.
+- If the user wants to connect agents to external tools, run n8n-style workflows, or integrate MCP servers, recommend `automation-mcp-workflow`. Pairs well with `devops-workflow` for infrastructure needs.
+- If the user wants UX research, user flow mapping, heuristic critique (Nielsen), accessibility review, or spec handoff before frontend implementation, recommend `ux-enhancement-workflow`. Clarify that `frontend-workflow` (Afrodita) handles the implementation phase after the spec is ready.
+- Do NOT recommend both `frontend-workflow` and `ux-enhancement-workflow` as replacements for each other; they are complementary — UX upstream, frontend implementation downstream.
+- Note: Claude-Mem-inspired session/decision memory is built into the core at `.specify/memory/`; no separate memory pack is needed.
 
 4) Output exact VS Code install steps (honest + reproducible)
 - You cannot install plugins automatically.

@@ -7,10 +7,12 @@ This directory contains specialized multi-agent workflow packs following the big
 | Workflow | Conductor | Specialists | Purpose |
 |----------|-----------|-------------|---------|
 | [atlas-orchestration-team](./atlas-orchestration-team/) | Atlas | 19 agents | General-purpose orchestration, Specify pipeline, governance specialists (Atenea, Clio, Ariadna) |
-| [frontend-workflow](./frontend-workflow/) | Afrodita | 8 agents | UI/UX development |
+| [frontend-workflow](./frontend-workflow/) | Afrodita | 8 agents | UI/UX **implementation** (React, Vue, Angular, TDD, styling) |
 | [backend-workflow](./backend-workflow/) | Backend-Atlas | 8 agents | API & database development |
 | [devops-workflow](./devops-workflow/) | DevOps-Atlas | 8 agents | Infrastructure & CI/CD |
 | [data-workflow](./data-workflow/) | Data-Atlas | 8 agents | Data engineering & ML |
+| [automation-mcp-workflow](./automation-mcp-workflow/) | Automation-Atlas | 5 agents | Automation & MCP server integration (opt-in; inspired by n8n-MCP, Superpowers, Everything Claude Code) |
+| [ux-enhancement-workflow](./ux-enhancement-workflow/) | UX-Atlas | 6 agents | UX research, flow design, heuristic critique, spec handoff (opt-in; inspired by UI UX Pro Max; does **not** replace frontend-workflow) |
 
 ## Cross-Workflow Handoffs
 
@@ -36,6 +38,13 @@ Workflows can hand off to each other for complex multi-domain tasks:
 | Backend-Atlas | Afrodita, DevOps-Atlas, Data-Atlas |
 | DevOps-Atlas | Afrodita, Backend-Atlas, Data-Atlas |
 | Data-Atlas | Backend-Atlas, DevOps-Atlas |
+| Automation-Atlas | Atlas, DevOps-Atlas |
+| UX-Atlas | Afrodita (implementation), Backend-Atlas (API contracts) |
+
+### Non-Overlap Notes
+
+- **frontend-workflow vs ux-enhancement-workflow:** `frontend-workflow` owns component implementation (TDD, styling, state). `ux-enhancement-workflow` owns research, flow mapping, heuristic critique, and spec packaging — upstream of implementation.
+- **devops-workflow vs automation-mcp-workflow:** `devops-workflow` owns infrastructure CI/CD. `automation-mcp-workflow` owns application-level workflow orchestration and MCP tool integration.
 
 ## Architecture Pattern
 
@@ -64,6 +73,34 @@ Each workflow follows the **conductor + planner + hidden specialists** pattern, 
 8. **Final Gates**: Domain-appropriate review, verification, accessibility, or release checks before completion
 9. **Cross-Workflow Handoffs**: Seamless delegation between domains
 
+## Memory Contract
+
+All packs in this directory consume the core memory under `.specify/memory/`. No pack creates a duplicate memory store.
+
+- **Session continuity:** `.specify/memory/session-memory.md`
+- **Durable decisions:** `.specify/memory/decision-log.md`
+- **Project constitution:** `.specify/memory/constitution.md`
+
+The Claude-Mem-inspired memory pattern lives in `.specify/memory/` (core, not a plugin). Plugin packs read from it; they do not own or replicate it.
+
+## Additional Future Plugin Lanes
+
+This directory is also the intended landing zone for future optional packs adapted from external ecosystems.
+
+The policy is:
+
+- keep the root `.github/agents` workflow as the default zero-setup path
+- use `plugins/` for optional packs that should not be forced into the core experience
+- prefer small, testable packs over large multi-purpose imports
+
+Candidate future lanes beyond the delivered UX and automation packs include:
+
+| Lane | Likely purpose |
+|------|----------------|
+| Utility / bootstrap pack | sync, installation, marketplace, and diagnostics helpers |
+
+When these additional packs are introduced, they should ship with their own README, activation path, and at least one focused demo or validation scenario.
+
 ## Quick Reference
 
 ### Frontend Workflow
@@ -90,6 +127,18 @@ Specialists: Infra-Architect, Pipeline-Engineer, Container-Master, Monitor-Senti
 ```
 Specialists: Data-Architect, Pipeline-Builder, Analytics-Engineer, ML-Scientist, Data-Quality, Data-Reviewer
 
+### Automation & MCP Workflow
+```
+@Automation-Atlas Connect an MCP server and compose a multi-step automation flow
+```
+Specialists: Automation-Planner, MCP-Integrator, Workflow-Composer, Automation-Reviewer
+
+### UX Enhancement Workflow
+```
+@UX-Atlas Research the onboarding journey, critique the flow, and prepare a frontend handoff
+```
+Specialists: UX-Planner, User-Flow-Designer, Design-Critic, Accessibility-Heuristics, Frontend-Handoff
+
 ## Installation
 
 ### Option 1: Workspace (Project-Specific)
@@ -101,7 +150,9 @@ Copy desired workflow folders to your project's `.github/agents/` or configure i
     "plugins/frontend-workflow/agents": true,
     "plugins/backend-workflow/agents": true,
     "plugins/devops-workflow/agents": true,
-    "plugins/data-workflow/agents": true
+    "plugins/data-workflow/agents": true,
+    "plugins/automation-mcp-workflow/agents": true,
+    "plugins/ux-enhancement-workflow/agents": true
   }
 }
 ```
@@ -131,8 +182,10 @@ Copy workflow folders to VS Code user prompts directory:
 | I want to... | Use |
 |--------------|-----|
 | Build UI components with accessibility | `@Afrodita` |
+| Research flows and package a UX spec | `@UX-Atlas` |
 | Create REST APIs with database | `@Backend-Atlas` |
 | Set up cloud infrastructure | `@DevOps-Atlas` |
+| Connect MCP tools and compose automation | `@Automation-Atlas` |
 | Build data pipelines or ML models | `@Data-Atlas` |
 | General development tasks | `@Atlas` |
 
