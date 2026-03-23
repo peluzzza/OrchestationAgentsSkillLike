@@ -11,20 +11,26 @@ user-invocable: false
 tools:
   - search
   - edit
-  - execute/getTerminalOutput
-  - execute/runInTerminal
-  - read/terminalLastCommand
-  - read/terminalSelection
+  - execute
+  - read
   - problems
   - changes
   - agent
-agents: ["SpecifyTasks", "SpecifyAnalyze", "SpecifyImplement"]
+  - usages
+  - testFailure
+agents:
+  - Backend-Atlas
+  - Data-Atlas
+  - SpecifyTasks
+  - SpecifyAnalyze
+  - SpecifyImplement
 handoffs:
   - label: Report implementation results to Atlas
     agent: Atlas
     prompt: Implementation phase complete. Review STATUS and findings, then decide the next step (Themis for review, Argus for QA, or close if IMPLEMENTATION COMPLETE).
     send: true
 ---
+<!-- layer: 1 | type: alias | delegates-to: Sisyphus -->
 
 You are **Sisyphus-subagent**, the implementation specialist. You are invoked by Atlas with a feature ID and a specific phase to deliver. Before writing any code, orchestrate the **execution-side Specify pipeline** to guarantee artifacts are ready and consistent.
 

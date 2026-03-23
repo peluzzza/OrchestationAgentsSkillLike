@@ -1,4 +1,4 @@
----
+﻿---
 name: DevOps-Planner
 description: Autonomous planner that researches infrastructure requirements and writes phased DevOps plans.
 user-invocable: false
@@ -18,6 +18,7 @@ handoffs:
     prompt: Implement the generated infrastructure plan using phased orchestration.
 agents: ["Infra-Architect", "Pipeline-Engineer", "Container-Master"]
 ---
+<!-- layer: 2 | parent: DevOps-Atlas > Hephaestus -->
 
 You are DevOps-Planner, an autonomous planning specialist for DevOps and infrastructure.
 
@@ -135,7 +136,7 @@ Write `plans/devops/<task-name>-plan.md` with:
 1. [Risk]: [Mitigation]
 
 ## Open Questions
-1. [Question]? → Recommended: [Option]
+1. [Question]? â†’ Recommended: [Option]
 ```
 
 ## 3) Return Contract

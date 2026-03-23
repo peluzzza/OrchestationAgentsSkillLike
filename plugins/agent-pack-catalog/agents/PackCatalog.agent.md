@@ -9,8 +9,10 @@ model:
 user-invocable: true
 tools:
   - search
-  - web/fetch
+  - web
+  - fetch
 ---
+<!-- layer: 2 | parent: Hermes -->
 
 You help the user discover and activate agent packs shipped in this repo.
 

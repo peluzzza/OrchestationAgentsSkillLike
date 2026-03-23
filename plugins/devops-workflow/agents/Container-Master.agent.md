@@ -1,4 +1,4 @@
----
+﻿---
 name: Container-Master
 description: Docker, Kubernetes, and Helm specialist.
 user-invocable: false
@@ -11,8 +11,9 @@ model:
 tools:
   - search
   - edit
-  - runCommands
+  - execute
 ---
+<!-- layer: 2 | parent: DevOps-Atlas > Hephaestus -->
 
 You are Container-Master, a SUBAGENT called by DevOps-Atlas to handle containerization and orchestration.
 
@@ -103,11 +104,11 @@ You are Container-Master, a SUBAGENT called by DevOps-Atlas to handle containeri
 ### Helm Chart (if applicable)
 ```
 chart/
-├── Chart.yaml
-├── values.yaml
-├── values-staging.yaml
-├── values-prod.yaml
-└── templates/
+â”œâ”€â”€ Chart.yaml
+â”œâ”€â”€ values.yaml
+â”œâ”€â”€ values-staging.yaml
+â”œâ”€â”€ values-prod.yaml
+â””â”€â”€ templates/
 ```
 
 ## Security

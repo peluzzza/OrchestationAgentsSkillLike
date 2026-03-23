@@ -1,4 +1,4 @@
----
+﻿---
 name: Data-Planner
 description: Autonomous planner that researches data requirements and writes phased data/ML plans.
 user-invocable: false
@@ -18,6 +18,7 @@ handoffs:
     prompt: Implement the generated data plan using phased orchestration.
 agents: ["Data-Architect", "Pipeline-Builder", "ML-Scientist"]
 ---
+<!-- layer: 2 | parent: Data-Atlas > Sisyphus -->
 
 You are Data-Planner, an autonomous planning specialist for data engineering and ML.
 
@@ -85,8 +86,8 @@ Write `plans/data/<task-name>-plan.md` with:
 
 ## Data Lineage
 ```
-[Source A] ─→ [stg_a] ─┬─→ [int_combined] ─→ [fct_output]
-[Source B] ─→ [stg_b] ─┘
+[Source A] â”€â†’ [stg_a] â”€â”¬â”€â†’ [int_combined] â”€â†’ [fct_output]
+[Source B] â”€â†’ [stg_b] â”€â”˜
 ```
 
 ## Phases
@@ -135,7 +136,7 @@ Write `plans/data/<task-name>-plan.md` with:
 1. [Risk]: [Mitigation]
 
 ## Open Questions
-1. [Question]? → Recommended: [Option]
+1. [Question]? â†’ Recommended: [Option]
 ```
 
 ## 3) Return Contract

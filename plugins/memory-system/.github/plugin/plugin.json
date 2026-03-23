@@ -1,0 +1,12 @@
+{
+    "id": "memory-system",
+    "name": "Memory System",
+    "description": "Persistent 3-level memory for agent sessions: session-memory, decision-log, and MCP knowledge graph.",
+    "version": "1.0.0",
+    "conductor": "Memory-Guardian",
+    "parentGod": "Prometheus",
+    "agents": [
+        "agents"
+    ],
+    "stability": "alpha"
+}

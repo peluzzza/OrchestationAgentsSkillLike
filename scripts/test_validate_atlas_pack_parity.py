@@ -40,9 +40,13 @@ def _write_agents(
     names: frozenset[str],
     content: str = _VALID_MD,
 ) -> None:
-    """Write *content* for every filename in *names* under *directory*."""
+    """Write *content* for every filename in *names* under *directory*.
+
+    Uses binary mode so that CRLF sequences in *content* are written literally
+    (text mode on Windows would double the carriage returns).
+    """
     for name in names:
-        (directory / name).write_text(content, encoding="utf-8")
+        (directory / name).write_bytes(content.encode("utf-8"))
 
 
 # ---------------------------------------------------------------------------

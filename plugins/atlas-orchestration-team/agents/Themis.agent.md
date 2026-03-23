@@ -14,7 +14,13 @@ handoffs:
     agent: Atlas
     prompt: The implementation has issues that need to be addressed. Please revise the code according to the feedback provided in the review.
     send: true
+agents:
+  - Backend-Reviewer
+  - Frontend-Reviewer
+  - Data-Reviewer
+  - Automation-Reviewer
 ---
+<!-- layer: 1 | domain: Code Review + Quality Gate -->
 
 You are a review subagent called after an implementation phase completes.
 

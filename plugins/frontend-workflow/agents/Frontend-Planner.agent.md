@@ -1,4 +1,4 @@
----
+﻿---
 name: Frontend-Planner
 description: Autonomous planner that researches UI/UX requirements and writes phased frontend plans.
 user-invocable: false
@@ -18,6 +18,7 @@ handoffs:
     prompt: Implement the generated frontend plan using phased orchestration.
 agents: ["UI-Designer", "State-Manager"]
 ---
+<!-- layer: 2 | parent: Afrodita > Afrodita-UX -->
 
 You are Frontend-Planner, an autonomous planning specialist for frontend development.
 
@@ -99,7 +100,7 @@ Write `plans/frontend/<task-name>-plan.md` with:
 1. [Risk]: [Mitigation]
 
 ## Open Questions
-1. [Question]? → Recommended: [Option]
+1. [Question]? â†’ Recommended: [Option]
 ```
 
 ## 3) Return Contract

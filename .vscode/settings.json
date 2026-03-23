@@ -7,7 +7,9 @@
     "plugins/data-workflow/agents": true,
     "plugins/automation-mcp-workflow/agents": true,
     "plugins/ux-enhancement-workflow/agents": true,
-    "plugins/agent-pack-catalog/agents": true
+    "plugins/agent-pack-catalog/agents": true,
+    "plugins/qa-workflow/agents": true,
+    "plugins/security-workflow/agents": true,
+    "plugins/memory-system/agents": true
   }
 }
-

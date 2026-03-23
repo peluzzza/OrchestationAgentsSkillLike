@@ -91,6 +91,21 @@ The human operator has unconditional authority to:
 
 Atlas MUST honour `enabled_agents` / `disabled_agents` prompt-level controls before every delegation. No agent invocation bypasses this check.
 
+### VIII. Strict Layer Isolation (NON-NEGOTIABLE)
+The agent system operates in exactly 3 layers. Violation of these rules is a constitution breach:
+
+a) **Layer 0 — Atlas only.** Atlas is the single user-visible entry point. Its `agents:` frontmatter MUST list only Layer 1 domain gods by name. `agents: ["*"]` is FOREVER FORBIDDEN.
+
+b) **Layer 1 — Domain Gods only.** Each god is the exclusive orchestrator of its domain. A god may invoke ONLY agents explicitly listed in its own `agents:` frontmatter, and those agents MUST be Layer 2 specialists within its subtree.
+
+c) **Layer 2 — Specialists are leaves.** A specialist agent MAY NOT invoke other agents unless it is a pack conductor (e.g., `Backend-Atlas`), in which case it may invoke only the leaf specialists within its own pack.
+
+d) **No cross-branch calls.** `Hephaestus` cannot call `Service-Builder`; `Sisyphus` cannot call `UI-Designer`. Every call stays within the caller's subtree.
+
+e) **Layer metadata is mandatory.** Every agent file MUST carry a `<!-- layer: N | domain: ... -->` metadata comment immediately after its closing frontmatter `---`. Any agent file lacking this comment MUST be treated as incomplete and MUST NOT be merged.
+
+The Compliance Review checklist (§ Governance) MUST include: `[ ] All modified agent files carry correct layer metadata comment`.
+
 ---
 
 ## Workflow Boundaries
@@ -131,4 +146,4 @@ All pull requests that add or modify agent files, templates, or `.specify/` arti
 
 ---
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-19 | **Last Amended**: 2026-03-19
+**Version**: 1.1.0 | **Ratified**: 2026-03-19 | **Last Amended**: 2026-03-23

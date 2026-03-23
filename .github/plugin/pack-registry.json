@@ -34,6 +34,7 @@
       "marketplacePublished": false,
       "activationPath": "plugins/frontend-workflow/agents",
       "conductor": "Afrodita",
+      "parentGod": "Afrodita-UX",
       "stability": "stable"
     },
     {
@@ -45,6 +46,7 @@
       "marketplacePublished": false,
       "activationPath": "plugins/backend-workflow/agents",
       "conductor": "Backend-Atlas",
+      "parentGod": "Sisyphus",
       "stability": "stable"
     },
     {
@@ -56,6 +58,7 @@
       "marketplacePublished": false,
       "activationPath": "plugins/devops-workflow/agents",
       "conductor": "DevOps-Atlas",
+      "parentGod": "Hephaestus",
       "stability": "stable"
     },
     {
@@ -67,6 +70,7 @@
       "marketplacePublished": false,
       "activationPath": "plugins/data-workflow/agents",
       "conductor": "Data-Atlas",
+      "parentGod": "Sisyphus",
       "stability": "stable"
     },
     {
@@ -78,6 +82,7 @@
       "marketplacePublished": true,
       "activationPath": "plugins/automation-mcp-workflow/agents",
       "conductor": "Automation-Atlas",
+      "parentGod": "Hephaestus",
       "stability": "preview",
       "demo": "automation-mcp-workflow-smoke"
     },
@@ -90,6 +95,7 @@
       "marketplacePublished": true,
       "activationPath": "plugins/ux-enhancement-workflow/agents",
       "conductor": "UX-Atlas",
+      "parentGod": "Afrodita-UX",
       "stability": "preview",
       "demo": "ux-enhancement-workflow-smoke"
     },
@@ -103,6 +109,42 @@
       "activationPath": "plugins/agent-pack-catalog/agents",
       "conductor": "PackCatalog",
       "stability": "stable"
+    },
+    {
+      "id": "qa-workflow",
+      "name": "QA Workflow",
+      "installPath": "plugins/qa-workflow",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": false,
+      "activationPath": "plugins/qa-workflow/agents",
+      "conductor": null,
+      "parentGod": "Argus",
+      "stability": "preview"
+    },
+    {
+      "id": "security-workflow",
+      "name": "Security Workflow",
+      "installPath": "plugins/security-workflow",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": false,
+      "activationPath": "plugins/security-workflow/agents",
+      "conductor": null,
+      "parentGod": "Atenea",
+      "stability": "preview"
+    },
+    {
+      "id": "memory-system",
+      "name": "Memory System",
+      "installPath": "plugins/memory-system",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": false,
+      "activationPath": "plugins/memory-system/agents",
+      "conductor": null,
+      "parentGod": "Prometheus",
+      "stability": "preview"
     }
   ]
 }

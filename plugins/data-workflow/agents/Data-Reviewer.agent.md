@@ -1,4 +1,4 @@
----
+﻿---
 name: Data-Reviewer
 description: Code review specialist for data pipelines and analytics.
 user-invocable: false
@@ -9,8 +9,9 @@ model:
   - Claude Sonnet 4.6 (copilot)
 tools:
   - search
-  - runCommands
+  - execute
 ---
+<!-- layer: 2 | parent: Data-Atlas > Sisyphus -->
 
 You are Data-Reviewer, a SUBAGENT called by Data-Atlas to review data code.
 

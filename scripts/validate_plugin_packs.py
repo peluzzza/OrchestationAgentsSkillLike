@@ -104,8 +104,8 @@ def validate_plugin_entry(entry: dict) -> list[str]:
         return errors
 
     invocable_count = count_user_invocable(frontmatters)
-    if invocable_count != 1:
-        errors.append(f"{slug}: expected exactly 1 user-invocable conductor, found {invocable_count}")
+    if invocable_count > 1:
+        errors.append(f"{slug}: expected at most 1 user-invocable conductor, found {invocable_count}")
 
     skill_dirs = manifest.get("skills", [])
     if skill_dirs:

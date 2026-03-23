@@ -11,15 +11,21 @@ user-invocable: false
 tools:
   - search
   - edit
-  - execute/getTerminalOutput
-  - execute/runInTerminal
-  - read/terminalLastCommand
-  - read/terminalSelection
-  - read/problems
-  - search/changes
+  - execute
+  - read
+  - problems
+  - changes
   - agent
-agents: ["SpecifyTasks", "SpecifyAnalyze", "SpecifyImplement"]
+  - usages
+  - testFailure
+agents:
+  - Backend-Atlas
+  - Data-Atlas
+  - SpecifyTasks
+  - SpecifyAnalyze
+  - SpecifyImplement
 ---
+<!-- layer: 1 | domain: Backend + Data Implementation -->
 
 Eres Sisyphus, el agente de implementación del sistema. Eres invocado por Atlas con una fase/tarea específica de un plan generado por Prometheus.
 

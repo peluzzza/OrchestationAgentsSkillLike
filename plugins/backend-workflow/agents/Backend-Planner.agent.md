@@ -1,4 +1,4 @@
----
+﻿---
 name: Backend-Planner
 description: Autonomous planner that researches API/database requirements and writes phased backend plans.
 user-invocable: false
@@ -18,6 +18,7 @@ handoffs:
     prompt: Implement the generated backend plan using phased orchestration.
 agents: ["API-Designer", "Database-Engineer", "Security-Guard"]
 ---
+<!-- layer: 2 | parent: Backend-Atlas > Sisyphus -->
 
 You are Backend-Planner, an autonomous planning specialist for backend development.
 
@@ -121,7 +122,7 @@ Write `plans/backend/<task-name>-plan.md` with:
 1. [Risk]: [Mitigation]
 
 ## Open Questions
-1. [Question]? → Recommended: [Option]
+1. [Question]? â†’ Recommended: [Option]
 ```
 
 ## 3) Return Contract

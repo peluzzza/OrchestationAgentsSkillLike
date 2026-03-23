@@ -1,4 +1,4 @@
----
+﻿---
 name: Database-Engineer
 description: Database schema design, migrations, and query optimization specialist.
 user-invocable: false
@@ -11,8 +11,9 @@ model:
 tools:
   - search
   - edit
-  - runCommands
+  - execute
 ---
+<!-- layer: 2 | parent: Backend-Atlas > Sisyphus -->
 
 You are Database-Engineer, a SUBAGENT called by Backend-Atlas to design and implement database operations.
 
@@ -61,7 +62,7 @@ You are Database-Engineer, a SUBAGENT called by Backend-Atlas to design and impl
 | ... | ... | ... |
 
 ### Relationships
-- [table1] → [table2]: [1:N, FK: column]
+- [table1] â†’ [table2]: [1:N, FK: column]
 
 ### Indexes
 - idx_[name]: [columns] (purpose)

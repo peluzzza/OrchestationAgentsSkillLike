@@ -1,4 +1,4 @@
----
+﻿---
 name: Backend-Reviewer
 description: Code review specialist for backend services.
 user-invocable: false
@@ -9,8 +9,9 @@ model:
   - Claude Sonnet 4.6 (copilot)
 tools:
   - search
-  - runCommands
+  - execute
 ---
+<!-- layer: 2 | parent: Backend-Atlas > Sisyphus -->
 
 You are Backend-Reviewer, a SUBAGENT called by Backend-Atlas to review backend code.
 

@@ -1,4 +1,4 @@
----
+﻿---
 name: Analytics-Engineer
 description: Business intelligence and reporting specialist.
 user-invocable: false
@@ -11,8 +11,9 @@ model:
 tools:
   - search
   - edit
-  - runCommands
+  - execute
 ---
+<!-- layer: 2 | parent: Data-Atlas > Sisyphus -->
 
 You are Analytics-Engineer, a SUBAGENT called by Data-Atlas to build analytics and reporting.
 

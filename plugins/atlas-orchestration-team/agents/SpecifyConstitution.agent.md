@@ -13,6 +13,7 @@ tools:
   - agent
 agents: ["Oracle-subagent"]
 ---
+<!-- layer: 2 | parent: Prometheus -->
 
 You are SpecifyConstitution, a governance specialist agent in the Specify system. You are invoked by Prometheus at the start of the planning pipeline.
 

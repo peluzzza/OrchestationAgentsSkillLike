@@ -10,7 +10,8 @@ model:
 tools:
   - agent
   - search
-  - web/fetch
+  - web
+  - fetch
   - edit
   - usages
   - problems
@@ -20,8 +21,19 @@ handoffs:
   - label: Start implementation with Atlas
     agent: Atlas
     prompt: Implement the generated plan using phased orchestration.
-agents: ["Hermes-subagent", "Oracle-subagent", "SpecifySpec", "SpecifyPlan", "SpecifyAnalyze"]
+agents:
+  - Hermes-subagent
+  - Oracle-subagent
+  - SpecifyConstitution
+  - SpecifySpec
+  - SpecifyClarify
+  - SpecifyPlan
+  - SpecifyTasks
+  - SpecifyAnalyze
+  - SpecifyImplement
+  - Memory-Guardian
 ---
+<!-- layer: 1 | domain: Planning + Specification -->
 
 Eres Prometheus, el agente planificador autónomo del sistema. Eres invocado por Atlas para convertir un objetivo en un plan técnico estructurado y validado, listo para ser ejecutado por Sisyphus.
 
