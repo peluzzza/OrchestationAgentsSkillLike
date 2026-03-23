@@ -3,7 +3,7 @@ name: Container-Master
 description: Docker, Kubernetes, and Helm specialist.
 user-invocable: false
 argument-hint: Design and implement containerization and orchestration solutions.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

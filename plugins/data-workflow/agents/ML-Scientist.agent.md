@@ -3,11 +3,7 @@ name: ML-Scientist
 description: Machine learning model development specialist.
 user-invocable: false
 argument-hint: Develop and train machine learning models for this use case.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
   - edit

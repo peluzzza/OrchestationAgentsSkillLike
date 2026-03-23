@@ -3,7 +3,7 @@ name: Monitor-Sentinel
 description: Observability specialist for monitoring, logging, and alerting.
 user-invocable: false
 argument-hint: Set up monitoring, logging, and alerting for this infrastructure.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

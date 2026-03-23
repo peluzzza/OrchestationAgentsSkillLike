@@ -3,12 +3,12 @@ name: Incident-Responder
 description: Structured incident response — detect, triage, mitigate, and produce a root cause analysis report.
 user-invocable: false
 argument-hint: Respond to incident: <description/alert>. Produce severity, timeline, RCA, and mitigation steps.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - execute
   - read
-  - problems
+  - read/problems
 ---
 <!-- layer: 2 | parent: Hephaestus > DevOps-Atlas -->
 

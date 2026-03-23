@@ -3,7 +3,7 @@ name: Infra-Architect
 description: Infrastructure-as-code specialist for cloud and on-prem environments.
 user-invocable: false
 argument-hint: Design and implement infrastructure using Terraform, Pulumi, or CloudFormation.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

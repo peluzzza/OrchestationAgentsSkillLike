@@ -3,11 +3,7 @@ name: Mutation-Tester
 description: Apply code mutations to high-risk logic and verify that existing tests detect them. Reports mutation score and surviving mutants.
 user-invocable: false
 argument-hint: Run mutation testing for <file/function>. Report mutation score and top surviving mutants.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - execute
   - read

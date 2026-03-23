@@ -2,14 +2,13 @@
 description: Review dependency manifests, lock files, and base images for outdated packages, CVEs, license concerns, and upgrade risk.
 name: Ariadna
 argument-hint: Audit dependency health for the changed manifests, lock files, or runtime images.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
   - search
   - execute
-  - changes
-  - problems
+  - search/changes
+  - read/problems
 handoffs:
   - label: Return Ariadna Audit
     agent: Atlas

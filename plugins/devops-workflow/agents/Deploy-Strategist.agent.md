@@ -3,7 +3,7 @@ name: Deploy-Strategist
 description: Deployment strategy specialist for zero-downtime releases.
 user-invocable: false
 argument-hint: Design and implement deployment strategies for safe releases.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

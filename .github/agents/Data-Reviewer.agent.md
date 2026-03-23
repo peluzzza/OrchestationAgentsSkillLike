@@ -3,11 +3,7 @@ name: Data-Reviewer
 description: Code review specialist for data pipelines and analytics.
 user-invocable: false
 argument-hint: Review data pipeline code for quality and best practices.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
   - execute

@@ -3,11 +3,11 @@ name: DevOps-Planner
 description: Autonomous planner that researches infrastructure requirements and writes phased DevOps plans.
 user-invocable: false
 argument-hint: Research this infrastructure task deeply and produce a phased DevOps plan.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
 handoffs:
   - label: Start implementation with DevOps-Atlas

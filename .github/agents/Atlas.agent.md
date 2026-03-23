@@ -3,13 +3,12 @@ description: Conductor orchestrator for planning, implementation, review, and ve
 name: Atlas
 user-invocable: true
 argument-hint: Orchestrate end-to-end execution for this task using specialist subagents.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - agent
   - search
   - web
-  - fetch
+  - web/fetch
   - edit
   - execute
   - read

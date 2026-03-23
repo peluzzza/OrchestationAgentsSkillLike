@@ -3,8 +3,7 @@ description: Create or update the project constitution from interactive or provi
 name: SpecifyConstitution
 user-invocable: false
 argument-hint: Create or update the project constitution with the provided principles.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

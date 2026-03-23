@@ -3,8 +3,7 @@ description: Perform a non-destructive cross-artifact consistency and quality an
 name: SpecifyAnalyze
 user-invocable: false
 argument-hint: Analyze the consistency of Specify artifacts for feature [feature-id].
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

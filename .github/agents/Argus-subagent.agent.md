@@ -2,16 +2,15 @@
 description: Compatibility alias for the Argus QA specialist. Exhaustive test coverage, edge case discovery, and quality validation. Invoked by Atlas after code review to verify testing completeness.
 name: Argus-subagent
 argument-hint: Provide phase objective, modified files, and existing tests. Run narrowest checks first, then widen. Return PASSED, NEEDS_MORE_TESTS, or FAILED.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
   - search
   - execute
   - read
-  - changes
-  - problems
-  - testFailure
+  - search/changes
+  - read/problems
+  - execute/testFailure
 handoffs:
   - label: Return QA findings to Atlas
     agent: Atlas

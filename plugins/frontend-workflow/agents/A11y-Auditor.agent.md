@@ -3,7 +3,7 @@ name: A11y-Auditor
 description: Accessibility specialist ensuring WCAG 2.1 AA compliance.
 user-invocable: false
 argument-hint: Audit these components for accessibility compliance.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - execute

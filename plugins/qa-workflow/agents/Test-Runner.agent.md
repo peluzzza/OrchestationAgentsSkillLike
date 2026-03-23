@@ -3,11 +3,7 @@ name: Test-Runner
 description: Execute targeted test commands (unit, integration, e2e) and return structured pass/fail results with output excerpts.
 user-invocable: false
 argument-hint: Run tests for <scope>. Return status, failures, coverage if available.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - execute
   - read

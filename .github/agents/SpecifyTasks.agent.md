@@ -3,8 +3,7 @@ description: Generate an actionable, dependency-ordered tasks.md for the feature
 name: SpecifyTasks
 user-invocable: false
 argument-hint: Generate the task breakdown for feature [feature-id] from the available plan.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

@@ -3,11 +3,7 @@ name: Performance-Tuner
 description: Backend performance optimization and profiling specialist.
 user-invocable: false
 argument-hint: Analyze and optimize performance for these backend services.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
   - execute

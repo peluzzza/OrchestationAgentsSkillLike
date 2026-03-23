@@ -3,11 +3,7 @@ name: Data-Quality
 description: Data quality and governance specialist.
 user-invocable: false
 argument-hint: Validate data quality and enforce governance policies.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
   - edit

@@ -3,7 +3,7 @@ name: Design-Critic
 description: Specialist for heuristic evaluation using Nielsen's 10 heuristics and structured UX critique.
 user-invocable: false
 argument-hint: Evaluate the proposed flows and spec against Nielsen's 10 heuristics and return a structured critique.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

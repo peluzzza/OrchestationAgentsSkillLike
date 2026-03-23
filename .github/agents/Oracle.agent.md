@@ -2,18 +2,17 @@
 description: Deep research agent for requirements, architecture, and implementation options.
 name: Oracle
 argument-hint: Research this subsystem/problem and return structured findings.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
   - agent
   - search
-  - usages
-  - problems
-  - changes
-  - testFailure
+  - search/usages
+  - read/problems
+  - search/changes
+  - execute/testFailure
   - web
-  - fetch
+  - web/fetch
 handoffs:
   - label: Delegate to Hermes
     agent: Atlas

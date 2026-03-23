@@ -3,8 +3,7 @@ name: Memory-Guardian
 description: Capture, compress, and retrieve agent session memory. Manages session-memory.md, decision-log.md, and the MCP knowledge graph.
 user-invocable: false
 argument-hint: "<capture|retrieve|compress> memory for session <ID>. Use mode: capture|retrieve|compress."
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - edit
   - search

@@ -2,16 +2,15 @@
 description: Update README files, usage notes, examples, and other repository documentation so it matches implemented behavior.
 name: Clio
 argument-hint: Update documentation for the changed behavior, setup, or interface.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
   - agent
   - edit
   - search
-  - changes
-  - usages
-  - problems
+  - search/changes
+  - search/usages
+  - read/problems
 handoffs:
   - label: Return Clio Update
     agent: Atlas

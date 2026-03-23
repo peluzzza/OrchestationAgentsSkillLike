@@ -3,10 +3,10 @@ name: UI-Designer
 description: Component architecture and layout specialist for frontend workflows.
 user-invocable: false
 argument-hint: Design component hierarchy and layout structure for this UI requirement.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
-  - fetch
+  - web/fetch
 ---
 <!-- layer: 2 | parent: Afrodita > Afrodita-UX -->
 

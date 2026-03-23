@@ -3,7 +3,7 @@ name: Security-Ops
 description: DevSecOps specialist for security scanning and compliance.
 user-invocable: false
 argument-hint: Perform security scanning and ensure compliance for this infrastructure.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - execute

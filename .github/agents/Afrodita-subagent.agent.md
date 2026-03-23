@@ -2,19 +2,19 @@
 description: Compatibility alias for the Afrodita frontend/UI specialist. Implements user interfaces, components, styling, and responsive layouts. Invoked by Atlas for frontend-scoped phases; QA ownership stays with Argus.
 name: Afrodita-subagent
 argument-hint: Provide UI scope, existing component patterns, design tokens or references, and acceptance criteria.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
   - edit
   - search
   - execute
   - read
-  - usages
-  - problems
-  - changes
-  - testFailure
+  - search/usages
+  - read/problems
+  - search/changes
+  - execute/testFailure
   - web
-  - fetch
+  - web/fetch
 handoffs:
   - label: Report back to Atlas
     agent: Atlas

@@ -3,11 +3,11 @@ name: DevOps-Atlas
 description: Conductor orchestrator for DevOps with infrastructure and CI/CD specialists.
 user-invocable: false
 argument-hint: Orchestrate infrastructure and deployment automation with DevOps specialists.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
   - execute
 agents:

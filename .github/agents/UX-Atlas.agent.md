@@ -3,11 +3,11 @@ name: UX-Atlas
 description: Conductor for UX research, flow design, heuristic critique, and frontend handoff workflows.
 user-invocable: false
 argument-hint: Orchestrate UX research, flow design, and spec handoff with UX specialists.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
 agents:
   - User-Flow-Designer

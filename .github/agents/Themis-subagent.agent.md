@@ -2,13 +2,12 @@
 description: Compatibility alias for the Themis code review specialist. Validates implementation against acceptance criteria, correctness, maintainability, and security hygiene. Invoked by Atlas after each implementation phase.
 name: Themis-subagent
 argument-hint: Provide phase objective, acceptance criteria, and the files changed. Return APPROVED, NEEDS_REVISION, or FAILED with specific findings.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
-  - changes
-  - problems
-  - usages
+  - search/changes
+  - read/problems
+  - search/usages
   - search
 handoffs:
   - label: Return review findings to Atlas

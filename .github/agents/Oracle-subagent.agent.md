@@ -2,18 +2,17 @@
 description: Deep research specialist. Gathers comprehensive context about a subsystem, problem, or technical decision and returns structured findings to the parent conductor. Use after Hermes has mapped the relevant files.
 name: Oracle-subagent
 argument-hint: Research this subsystem or problem deeply and return structured findings.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
   - agent
   - search
-  - usages
-  - problems
-  - changes
-  - testFailure
+  - search/usages
+  - read/problems
+  - search/changes
+  - execute/testFailure
   - web
-  - fetch
+  - web/fetch
 handoffs:
   - label: Return findings to Atlas
     agent: Atlas

@@ -2,14 +2,13 @@
 description: Review gate that validates implementation quality, correctness, and readiness.
 name: Themis
 argument-hint: Provide phase name, files changed, and acceptance criteria. I will analyze the implementation and return APPROVED, NEEDS_REVISION, or FAILED.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
   - agent
-  - changes
-  - problems
-  - usages
+  - search/changes
+  - read/problems
+  - search/usages
   - search
 handoffs:
   - label: Request Revision

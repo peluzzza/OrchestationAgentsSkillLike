@@ -2,17 +2,16 @@
 description: QA verification agent — targeted test execution, coverage analysis, edge-case discovery, and failure triage.
 name: Argus
 argument-hint: Verify this phase by running the smallest relevant checks first, expanding only when needed.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
   - agent
   - search
   - execute
   - read
-  - changes
-  - problems
-  - testFailure
+  - search/changes
+  - read/problems
+  - execute/testFailure
 agents:
   - A11y-Auditor
   - Test-Runner

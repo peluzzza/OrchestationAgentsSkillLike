@@ -3,7 +3,7 @@ name: Accessibility-Heuristics
 description: Specialist for WCAG 2.1 AA and inclusive design review of UX flows and specs.
 user-invocable: false
 argument-hint: Review the UX flows and spec for WCAG 2.1 AA compliance and inclusive design.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

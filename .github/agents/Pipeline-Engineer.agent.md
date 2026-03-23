@@ -3,7 +3,7 @@ name: Pipeline-Engineer
 description: CI/CD pipeline design and implementation specialist.
 user-invocable: false
 argument-hint: Design and implement CI/CD pipelines for automated testing and deployment.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

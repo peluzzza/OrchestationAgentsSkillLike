@@ -2,15 +2,14 @@
 description: Review changed code and configuration for secrets exposure, insecure patterns, dependency vulnerabilities, and high-risk operational issues.
 name: Atenea
 argument-hint: Review a completed phase for secrets exposure, insecure code paths, dependency risk, and remediation steps.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: false
 tools:
   - agent
   - search
-  - changes
-  - problems
-  - usages
+  - search/changes
+  - read/problems
+  - search/usages
   - execute
 handoffs:
   - label: Return Atenea Findings

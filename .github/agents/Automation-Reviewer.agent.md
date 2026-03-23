@@ -3,14 +3,10 @@ name: Automation-Reviewer
 description: Safety and correctness gate for automation workflows. Reviews for irreversible actions, credential exposure, and logical errors.
 user-invocable: false
 argument-hint: Review this automation workflow for safety and correctness.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
-  - fetch
+  - web/fetch
   - edit
 ---
 <!-- layer: 2 | parent: Automation-Atlas > Hephaestus -->

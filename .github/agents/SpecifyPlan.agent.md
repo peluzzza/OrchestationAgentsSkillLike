@@ -3,13 +3,12 @@ description: Execute the implementation planning workflow using the plan templat
 name: SpecifyPlan
 user-invocable: false
 argument-hint: Create the technical implementation plan for the spec. I am building with [tech stack description].
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit
   - web
-  - fetch
+  - web/fetch
   - agent
 agents: ["Hermes-subagent", "Oracle-subagent"]
 ---

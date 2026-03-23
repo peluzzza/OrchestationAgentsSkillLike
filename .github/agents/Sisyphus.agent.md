@@ -2,22 +2,18 @@
 description: Implementation specialist that drives the Specify execution pipeline (tasks + implement) with strict tests-first discipline and phase-by-phase delivery.
 name: Sisyphus
 argument-hint: Implement this scoped phase/task with tests first and minimal diffs.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 user-invocable: false
 tools:
   - search
   - edit
   - execute
   - read
-  - problems
-  - changes
+  - read/problems
+  - search/changes
   - agent
-  - usages
-  - testFailure
+  - search/usages
+  - execute/testFailure
 agents:
   - Backend-Atlas
   - Data-Atlas

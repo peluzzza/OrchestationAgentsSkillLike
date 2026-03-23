@@ -3,7 +3,7 @@ name: Style-Engineer
 description: CSS, animations, theming, and responsive design specialist.
 user-invocable: false
 argument-hint: Implement styling, animations, and responsive design for these components.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

@@ -3,16 +3,11 @@ name: n8n-Connector
 description: Generate n8n workflow JSON definitions via MCP integration. Requires n8n MCP server configured in .vscode/mcp.json.
 user-invocable: false
 argument-hint: Generate n8n workflow for <automation goal>. Return workflow JSON + setup instructions.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
-  - fetch
+  - web/fetch
   - edit
-# PREREQUISITE: n8n MCP server must be configured in .vscode/mcp.json
 ---
 <!-- layer: 2 | parent: Hephaestus > Automation-Atlas -->
 

@@ -3,12 +3,12 @@ name: Cost-Optimizer
 description: Analyze cloud resource usage, identify cost inefficiencies, and propose rightsizing or elimination recommendations.
 user-invocable: false
 argument-hint: Analyze <resource/service> costs. Return top 3 optimization recommendations with estimated savings.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - execute
   - read
-  - fetch
+  - web/fetch
 ---
 <!-- layer: 2 | parent: Hephaestus > DevOps-Atlas -->
 

@@ -3,12 +3,11 @@ name: Backend-Planner
 description: Autonomous planner that researches API/database requirements and writes phased backend plans.
 user-invocable: false
 argument-hint: Research this backend task deeply and produce a phased implementation plan.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
 handoffs:
   - label: Start implementation with Backend-Atlas

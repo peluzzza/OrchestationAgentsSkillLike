@@ -3,15 +3,11 @@ name: MCP-Integrator
 description: Specialist for MCP server connection, tool discovery, schema validation, and protocol wiring.
 user-invocable: false
 argument-hint: Connect MCP servers, map tools, and configure protocol bindings.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
   - execute
 agents: ["*"]

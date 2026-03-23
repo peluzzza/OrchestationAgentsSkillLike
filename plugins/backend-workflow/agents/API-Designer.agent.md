@@ -3,14 +3,10 @@ name: API-Designer
 description: REST/GraphQL API design and specification specialist.
 user-invocable: false
 argument-hint: Design API endpoints and contracts for this backend feature.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
-  - fetch
+  - web/fetch
 ---
 <!-- layer: 2 | parent: Backend-Atlas > Sisyphus -->
 

@@ -3,11 +3,7 @@ name: Database-Engineer
 description: Database schema design, migrations, and query optimization specialist.
 user-invocable: false
 argument-hint: Design database schema and write migrations for this feature.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
   - edit

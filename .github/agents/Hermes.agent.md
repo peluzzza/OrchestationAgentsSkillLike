@@ -2,17 +2,14 @@
 description: Fast read-only scout for locating files, usages, and dependencies across the codebase.
 name: Hermes
 argument-hint: Find files, usages, dependencies, and context related to: <research goal or problem statement>
-model:
-  - Gemini 3 Flash (Preview) (copilot)
-  - Claude Haiku 4.5 (copilot)
-  - Claude Haiku 4.5 (copilot)
+model: ["Gemini 3 Flash (Preview) (copilot)", "Claude Haiku 4.5 (copilot)"]
 user-invocable: false
 tools:
   - search
-  - usages
-  - problems
-  - changes
-  - testFailure
+  - search/usages
+  - read/problems
+  - search/changes
+  - execute/testFailure
 handoffs:
   - label: Return Findings
     agent: Atlas

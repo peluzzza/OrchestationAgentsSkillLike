@@ -3,8 +3,7 @@ description: Identify underspecified areas in the current feature spec by asking
 name: SpecifyClarify
 user-invocable: false
 argument-hint: Clarify the pending ambiguities in the spec for feature [feature-id].
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit

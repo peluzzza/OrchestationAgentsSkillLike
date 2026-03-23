@@ -2,17 +2,14 @@
 description: Read-only codebase exploration specialist. Maps files, usages, and dependencies for parent conductor agents using breadth-first discovery. Use before Oracle when the relevant file set is unknown.
 name: Hermes-subagent
 argument-hint: Find files, usages, dependencies, and context related to: <research goal or problem statement>
-model:
-  - Gemini 3 Flash (Preview) (copilot)
-  - Claude Haiku 4.5 (copilot)
-  - Claude Haiku 4.5 (copilot)
+model: ["Gemini 3 Flash (Preview) (copilot)", "Claude Haiku 4.5 (copilot)"]
 user-invocable: false
 tools:
   - search
-  - usages
-  - problems
-  - changes
-  - testFailure
+  - search/usages
+  - read/problems
+  - search/changes
+  - execute/testFailure
 handoffs:
   - label: Return findings to Atlas
     agent: Atlas

@@ -3,14 +3,10 @@ name: Security-Guard
 description: Security, authentication, and authorization specialist.
 user-invocable: false
 argument-hint: Audit and implement security patterns for this backend feature.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
-  - fetch
+  - web/fetch
   - edit
 ---
 <!-- layer: 2 | parent: Backend-Atlas > Sisyphus -->

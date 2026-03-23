@@ -3,7 +3,7 @@ name: Frontend-Reviewer
 description: Code review specialist for frontend components.
 user-invocable: false
 argument-hint: Review these frontend changes for quality and best practices.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - execute

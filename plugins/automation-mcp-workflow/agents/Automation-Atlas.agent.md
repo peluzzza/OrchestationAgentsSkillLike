@@ -3,15 +3,11 @@ name: Automation-Atlas
 description: Conductor for automation and MCP workflow orchestration.
 user-invocable: false
 argument-hint: Orchestrate automation and MCP integrations with workflow specialists.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
   - execute
 agents:

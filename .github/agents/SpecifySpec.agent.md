@@ -3,13 +3,12 @@ description: Create or update the feature specification from a natural language 
 name: SpecifySpec
 user-invocable: false
 argument-hint: "Feature description: [natural language description of what to build]"
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit
   - web
-  - fetch
+  - web/fetch
 agents: []
 ---
 <!-- layer: 2 | parent: Prometheus -->

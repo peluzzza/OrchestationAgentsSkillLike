@@ -3,15 +3,11 @@ name: Compliance-Checker
 description: Audit code and configuration for regulatory compliance (GDPR, HIPAA, SOC2, PCI-DSS) and internal policy adherence.
 user-invocable: false
 argument-hint: Audit <scope> for compliance with <framework>. Return findings and remediation steps.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - search
-  - changes
-  - problems
+  - search/changes
+  - read/problems
   - read
 ---
 <!-- layer: 2 | parent: Atenea -->

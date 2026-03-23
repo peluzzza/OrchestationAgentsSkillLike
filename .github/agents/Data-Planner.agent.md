@@ -3,12 +3,11 @@ name: Data-Planner
 description: Autonomous planner that researches data requirements and writes phased data/ML plans.
 user-invocable: false
 argument-hint: Research this data task deeply and produce a phased data engineering plan.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
 handoffs:
   - label: Start implementation with Data-Atlas

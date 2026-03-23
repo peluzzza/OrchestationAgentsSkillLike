@@ -3,12 +3,11 @@ name: Backend-Atlas
 description: Conductor orchestrator for backend development with API/database specialists.
 user-invocable: false
 argument-hint: Orchestrate backend feature implementation with API and database specialists.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
   - execute
 agents:

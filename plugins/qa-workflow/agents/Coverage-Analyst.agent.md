@@ -3,16 +3,12 @@ name: Coverage-Analyst
 description: Measure test coverage, identify uncovered paths, and produce a prioritized gap report.
 user-invocable: false
 argument-hint: Analyze coverage for <scope>. Identify top 3 uncovered paths.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 tools:
   - execute
   - read
   - search
-  - problems
+  - read/problems
 ---
 <!-- layer: 2 | parent: Argus -->
 

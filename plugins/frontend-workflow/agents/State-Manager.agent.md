@@ -3,10 +3,10 @@ name: State-Manager
 description: State management patterns specialist for frontend applications.
 user-invocable: false
 argument-hint: Research and implement state management patterns for this feature.
-model: Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
-  - fetch
+  - web/fetch
   - edit
 ---
 <!-- layer: 2 | parent: Afrodita > Afrodita-UX -->

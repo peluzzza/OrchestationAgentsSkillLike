@@ -2,22 +2,18 @@
 description: Compatibility alias for the Sisyphus implementation specialist. Specify-aware execution shim delegated by Atlas for phase-scoped code delivery; runs EX-0→EX-4 pipeline validation before writing any code.
 name: Sisyphus-subagent
 argument-hint: Pass FEATURE_ID and the exact PHASE name from Atlas/Prometheus. Implement only the assigned phase.
-model:
-  - Claude Opus 4.6 (copilot)
-  - GPT-5.3-Codex (copilot)
-  - GPT-5.3-Codex (copilot)
-  - Claude Sonnet 4.6 (copilot)
+model: ["Claude Opus 4.6 (copilot)", "GPT-5.3-Codex (copilot)", "Claude Sonnet 4.6 (copilot)"]
 user-invocable: false
 tools:
   - search
   - edit
   - execute
   - read
-  - problems
-  - changes
+  - read/problems
+  - search/changes
   - agent
-  - usages
-  - testFailure
+  - search/usages
+  - execute/testFailure
 agents:
   - Backend-Atlas
   - Data-Atlas

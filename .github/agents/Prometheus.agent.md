@@ -3,18 +3,17 @@ description: Autonomous planner that researches context, drives the full Specify
 name: Prometheus
 user-invocable: false
 argument-hint: Research this task deeply and produce a phased execution plan for Atlas.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - agent
   - search
   - web
-  - fetch
+  - web/fetch
   - edit
-  - usages
-  - problems
-  - changes
-  - testFailure
+  - search/usages
+  - read/problems
+  - search/changes
+  - execute/testFailure
 handoffs:
   - label: Start implementation with Atlas
     agent: Atlas

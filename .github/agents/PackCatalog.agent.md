@@ -1,13 +1,12 @@
 ---
 description: Catalog/discovery agent for this marketplace. Lists available packs, recommends what to install based on repo context, and provides exact VS Code installation steps.
 name: PackCatalog
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 user-invocable: true
 tools:
   - search
   - web
-  - fetch
+  - web/fetch
 ---
 <!-- layer: 2 | parent: Hermes -->
 

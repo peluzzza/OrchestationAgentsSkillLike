@@ -3,12 +3,11 @@ name: Data-Atlas
 description: Conductor orchestrator for data engineering and ML workflows.
 user-invocable: false
 argument-hint: Orchestrate data pipelines and ML workflows with data specialists.
-model:
-  - Claude Sonnet 4.6 (copilot)
+model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - agent
   - search
-  - fetch
+  - web/fetch
   - edit
   - execute
 agents:
