@@ -14,8 +14,6 @@ tools:
 handoffs:
   - label: Return QA findings to Atlas
     agent: Atlas
-    prompt: QA testing complete. If FAILED or NEEDS_MORE_TESTS, route back to Sisyphus for fixes. If PASSED, advance the phase or close.
-    send: true
 ---
 <!-- layer: 1 | type: alias | delegates-to: Argus -->
 

@@ -12,7 +12,6 @@ tools:
 handoffs:
   - label: Start implementation with Backend-Atlas
     agent: Backend-Atlas
-    prompt: Implement the generated backend plan using phased orchestration.
 agents: ["API-Designer", "Database-Engineer", "Security-Guard"]
 ---
 <!-- layer: 2 | parent: Backend-Atlas > Sisyphus -->

@@ -14,8 +14,6 @@ tools:
 handoffs:
   - label: Return Atenea Findings
     agent: Atlas
-    prompt: Atenea review completed. Evaluate the findings and decide whether the phase can proceed.
-    send: true
 agents:
   - Security-Guard
   - Security-Ops

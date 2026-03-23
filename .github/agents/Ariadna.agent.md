@@ -12,8 +12,6 @@ tools:
 handoffs:
   - label: Return Ariadna Audit
     agent: Atlas
-    prompt: Ariadna audit completed. Review the findings and decide whether follow-up work is needed.
-    send: true
 agents: []
 ---
 <!-- layer: 1 | domain: Dependency + Package Audit -->

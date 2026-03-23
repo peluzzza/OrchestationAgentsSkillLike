@@ -14,8 +14,6 @@ tools:
 handoffs:
   - label: Return Operations Findings
     agent: Atlas
-    prompt: Operations findings ready (deploy, rollout, incident, maintenance, performance, or release readiness). Review the findings, determine whether the work is complete, and decide the next step.
-    send: true
 agents:
   - DevOps-Atlas
   - Automation-Atlas

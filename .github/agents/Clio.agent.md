@@ -14,8 +14,6 @@ tools:
 handoffs:
   - label: Return Clio Update
     agent: Atlas
-    prompt: Clio update completed. Review the output and continue the workflow.
-    send: true
 agents:
   - Frontend-Handoff
 ---

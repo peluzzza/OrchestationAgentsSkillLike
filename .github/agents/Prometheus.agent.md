@@ -17,7 +17,6 @@ tools:
 handoffs:
   - label: Start implementation with Atlas
     agent: Atlas
-    prompt: Implement the generated plan using phased orchestration.
 agents:
   - Hermes-subagent
   - Oracle-subagent

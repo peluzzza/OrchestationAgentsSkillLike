@@ -12,8 +12,6 @@ tools:
 handoffs:
   - label: Return review findings to Atlas
     agent: Atlas
-    prompt: Code review complete. If NEEDS_REVISION or FAILED, route to Sisyphus for fixes. If APPROVED, route to Argus for QA or advance the phase.
-    send: true
 ---
 <!-- layer: 1 | type: alias | delegates-to: Themis -->
 

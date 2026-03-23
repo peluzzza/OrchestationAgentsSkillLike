@@ -12,7 +12,6 @@ tools:
 handoffs:
   - label: Start implementation with Data-Atlas
     agent: Data-Atlas
-    prompt: Implement the generated data plan using phased orchestration.
 agents: ["Data-Architect", "Pipeline-Builder", "ML-Scientist"]
 ---
 <!-- layer: 2 | parent: Data-Atlas > Sisyphus -->

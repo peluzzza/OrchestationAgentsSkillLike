@@ -23,8 +23,6 @@ agents:
 handoffs:
   - label: Report implementation results to Atlas
     agent: Atlas
-    prompt: Implementation phase complete. Review STATUS and findings, then decide the next step (Themis for review, Argus for QA, or close if IMPLEMENTATION COMPLETE).
-    send: true
 ---
 <!-- layer: 1 | type: alias | delegates-to: Sisyphus -->
 

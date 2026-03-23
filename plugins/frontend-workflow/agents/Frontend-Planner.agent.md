@@ -12,7 +12,6 @@ tools:
 handoffs:
   - label: Start implementation with Afrodita
     agent: Afrodita
-    prompt: Implement the generated frontend plan using phased orchestration.
 agents: ["UI-Designer", "State-Manager"]
 ---
 <!-- layer: 2 | parent: Afrodita > Afrodita-UX -->

@@ -19,8 +19,6 @@ tools:
 handoffs:
   - label: Report back to Atlas
     agent: Atlas
-    prompt: Frontend implementation complete. Please review components, accessibility, responsive behavior, UX states covered, and any follow-up recommendations.
-    send: true
 agents:
   - Afrodita
   - UX-Atlas

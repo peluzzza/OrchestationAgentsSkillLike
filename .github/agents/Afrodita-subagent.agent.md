@@ -18,8 +18,6 @@ tools:
 handoffs:
   - label: Report back to Atlas
     agent: Atlas
-    prompt: "Frontend implementation complete. STATUS=COMPLETE: route to Themis for code review. STATUS=PARTIAL: re-invoke Afrodita-subagent with a narrower scope. STATUS=BLOCKED: stop and consult the user."
-    send: true
 ---
 <!-- layer: 1 | type: alias | delegates-to: Afrodita-UX -->
 

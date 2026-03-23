@@ -16,8 +16,6 @@ tools:
 handoffs:
   - label: Return findings to Atlas
     agent: Atlas
-    prompt: Research complete. Review the findings and decide the next step.
-    send: true
 agents:
   - Hermes-subagent
 ---

@@ -16,8 +16,6 @@ tools:
 handoffs:
   - label: Delegate to Hermes
     agent: Atlas
-    prompt: Research scope is large, delegate to Hermes for file discovery
-    send: true
 agents: []
 ---
 <!-- layer: 1 | domain: Requirements + Architecture Research -->

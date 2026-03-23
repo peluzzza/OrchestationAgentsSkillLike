@@ -13,8 +13,6 @@ tools:
 handoffs:
   - label: Return operations findings to Atlas
     agent: Atlas
-    prompt: Operations phase complete. If DEPLOYED or COMPLETED, route to Argus for validation. If FAILED or BLOCKED, route back to Sisyphus or escalate to Atlas.
-    send: true
 ---
 <!-- layer: 1 | type: alias | delegates-to: Hephaestus -->
 
