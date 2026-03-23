@@ -16,7 +16,6 @@ tools:
   - problems
   - changes
   - testFailure
-  - runSubagent
 handoffs:
   - label: Start implementation with Atlas
     agent: Atlas
@@ -77,6 +76,29 @@ Tu diferencial clave: orquestas el **pipeline de especificación Specify** antes
 
 **Límite:** máximo 10 subagentes paralelos por fase de investigación.
 
+### Instrucciones de invocación de subagentes
+
+<subagent_instructions>
+**Al invocar Hermes-subagent:**
+- Proporciona un objetivo de exploración claro: qué ficheros, símbolos o usages necesitas localizar.
+- Lanza múltiples instancias de Hermes en paralelo cuando haya dominios claramente distintos.
+- Instrúyelo explícitamente a no editar ficheros, no ejecutar comandos y no hacer web fetch.
+- Espera: `<analysis>` (intención de búsqueda) seguida de `<results>` con `<files>`, `<answer>` y `<next_steps>`.
+- Usa la lista `<files>` de Hermes para decidir qué debe investigar Oracle en profundidad.
+
+**Al invocar Oracle-subagent:**
+- Proporciona la pregunta de investigación específica o el subsistema concreto a analizar.
+- Lanza un Oracle por subsistema independiente; usa invocación paralela cuando sea posible.
+- Instrúyelo a no escribir planes ni código — solo hallazgos estructurados.
+- Espera retorno con: Relevant Files, Key Functions/Classes, Patterns/Conventions, Implementation Options.
+
+**Patrón de invocación paralela:**
+1. Lanza Hermes para mapear ficheros relevantes (o múltiples Hermes por dominio).
+2. Revisa la lista de ficheros y subsistemas identificados por Hermes.
+3. Lanza múltiples instancias de Oracle en paralelo — una por subsistema mayor.
+4. Recopila todos los resultados antes de sintetizar el plan.
+</subagent_instructions>
+
 ### Skills routing (genérico)
 
 Cuando redactes el plan, incluye en **Notas para Atlas** los skills que los subagentes ejecutores deben cargar:
@@ -116,16 +138,9 @@ Aplica la estrategia de delegación definida arriba. Paraleliza:
 
 Consolida los hallazgos antes de continuar. Aplica la regla del 90 %: si ya tienes claridad suficiente, no amplíes la investigación.
 
-### Fase SP-1: Constitución del proyecto (condicional)
+### Fase SP-1: Constitución del proyecto
 
-Si `SpecifyConstitution` está disponible en el runtime actual, invócalo con:
-- El objetivo recibido de Atlas.
-- Los hallazgos de Hermes/Oracle sobre el stack y restricciones existentes.
-
-Espera retorno con `CONSTITUTION_STATUS`. Si es `UNCHANGED`, continúa directamente.
-Si hay `PENDING_TODOS` críticos, resuélvelos antes de continuar.
-
-Si `SpecifyConstitution` no está disponible o fue excluido por controles de agentes, trata `.specify/memory/constitution.md` como la fuente autoritativa actual y continúa, documentando el fallback en `SPECIFY_PIPELINE_STATUS`.
+`SpecifyConstitution` no forma parte del runtime de este agente. Trata `.specify/memory/constitution.md` como la fuente autoritativa actual y continúa. Si el archivo no existe, omite esta fase y registra `Constitution: SKIPPED_NO_FILE` en `SPECIFY_PIPELINE_STATUS`.
 
 ### Fase SP-2: Especificación funcional
 
@@ -143,11 +158,7 @@ Evalúa el retorno:
 
 Solo si `SpecifySpec` retornó `NEEDS_CLARIFICATION` y hay un usuario disponible para responder preguntas.
 
-Si `SpecifyClarify` está disponible en el runtime actual, invócalo con el `SPEC_PATH` y las clarificaciones pendientes.
-
-Espera `SPEC_READY: true` antes de continuar.
-
-Si `SpecifyClarify` no está disponible o fue excluido por controles de agentes, aplica directamente la opción conservadora por defecto en `spec.md`, registra la decisión, y continúa sin bloquear el pipeline.
+`SpecifyClarify` no forma parte del runtime de este agente. Aplica directamente la opción conservadora por defecto en `spec.md` para cada marcador `[NEEDS CLARIFICATION: …]`, añade un comentario HTML `<!-- default: <opción> — asumida conservadoramente -->` en la misma línea, y continúa. Registra cada decisión en `SPECIFY_PIPELINE_STATUS`.
 
 ### Fase SP-4: Elaboración del plan técnico
 

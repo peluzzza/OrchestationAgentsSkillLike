@@ -1,0 +1,108 @@
+{
+  "version": "1.0.0",
+  "packs": [
+    {
+      "id": "canonical-root",
+      "name": "Atlas Orchestration (Default Runtime Surface)",
+      "installPath": ".github/agents",
+      "shipped": true,
+      "defaultActive": true,
+      "marketplacePublished": false,
+      "activationPath": null,
+      "conductor": "Atlas",
+      "stability": "stable",
+      "notes": "Default-active workspace runtime surface. Contains a synced copy of the canonical shared Atlas pack plus 7 root-only compatibility aliases. Legacy id retained for compatibility."
+    },
+    {
+      "id": "atlas-orchestration-team",
+      "name": "Atlas Orchestration Team (Canonical Shared Source)",
+      "installPath": "plugins/atlas-orchestration-team",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": true,
+      "activationPath": "plugins/atlas-orchestration-team/agents",
+      "conductor": "Atlas",
+      "stability": "stable",
+      "notes": "Canonical authoring source for the shared 19-agent Atlas orchestration surface. The default-active root runtime surface consumes a synced copy plus 7 root-only aliases."
+    },
+    {
+      "id": "frontend-workflow",
+      "name": "Frontend Workflow",
+      "installPath": "plugins/frontend-workflow",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": false,
+      "activationPath": "plugins/frontend-workflow/agents",
+      "conductor": "Afrodita",
+      "stability": "stable"
+    },
+    {
+      "id": "backend-workflow",
+      "name": "Backend Workflow",
+      "installPath": "plugins/backend-workflow",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": false,
+      "activationPath": "plugins/backend-workflow/agents",
+      "conductor": "Backend-Atlas",
+      "stability": "stable"
+    },
+    {
+      "id": "devops-workflow",
+      "name": "DevOps Workflow",
+      "installPath": "plugins/devops-workflow",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": false,
+      "activationPath": "plugins/devops-workflow/agents",
+      "conductor": "DevOps-Atlas",
+      "stability": "stable"
+    },
+    {
+      "id": "data-workflow",
+      "name": "Data Workflow",
+      "installPath": "plugins/data-workflow",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": false,
+      "activationPath": "plugins/data-workflow/agents",
+      "conductor": "Data-Atlas",
+      "stability": "stable"
+    },
+    {
+      "id": "automation-mcp-workflow",
+      "name": "Automation & MCP Workflow",
+      "installPath": "plugins/automation-mcp-workflow",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": true,
+      "activationPath": "plugins/automation-mcp-workflow/agents",
+      "conductor": "Automation-Atlas",
+      "stability": "preview",
+      "demo": "automation-mcp-workflow-smoke"
+    },
+    {
+      "id": "ux-enhancement-workflow",
+      "name": "UX Enhancement Workflow",
+      "installPath": "plugins/ux-enhancement-workflow",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": true,
+      "activationPath": "plugins/ux-enhancement-workflow/agents",
+      "conductor": "UX-Atlas",
+      "stability": "preview",
+      "demo": "ux-enhancement-workflow-smoke"
+    },
+    {
+      "id": "agent-pack-catalog",
+      "name": "Agent Pack Catalog",
+      "installPath": "plugins/agent-pack-catalog",
+      "shipped": true,
+      "defaultActive": false,
+      "marketplacePublished": true,
+      "activationPath": "plugins/agent-pack-catalog/agents",
+      "conductor": "PackCatalog",
+      "stability": "stable"
+    }
+  ]
+}

@@ -5,8 +5,10 @@ This repo is set up so you can start from zero with a simple experience:
 - In the default zero-setup mode, you see only `Atlas` in the agent picker.
 - `Atlas` delegates internally to hidden specialist subagents when needed.
 - For implementation or code-changing work, `Atlas` routes planning through hidden `Prometheus` so the Specify pipeline runs before execution.
-- `.github/agents/` is the canonical source of truth for the agent system.
-- `plugins/` is optional secondary distribution/organization for future agent packs and domain-specific conductors.
+- `plugins/atlas-orchestration-team/agents/` is the canonical shared source for the 19-agent Atlas orchestration pack.
+- `.github/agents/` is the default-active workspace runtime surface: a synced copy of that shared pack plus 7 root-only compatibility aliases.
+- All supported capability packs can ship in-repo, but only a curated subset is active by default.
+- `plugins/` is the secondary distribution/organization surface for shipped packs that stay available-but-inactive until explicitly enabled.
 - No plugin marketplace setup is required for the default flow.
 
 ## Install From Zero (60 seconds)
@@ -49,9 +51,9 @@ This setup blends two ideas:
 
 For implementation or code-changing tasks, Atlas routes planning through `Prometheus` so the Specify pipeline runs before execution. For docs-only, meta, or orchestration-only work, Atlas can take a lighter planning path when that is the simpler fit.
 
-## Optional Distribution Packs
+## Shipped Capability Packs
 
-In addition to the canonical `.github/agents` pack, the repo also ships optional distribution packs for future expansion, alternative organization, or explicitly enabled domain conductors. They are not required for the normal Atlas-first workflow.
+In addition to the default-active `.github/agents` runtime surface, the repo also ships additional capability packs for future expansion, alternative organization, or explicitly enabled domain conductors. The shared 19-agent Atlas pack is authored canonically under `plugins/atlas-orchestration-team/agents/`, then synced into `.github/agents/` for the zero-setup workflow. These packs are part of the repository distribution, but they are not active in the default Atlas-first workflow.
 
 | Workflow | Conductor | Agents | Purpose |
 |----------|-----------|--------|---------|
@@ -71,8 +73,10 @@ This repository now includes the validated capability lanes that were folded int
 
 The merge policy is:
 
-- keep `.github/agents` as the canonical core
-- keep `plugins/` optional and opt-in
+- author the shared Atlas orchestration pack canonically in `plugins/atlas-orchestration-team/agents`
+- keep `.github/agents` as the default-active root runtime surface
+- ship supported packs in-repo, but keep only the root runtime surface default-active
+- keep `plugins/` available-but-inactive until explicitly enabled
 - import capabilities, not donor-specific product logic
 - prefer lightweight file-backed memory before adding infrastructure
 - validate new capabilities through small demos before broad rollout
@@ -97,7 +101,8 @@ For the implementation report and phased roadmap, see:
 
 The repository currently ships with:
 
-- canonical root orchestration under `.github/agents`
+- canonical shared Atlas orchestration under `plugins/atlas-orchestration-team/agents`
+- default-active root runtime orchestration under `.github/agents`
 - shared bounded memory under `.specify/memory/`
 - two opt-in workflow packs under `plugins/`
 - focused smoke demos under `demos/`
@@ -106,16 +111,18 @@ The repository currently ships with:
 Recommended verification commands from the repo root:
 
 ```shell
+python3 scripts/validate_pack_registry.py
 python3 scripts/validate_plugin_packs.py
 python3 scripts/validate_optional_pack_demos.py
 python3 scripts/validate_atlas_pack_parity.py
+python3 -m unittest -v scripts/test_validate_pack_registry.py
 python3 -m unittest -v scripts/test_validate_optional_pack_demos.py
 python3 -m unittest -v scripts/test_validate_atlas_pack_parity.py
 python3 -m unittest -v demos/automation-mcp-workflow-smoke/test_workflow_bundle.py
 python3 -m unittest -v demos/ux-enhancement-workflow-smoke/test_ux_handoff.py
 ```
 
-### Enable Optional Domain Conductors
+### Enable Additional Shipped Conductors
 
 Add to `.vscode/settings.json`:
 
@@ -133,7 +140,7 @@ Add to `.vscode/settings.json`:
 }
 ```
 
-Then reload VS Code. You'll see these conductors in the agent picker:
+Then reload VS Code. You'll keep the core default-active set and also see these additional shipped conductors in the agent picker:
 - `@Atlas` - General orchestration
 - `@Afrodita` - UI/UX tasks
 - `@Backend-Atlas` - API/Database tasks
@@ -213,9 +220,9 @@ Specify agents are already included in `.github/agents/` — no extra plugin sou
 
 ## Optional: Distribution / Marketplace Packs
 
-Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use, and future core improvements should land in `.github/agents` first.
+Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use. Shared Atlas-pack improvements should land in `plugins/atlas-orchestration-team/agents` first and then be synced into `.github/agents`.
 
-Not every directory under `plugins/` is necessarily published in `.github/plugin/marketplace.json` at the same time: some packs can exist as local plugin-path examples, mirrors, or pre-marketplace optional workflows.
+Not every directory under `plugins/` is necessarily published in `.github/plugin/marketplace.json` at the same time: some packs can exist as shipped-but-inactive local plugin-path examples, mirrors, or pre-marketplace workflows.
 
 - Marketplace definition: `.github/plugin/marketplace.json`
 - Plugin packs: `plugins/atlas-orchestration-team`, `plugins/agent-pack-catalog`
@@ -231,13 +238,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1
 
 ## Keep Setup Agents-First (Recommended)
 
-If you want the clean canonical experience, keep `.github/agents` active and ignore or remove `plugins/` to avoid duplicate sources:
+If you want the clean zero-setup runtime experience, keep `.github/agents` active and avoid enabling duplicate plugin paths for the same shared agents. No repository deletion is required; just leave the plugin paths disabled in VS Code unless you intentionally want distribution-pack mode.
 
-```powershell
-Remove-Item -Recurse -Force "plugins"
-```
-
-Then reload VS Code.
+For contributors: do **not** hand-edit both copies of the shared Atlas pack. Edit `plugins/atlas-orchestration-team/agents/` first, then sync the shared files into `.github/agents/` so the root runtime surface stays aligned.
 
 ## Optional: Flow Source Selection Demo
 

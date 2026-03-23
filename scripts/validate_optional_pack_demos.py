@@ -18,6 +18,7 @@ Usage::
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -27,19 +28,30 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # Files that must exist inside every validated demo directory.
 _REQUIRED_FILES: tuple[str, ...] = ("README.md", "DEMO_PROMPT.md")
 
-# (demo_dir_name, plugin_slug, plugin_path_fragment_for_demo_prompt_check)
-OPTIONAL_PACK_DEMOS: tuple[tuple[str, str, str], ...] = (
-    (
-        "automation-mcp-workflow-smoke",
-        "automation-mcp-workflow",
-        "plugins/automation-mcp-workflow",
-    ),
-    (
-        "ux-enhancement-workflow-smoke",
-        "ux-enhancement-workflow",
-        "plugins/ux-enhancement-workflow",
-    ),
-)
+
+def _load_demo_packs() -> tuple[tuple[str, str, str], ...]:
+    """Load optional-pack demo entries from the pack registry.
+
+    Returns a tuple of ``(demo_dir_name, pack_id, plugin_path_fragment)``
+    for each registry entry that declares a ``demo`` key.  Falls back to an
+    empty tuple when the registry file is absent.
+    """
+    registry_path = REPO_ROOT / ".github" / "plugin" / "pack-registry.json"
+    if not registry_path.is_file():
+        return ()
+    with registry_path.open("r", encoding="utf-8") as handle:
+        registry = json.load(handle)
+    return tuple(
+        (pack["demo"], pack["id"], pack["installPath"])
+        for pack in registry.get("packs", [])
+        if pack.get("demo") and pack.get("id") and pack.get("installPath")
+    )
+
+
+# Evaluated at import time against the real repo root.  Tests that exercise
+# main() must supply a mock registry; tests that call _collect_errors()
+# directly are unaffected by this constant.
+OPTIONAL_PACK_DEMOS: tuple[tuple[str, str, str], ...] = _load_demo_packs()
 
 # Phrases that indicate unsupported "enable everything" activation patterns.
 _FORBIDDEN_PHRASES: tuple[str, ...] = (
@@ -168,9 +180,10 @@ def main() -> int:
     Returns:
         0 on success, 1 if any validation errors were found.
     """
+    demo_packs = _load_demo_packs()
     all_errors: list[str] = []
 
-    for demo_dir_name, _plugin_slug, plugin_path_fragment in OPTIONAL_PACK_DEMOS:
+    for demo_dir_name, _pack_id, plugin_path_fragment in demo_packs:
         all_errors.extend(_collect_errors(demo_dir_name, plugin_path_fragment))
 
     if all_errors:
@@ -179,10 +192,7 @@ def main() -> int:
             print(f"  - {error}")
         return 1
 
-    print(
-        f"OPTIONAL PACK DEMO VALIDATION OK"
-        f" ({len(OPTIONAL_PACK_DEMOS)} demos checked)"
-    )
+    print(f"OPTIONAL PACK DEMO VALIDATION OK ({len(demo_packs)} demos checked)")
     return 0
 
 

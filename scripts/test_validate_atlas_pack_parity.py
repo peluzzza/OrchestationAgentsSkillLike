@@ -182,30 +182,30 @@ class TestCheckRootAgents(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# check_mirror_agents
+# check_source_agents
 # ---------------------------------------------------------------------------
 
 
-class TestCheckMirrorAgents(unittest.TestCase):
-    def _make_mirror(self, tmp: str) -> Path:
-        d = Path(tmp) / "mirror"
+class TestCheckSourceAgents(unittest.TestCase):
+    def _make_source(self, tmp: str) -> Path:
+        d = Path(tmp) / "source"
         d.mkdir()
         return d
 
-    def test_passes_with_complete_mirror(self) -> None:
+    def test_passes_with_complete_source(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            mirror = self._make_mirror(tmp)
-            _write_agents(mirror, validator.CANONICAL_SHARED)
-            self.assertEqual(validator.check_mirror_agents(mirror), [])
+            source = self._make_source(tmp)
+            _write_agents(source, validator.CANONICAL_SHARED)
+            self.assertEqual(validator.check_source_agents(source), [])
 
     def test_fails_on_missing_shared_agent(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            mirror = self._make_mirror(tmp)
+            source = self._make_source(tmp)
             _write_agents(
-                mirror,
+                source,
                 validator.CANONICAL_SHARED - {"Prometheus.agent.md"},
             )
-            errors = validator.check_mirror_agents(mirror)
+            errors = validator.check_source_agents(source)
             self.assertTrue(
                 any(
                     "Prometheus.agent.md" in e and "shared agent missing" in e
@@ -216,10 +216,10 @@ class TestCheckMirrorAgents(unittest.TestCase):
 
     def test_fails_on_extra_file(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            mirror = self._make_mirror(tmp)
-            _write_agents(mirror, validator.CANONICAL_SHARED)
-            (mirror / "Extra.agent.md").write_text(_VALID_MD)
-            errors = validator.check_mirror_agents(mirror)
+            source = self._make_source(tmp)
+            _write_agents(source, validator.CANONICAL_SHARED)
+            (source / "Extra.agent.md").write_text(_VALID_MD)
+            errors = validator.check_source_agents(source)
             self.assertTrue(
                 any(
                     "Extra.agent.md" in e and "unexpected extra file" in e
@@ -230,14 +230,14 @@ class TestCheckMirrorAgents(unittest.TestCase):
 
     def test_fails_if_root_only_alias_present(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            mirror = self._make_mirror(tmp)
-            _write_agents(mirror, validator.CANONICAL_SHARED)
-            (mirror / "Sisyphus-subagent.agent.md").write_text(_VALID_MD)
-            errors = validator.check_mirror_agents(mirror)
+            source = self._make_source(tmp)
+            _write_agents(source, validator.CANONICAL_SHARED)
+            (source / "Sisyphus-subagent.agent.md").write_text(_VALID_MD)
+            errors = validator.check_source_agents(source)
             self.assertTrue(
                 any(
                     "Sisyphus-subagent.agent.md" in e
-                    and "must not be mirrored" in e
+                    and "must not appear in source" in e
                     for e in errors
                 ),
                 errors,
@@ -245,21 +245,21 @@ class TestCheckMirrorAgents(unittest.TestCase):
 
     def test_all_root_only_aliases_blocked(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            mirror = self._make_mirror(tmp)
+            source = self._make_source(tmp)
             _write_agents(
-                mirror,
+                source,
                 validator.CANONICAL_SHARED | validator.ROOT_ONLY,
             )
-            errors = validator.check_mirror_agents(mirror)
-            blocked = [e for e in errors if "must not be mirrored" in e]
+            errors = validator.check_source_agents(source)
+            blocked = [e for e in errors if "must not appear in source" in e]
             self.assertEqual(len(blocked), len(validator.ROOT_ONLY))
 
     def test_fails_on_malformed_frontmatter(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            mirror = self._make_mirror(tmp)
-            _write_agents(mirror, validator.CANONICAL_SHARED)
-            (mirror / "Atlas.agent.md").write_text(_INVALID_MD)
-            errors = validator.check_mirror_agents(mirror)
+            source = self._make_source(tmp)
+            _write_agents(source, validator.CANONICAL_SHARED)
+            (source / "Atlas.agent.md").write_text(_INVALID_MD)
+            errors = validator.check_source_agents(source)
             self.assertTrue(
                 any("Atlas.agent.md" in e and "frontmatter" in e for e in errors),
                 errors,
@@ -267,62 +267,62 @@ class TestCheckMirrorAgents(unittest.TestCase):
 
     def test_passes_with_crlf_frontmatter(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            mirror = self._make_mirror(tmp)
+            source = self._make_source(tmp)
             _write_agents(
-                mirror, validator.CANONICAL_SHARED, content=_VALID_MD_CRLF
+                source, validator.CANONICAL_SHARED, content=_VALID_MD_CRLF
             )
-            self.assertEqual(validator.check_mirror_agents(mirror), [])
+            self.assertEqual(validator.check_source_agents(source), [])
 
     def test_passes_with_bom_frontmatter(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            mirror = self._make_mirror(tmp)
+            source = self._make_source(tmp)
             _write_agents(
-                mirror, validator.CANONICAL_SHARED, content=_VALID_MD_BOM
+                source, validator.CANONICAL_SHARED, content=_VALID_MD_BOM
             )
-            self.assertEqual(validator.check_mirror_agents(mirror), [])
+            self.assertEqual(validator.check_source_agents(source), [])
 
     def test_passes_with_crlf_bom_combined(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            mirror = self._make_mirror(tmp)
+            source = self._make_source(tmp)
             bom_crlf = (
                 "\ufeff---\r\nname: A\r\nuser-invocable: false\r\n"
                 "---\r\n# ok\r\n"
             )
             _write_agents(
-                mirror, validator.CANONICAL_SHARED, content=bom_crlf
+                source, validator.CANONICAL_SHARED, content=bom_crlf
             )
-            self.assertEqual(validator.check_mirror_agents(mirror), [])
+            self.assertEqual(validator.check_source_agents(source), [])
 
 
 class TestCheckSharedContent(unittest.TestCase):
     def _make_dirs(self, tmp: str) -> tuple[Path, Path]:
         root = Path(tmp) / "root"
         root.mkdir()
-        mirror = Path(tmp) / "mirror"
-        mirror.mkdir()
-        return root, mirror
+        source = Path(tmp) / "source"
+        source.mkdir()
+        return root, source
 
     def test_detects_content_drift_for_shared_agent(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            root, mirror = self._make_dirs(tmp)
+            root, source = self._make_dirs(tmp)
             _write_agents(root, validator.CANONICAL_SHARED | validator.ROOT_ONLY)
-            _write_agents(mirror, validator.CANONICAL_SHARED)
-            (mirror / "Atlas.agent.md").write_text(
+            _write_agents(source, validator.CANONICAL_SHARED)
+            (source / "Atlas.agent.md").write_text(
                 "---\nname: Different\nuser-invocable: true\n---\n# changed\n",
                 encoding="utf-8",
             )
 
-            errors = validator.check_shared_content(root, mirror)
+            errors = validator.check_shared_content(root, source)
 
-        self.assertIn("parity: content drift detected -> Atlas.agent.md", errors)
+        self.assertIn("parity: root runtime drift detected from source -> Atlas.agent.md", errors)
 
     def test_ignores_bom_and_crlf_only_differences(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            root, mirror = self._make_dirs(tmp)
+            root, source = self._make_dirs(tmp)
             _write_agents(root, validator.CANONICAL_SHARED | validator.ROOT_ONLY, content=_VALID_MD)
-            _write_agents(mirror, validator.CANONICAL_SHARED, content=_VALID_MD_BOM.replace("\n", "\r\n"))
+            _write_agents(source, validator.CANONICAL_SHARED, content=_VALID_MD_BOM.replace("\n", "\r\n"))
 
-            errors = validator.check_shared_content(root, mirror)
+            errors = validator.check_shared_content(root, source)
 
         self.assertEqual([], errors)
 
@@ -336,56 +336,56 @@ class TestRunChecks(unittest.TestCase):
     def _make_dirs(self, tmp: str) -> tuple[Path, Path]:
         root = Path(tmp) / "root"
         root.mkdir()
-        mirror = Path(tmp) / "mirror"
-        mirror.mkdir()
-        return root, mirror
+        source = Path(tmp) / "source"
+        source.mkdir()
+        return root, source
 
     def test_passes_with_valid_layout(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            root, mirror = self._make_dirs(tmp)
+            root, source = self._make_dirs(tmp)
             _write_agents(
                 root, validator.CANONICAL_SHARED | validator.ROOT_ONLY
             )
-            _write_agents(mirror, validator.CANONICAL_SHARED)
+            _write_agents(source, validator.CANONICAL_SHARED)
             self.assertEqual(
-                validator.run_checks(root_dir=root, mirror_dir=mirror), []
+                validator.run_checks(root_dir=root, source_dir=source), []
             )
 
     def test_aggregates_errors_from_both_sides(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            root, mirror = self._make_dirs(tmp)
+            root, source = self._make_dirs(tmp)
             _write_agents(
                 root,
                 (validator.CANONICAL_SHARED - {"Oracle.agent.md"})
                 | validator.ROOT_ONLY,
             )
             _write_agents(
-                mirror,
+                source,
                 validator.CANONICAL_SHARED - {"Oracle.agent.md"},
             )
-            (mirror / "Intruder.agent.md").write_text(_VALID_MD)
-            errors = validator.run_checks(root_dir=root, mirror_dir=mirror)
-            # root missing Oracle, mirror missing Oracle, mirror extra Intruder
+            (source / "Intruder.agent.md").write_text(_VALID_MD)
+            errors = validator.run_checks(root_dir=root, source_dir=source)
+            # root missing Oracle, source missing Oracle, source extra Intruder
             self.assertGreaterEqual(len(errors), 3)
 
     def test_includes_content_drift_in_aggregated_errors(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            root, mirror = self._make_dirs(tmp)
+            root, source = self._make_dirs(tmp)
             _write_agents(root, validator.CANONICAL_SHARED | validator.ROOT_ONLY)
-            _write_agents(mirror, validator.CANONICAL_SHARED)
-            (mirror / "Prometheus.agent.md").write_text(
+            _write_agents(source, validator.CANONICAL_SHARED)
+            (source / "Prometheus.agent.md").write_text(
                 "---\nname: Prometheus\nuser-invocable: false\n---\n# drift\n",
                 encoding="utf-8",
             )
 
-            errors = validator.run_checks(root_dir=root, mirror_dir=mirror)
+            errors = validator.run_checks(root_dir=root, source_dir=source)
 
-        self.assertIn("parity: content drift detected -> Prometheus.agent.md", errors)
+        self.assertIn("parity: root runtime drift detected from source -> Prometheus.agent.md", errors)
 
     def test_empty_dirs_produce_expected_error_count(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            root, mirror = self._make_dirs(tmp)
-            errors = validator.run_checks(root_dir=root, mirror_dir=mirror)
+            root, source = self._make_dirs(tmp)
+            errors = validator.run_checks(root_dir=root, source_dir=source)
             expected = (
                 len(validator.CANONICAL_SHARED) * 2
                 + len(validator.ROOT_ONLY)

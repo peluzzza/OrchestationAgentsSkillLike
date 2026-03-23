@@ -2,7 +2,7 @@
 
 Core end-to-end orchestration pack for plan → implement → review → verify flows.
 
-This is the optional distribution-pack form of the repository's Atlas-style multi-agent workflow. It mirrors the root-first orchestration philosophy while remaining installable as a standalone pack through the marketplace surface.
+This is the canonical shared source for the repository's 19-agent Atlas orchestration pack. The root `.github/agents` surface stays active by default for zero-setup use, but its shared files are expected to remain synced from this pack while preserving 7 root-only compatibility aliases.
 
 ## Purpose
 
@@ -28,10 +28,10 @@ This is the optional distribution-pack form of the repository's Atlas-style mult
 
 ## Installation
 
-Use marketplace mode or plugin-path mode if you want this pack as an optional distribution source. The canonical root-first experience still lives in `.github/agents`.
+Use marketplace mode or plugin-path mode if you want this pack as a standalone installable source. The default zero-setup runtime experience still lives in `.github/agents`, but shared Atlas-pack edits should originate here.
 
 ## Notes
 
-- Root `.github/agents` remains canonical.
-- This pack is a distribution/mirroring surface, not the authoritative source of truth.
+- This pack is the authoritative shared source of truth for the 19-agent Atlas orchestration surface.
+- Root `.github/agents` remains the default-active runtime copy plus root-only compatibility aliases.
 - Memory continuity is shared through `.specify/memory/`.

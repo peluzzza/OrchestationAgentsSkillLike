@@ -9,15 +9,17 @@ Use this file as the bounded working-memory layer for the current orchestration 
 - Do not duplicate full plans that already live in `plans/` or `.specify/specs/`.
 
 ## Current Objective
-- Stabilize and evolve `OrchestationAgentsSkillLike` as a root-first orchestration repository.
+- Stabilize and evolve `OrchestationAgentsSkillLike` as a plugin-authored, root-runtime orchestration repository.
 - Merge selected external ecosystem capabilities incrementally by folder.
 
 ## Active Repositories
 - `review_clones/OrchestationAgentsSkillLike` — target orchestration repo
 
 ## In-Flight Decisions
-- Canonical root remains `.github/agents/`.
-- `plugins/` remains opt-in.
+- `plugins/atlas-orchestration-team/agents` is the canonical shared source for the Atlas pack.
+- `.github/agents` remains the default-active runtime surface plus root-only aliases.
+- Supported packs can ship in-repo while staying available-but-inactive by default.
+- Only the root runtime surface is default-active.
 - Memory starts file-backed under `.specify/memory/`.
 - UX and MCP automation stay outside the core until proven.
 
@@ -27,7 +29,7 @@ Use this file as the bounded working-memory layer for the current orchestration 
 ## Next Likely Moves
 - Add CI wiring for the three repository validators.
 - Reuse the parity-validator pattern if more mirrored packs become marketplace surfaces.
-- Keep `.github/agents` authoritative and sync mirrors only after core changes stabilize.
+- Keep plugin-authored shared packs authoritative and sync `.github/agents` after shared changes stabilize.
 
 ## Blockers
 - None currently documented.

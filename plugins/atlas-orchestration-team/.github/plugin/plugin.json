@@ -1,6 +1,6 @@
 {
   "name": "atlas-orchestration-team",
-  "description": "Optional distribution mirror of the canonical root Atlas pack. Surfaces the shared 19-agent orchestration team (Atlas conductor + focused specialists) for plan → implement → review → verify flows. The authoritative source of truth remains .github/agents in the root repository.",
+  "description": "Canonical shared source for the 19-agent Atlas orchestration team (Atlas conductor + focused specialists) used for plan → implement → review → verify flows. The root .github/agents surface remains the default-active runtime copy and adds 7 root-only compatibility aliases.",
   "version": "0.1.0",
   "author": {
     "name": "peluzzza"

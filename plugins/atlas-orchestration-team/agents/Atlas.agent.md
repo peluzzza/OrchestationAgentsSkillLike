@@ -68,7 +68,7 @@ Discovery sources (higher precedence wins on duplicate names):
 1. `.github/agents/*.agent.md`
 2. `plugins/**/agents/*.agent.md`
 
-`.github/agents` is the canonical source of truth for this repository. Treat `plugins/**/agents` as optional secondary distribution/organization packs that may be enabled explicitly, but do not prefer them over core agents when a canonical equivalent exists.
+The shared 19-agent Atlas orchestration pack is authored canonically in `plugins/atlas-orchestration-team/agents`. `.github/agents` remains the default-active workspace runtime surface and may also contain root-only compatibility aliases. For runtime duplicate resolution, keep `.github/agents` first so zero-setup behavior stays stable; for shared-pack edits, treat the plugin source as authoritative and keep root in sync.
 
 Capture for each agent: `name`, `description`, `user-invocable`, `tools`, `handoffs`.
 
@@ -144,7 +144,7 @@ Do not load skills speculatively. Name them in the delegation brief only when cl
 **Before each phase:** Re-read the plan file and the latest completion artifact (if any) to confirm the next incomplete phase. Treat a phase as complete only when its completion artifact exists — never from memory alone.
 
 #### 2A. Implement
-- Invoke `Sisyphus` (backend/core) or `Afrodita-UX` (UI/UX).
+- Invoke `Sisyphus` (backend/core) or `Afrodita-subagent` (UI/UX).
 - Provide: phase number, objective, files/functions to touch, acceptance criteria, interface constraints, and quality gates that must stay green.
 - When using the Specify pipeline, also pass `FEATURE_ID` received from Prometheus so Sisyphus can locate the correct Specify artifacts.
 - Sisyphus implements the scoped phase only. It does not own QA, commit messages, or completion files. Do not let Sisyphus decide that the full plan is complete; it implements only the assigned phase.
@@ -262,7 +262,7 @@ Stop when all acceptance criteria are met or an explicit pause gate is reached.
 
 **Hermes** — Provide crisp goal. Instruct: read-only, produce final results with files, answer, and next steps. Use results to guide Oracle or Sisyphus.
 
-**Afrodita-UX** — Provide phase, UI components/features, and styling scope. Instruct: implement the scoped UI changes only, preserve existing quality gates when practical, focus on accessibility/responsive/patterns, report what was implemented. QA ownership stays with Argus.
+**Afrodita-subagent** — Provide phase, UI components/features, and styling scope. Instruct: implement the scoped UI changes only, preserve existing quality gates when practical, focus on accessibility/responsive/patterns, report what was implemented. QA ownership stays with Argus.
 
 **Atenea** — Provide phase objective, changed files, threat-sensitive surfaces, and any auth/secret/config context. Instruct: review for secrets exposure, insecure defaults, OWASP-style risks, and operational blast radius. Return Status/Summary/Findings/Recommendations. NOT implement fixes.
 

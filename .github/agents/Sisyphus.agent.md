@@ -16,7 +16,7 @@ tools:
   - read/terminalLastCommand
   - read/terminalSelection
   - read/problems
-  - changes
+  - search/changes
   - agent
 agents: ["SpecifyTasks", "SpecifyAnalyze", "SpecifyImplement"]
 ---
@@ -115,7 +115,7 @@ Monitoriza el retorno de cada invocación:
 Tras completar la implementación:
 
 1. **Checkboxes**: Confirma que las tasks de `tasks.md` cubiertas en esta fase están marcadas `[x]`.
-2. **Regresiones básicas**: Usa `read/problems` y `read/changes` para detectar errores evidentes o cambios involuntarios.
+2. **Regresiones básicas**: Usa `read/problems` y `search/changes` para detectar errores evidentes o cambios involuntarios.
 3. **Tests**: Si la fase incluía tests, ejecuta el target más pequeño relevante existente antes de ampliar el scope — no la suite completa salvo que Atlas lo indique explícitamente.
 4. **Linting/formato**: Si el proyecto tiene un linter o formatter configurado, ejecútalo y corrige los issues antes de reportar.
 

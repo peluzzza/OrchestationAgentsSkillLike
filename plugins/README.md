@@ -89,8 +89,10 @@ This directory is also the intended landing zone for future optional packs adapt
 
 The policy is:
 
-- keep the root `.github/agents` workflow as the default zero-setup path
-- use `plugins/` for optional packs that should not be forced into the core experience
+- keep the root `.github/agents` workflow as the default zero-setup runtime path
+- keep `plugins/atlas-orchestration-team/agents` as the canonical shared source for the Atlas pack
+- ship additional packs under `plugins/` as part of the repository distribution
+- keep those shipped plugin packs available-but-inactive until explicitly enabled
 - prefer small, testable packs over large multi-purpose imports
 
 Candidate future lanes beyond the delivered UX and automation packs include:
@@ -157,7 +159,7 @@ Copy desired workflow folders to your project's `.github/agents/` or configure i
 }
 ```
 
-Enable only the workflow-pack locations you actually want active in the workspace to avoid duplicate sources.
+Enable only the workflow-pack locations you actually want active in the workspace to avoid duplicate sources. Shipping a pack in-repo does not mean activating it by default. For the shared Atlas pack, edit the plugin source first and keep `.github/agents` as the synced runtime surface.
 
 ### Option 2: User Data (Global)
 Copy workflow folders to VS Code user prompts directory:

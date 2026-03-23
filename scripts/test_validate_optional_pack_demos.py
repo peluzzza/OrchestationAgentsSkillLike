@@ -161,10 +161,49 @@ class ValidateOptionalPackDemosTests(unittest.TestCase):
             errors,
         )
 
+    def _create_demo_registry(
+        self,
+        repo_root: Path,
+        demo_entries: list[tuple[str, str, str]],
+    ) -> None:
+        """Write a minimal pack-registry.json that lists demo-enabled packs.
+
+        Args:
+            repo_root: Root of the temporary repository tree.
+            demo_entries: List of ``(demo_dir_name, pack_id, install_path)``
+                tuples that should appear in the registry with a ``demo`` key.
+        """
+        plugin_dir = repo_root / ".github" / "plugin"
+        plugin_dir.mkdir(parents=True, exist_ok=True)
+        packs = [
+            {
+                "id": pack_id,
+                "name": pack_id,
+                "installPath": install_path,
+                "shipped": True,
+                "defaultActive": False,
+                "marketplacePublished": False,
+                "activationPath": f"{install_path}/agents",
+                "conductor": "SomeConductor",
+                "stability": "preview",
+                "demo": demo_dir,
+            }
+            for demo_dir, pack_id, install_path in demo_entries
+        ]
+        (plugin_dir / "pack-registry.json").write_text(
+            __import__("json").dumps({"version": "1.0.0", "packs": packs}),
+            encoding="utf-8",
+        )
+
     def test_main_returns_zero_for_registered_clean_demos(self) -> None:
         """The CLI entrypoint should return zero when all demos are valid."""
         with tempfile.TemporaryDirectory() as temp_dir:
             repo_root = Path(temp_dir)
+            demo_entries = [
+                ("automation-mcp-workflow-smoke", "automation-mcp-workflow", "plugins/automation-mcp-workflow"),
+                ("ux-enhancement-workflow-smoke", "ux-enhancement-workflow", "plugins/ux-enhancement-workflow"),
+            ]
+            self._create_demo_registry(repo_root, demo_entries)
             self._create_demo(
                 repo_root,
                 "automation-mcp-workflow-smoke",
@@ -185,6 +224,11 @@ class ValidateOptionalPackDemosTests(unittest.TestCase):
         """The CLI entrypoint should fail when one demo is incomplete."""
         with tempfile.TemporaryDirectory() as temp_dir:
             repo_root = Path(temp_dir)
+            demo_entries = [
+                ("automation-mcp-workflow-smoke", "automation-mcp-workflow", "plugins/automation-mcp-workflow"),
+                ("ux-enhancement-workflow-smoke", "ux-enhancement-workflow", "plugins/ux-enhancement-workflow"),
+            ]
+            self._create_demo_registry(repo_root, demo_entries)
             self._create_demo(
                 repo_root,
                 "automation-mcp-workflow-smoke",
@@ -202,6 +246,74 @@ class ValidateOptionalPackDemosTests(unittest.TestCase):
                 result = validator.main()
 
         self.assertEqual(1, result)
+
+    def test_main_returns_zero_when_registry_has_no_demo_packs(self) -> None:
+        """main() should report success (0 demos) when no registry exists."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            repo_root = Path(temp_dir)
+            with mock.patch.object(validator, "REPO_ROOT", repo_root):
+                result = validator.main()
+        self.assertEqual(0, result)
+
+
+class LoadDemoPacksTests(unittest.TestCase):
+    """Tests for the _load_demo_packs() helper."""
+
+    def test_returns_empty_when_registry_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo_root = Path(tmp)
+            with mock.patch.object(validator, "REPO_ROOT", repo_root):
+                result = validator._load_demo_packs()
+        self.assertEqual((), result)
+
+    def test_returns_entries_with_demo_field(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo_root = Path(tmp)
+            plugin_dir = repo_root / ".github" / "plugin"
+            plugin_dir.mkdir(parents=True)
+            registry = {
+                "packs": [
+                    {
+                        "id": "my-pack",
+                        "installPath": "plugins/my-pack",
+                        "demo": "my-pack-smoke",
+                    },
+                    {
+                        "id": "no-demo-pack",
+                        "installPath": "plugins/no-demo",
+                    },
+                ]
+            }
+            (plugin_dir / "pack-registry.json").write_text(
+                __import__("json").dumps(registry), encoding="utf-8"
+            )
+            with mock.patch.object(validator, "REPO_ROOT", repo_root):
+                result = validator._load_demo_packs()
+
+        self.assertEqual(1, len(result))
+        demo_name, pack_id, install_path = result[0]
+        self.assertEqual("my-pack-smoke", demo_name)
+        self.assertEqual("my-pack", pack_id)
+        self.assertEqual("plugins/my-pack", install_path)
+
+    def test_ignores_entries_missing_id_or_install_path(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo_root = Path(tmp)
+            plugin_dir = repo_root / ".github" / "plugin"
+            plugin_dir.mkdir(parents=True)
+            registry = {
+                "packs": [
+                    {"id": "no-path", "demo": "smoke"},
+                    {"installPath": "plugins/no-id", "demo": "smoke"},
+                ]
+            }
+            (plugin_dir / "pack-registry.json").write_text(
+                __import__("json").dumps(registry), encoding="utf-8"
+            )
+            with mock.patch.object(validator, "REPO_ROOT", repo_root):
+                result = validator._load_demo_packs()
+
+        self.assertEqual((), result)
 
 
 if __name__ == "__main__":

@@ -114,7 +114,8 @@ Atlas Agents introduces a **conductor–specialist orchestration pattern** inspi
 Atlas implements a hierarchical orchestration model where a single **conductor agent** (`Atlas`) manages a team of **hidden specialist agents**. This pattern provides:
 
 - **Zero-setup experience**: Users see only `Atlas` in the VS Code agent picker.
-- **Canonical core pack**: `.github/agents/` is the source of truth for the agent system.
+- **Canonical shared Atlas source**: `plugins/atlas-orchestration-team/agents/` is the authoring source for the shared 19-agent Atlas pack.
+- **Default-active runtime surface**: `.github/agents/` stays enabled by default as the synced workspace runtime copy plus root-only compatibility aliases.
 - **Automatic agent discovery**: At runtime, Atlas scans `.github/agents/` first and may also scan `plugins/**/agents/` when optional distribution packs are explicitly enabled.
 - **Dynamic routing**: Based on task analysis, Atlas routes work to the most appropriate specialist using a defined routing policy.
 
@@ -137,7 +138,7 @@ User → Atlas (Conductor)
 
 ### 3.2 Agent Roster
 
-The canonical `.github/agents` pack consists of the following agents:
+The default-active `.github/agents` runtime surface consists of the following agents:
 
 | # | Agent | Role | Visibility | Primary Function |
 |---|-------|------|------------|------------------|
@@ -201,7 +202,7 @@ This strategy results in significant **token budget savings** compared to feedin
 
 ### 4.1 Distribution Pack Summary
 
-The project also includes optional **distribution packs**, each targeting a specific software engineering domain. These packs are secondary to the canonical `.github/agents` core and are intended for explicit enablement, packaging, or future expansion.
+The project also includes optional **distribution packs**, each targeting a specific software engineering domain. The shared Atlas pack is authored canonically in `plugins/atlas-orchestration-team`, while `.github/agents` remains the default-active runtime surface. The remaining packs are intended for explicit enablement, packaging, or future expansion.
 
 | # | Workflow Pack | Conductor | Specialists | Domain |
 |---|----------|-----------|:-----------:|--------|
@@ -378,9 +379,9 @@ The project is publicly available as an open-source repository under the **MIT L
 atlas-agents/
 ├── README.md                          # Project documentation and quick start
 ├── LICENSE                            # MIT License
-├── .github/agents/                    # Canonical agent pack (source of truth)
+├── .github/agents/                    # Default-active runtime surface (synced shared pack + root-only aliases)
 ├── plugins/                           # Optional distribution/organization packs
-│   ├── atlas-orchestration-team/      # Core team mirror (19 agents)
+│   ├── atlas-orchestration-team/      # Canonical shared Atlas source pack (19 agents)
 │   ├── frontend-workflow/             # Frontend specialists (8 agents)
 │   ├── backend-workflow/              # Backend specialists (8 agents)
 │   ├── devops-workflow/               # DevOps specialists (8 agents)
@@ -416,7 +417,7 @@ The project provides a **60-second setup** experience:
 }
 ```
 
-Optional distribution packs under `plugins/` can be enabled separately, but they are not required for the canonical Atlas-first experience.
+Optional distribution packs under `plugins/` can be enabled separately, but they are not required for the zero-setup Atlas-first runtime experience. Contributors should edit the shared Atlas pack in `plugins/atlas-orchestration-team/agents/` and sync `.github/agents/` instead of hand-editing both surfaces.
 
 **Prerequisites:**
 - VS Code Insiders with GitHub Copilot extension
