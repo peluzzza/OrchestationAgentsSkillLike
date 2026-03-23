@@ -4,7 +4,6 @@ description: Conductor orchestrator for data engineering and ML workflows.
 user-invocable: false
 argument-hint: Orchestrate data pipelines and ML workflows with data specialists.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - agent

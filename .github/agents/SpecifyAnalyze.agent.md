@@ -4,7 +4,6 @@ name: SpecifyAnalyze
 user-invocable: false
 argument-hint: Analyze the consistency of Specify artifacts for feature [feature-id].
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - search

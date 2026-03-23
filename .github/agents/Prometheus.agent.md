@@ -4,7 +4,6 @@ name: Prometheus
 user-invocable: false
 argument-hint: Research this task deeply and produce a phased execution plan for Atlas.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - agent

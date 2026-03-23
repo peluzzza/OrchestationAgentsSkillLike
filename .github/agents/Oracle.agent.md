@@ -3,7 +3,6 @@ description: Deep research agent for requirements, architecture, and implementat
 name: Oracle
 argument-hint: Research this subsystem/problem and return structured findings.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:

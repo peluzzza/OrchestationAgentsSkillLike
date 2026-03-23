@@ -3,7 +3,6 @@ description: Review changed code and configuration for secrets exposure, insecur
 name: Atenea
 argument-hint: Review a completed phase for secrets exposure, insecure code paths, dependency risk, and remediation steps.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:

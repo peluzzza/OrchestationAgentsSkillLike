@@ -3,7 +3,6 @@ description: Review dependency manifests, lock files, and base images for outdat
 name: Ariadna
 argument-hint: Audit dependency health for the changed manifests, lock files, or runtime images.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:

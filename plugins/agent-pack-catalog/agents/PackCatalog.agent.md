@@ -2,7 +2,6 @@
 description: Catalog/discovery agent for this marketplace. Lists available packs, recommends what to install based on repo context, and provides exact VS Code installation steps.
 name: PackCatalog
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: true
 tools:

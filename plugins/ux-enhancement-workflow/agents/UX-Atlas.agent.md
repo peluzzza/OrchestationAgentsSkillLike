@@ -3,7 +3,7 @@ name: UX-Atlas
 description: Conductor for UX research, flow design, heuristic critique, and frontend handoff workflows.
 user-invocable: false
 argument-hint: Orchestrate UX research, flow design, and spec handoff with UX specialists.
-model: Gemini Pro 3.1 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 tools:
   - agent
   - search

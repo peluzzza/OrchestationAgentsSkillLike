@@ -4,7 +4,6 @@ name: SpecifyTasks
 user-invocable: false
 argument-hint: Generate the task breakdown for feature [feature-id] from the available plan.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - search

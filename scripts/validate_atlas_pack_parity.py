@@ -1,19 +1,12 @@
-"""Validate parity between the canonical shared Atlas source pack and the root runtime surface.
+"""Validate completeness of .github/agents/ — the single source of truth for all agents.
 
 Rules enforced:
 
-1. The shared surface (CANONICAL_SHARED, 19 files) must be present in both:
-    - plugins/atlas-orchestration-team/agents/  (canonical shared source)
-    - .github/agents/                           (default-active root runtime)
+1. Every agent in ALL_AGENTS must be present in .github/agents/.
 
-2. The root-only compatibility aliases (ROOT_ONLY, 7 files) are explicitly
-    allowed only in .github/agents/. They must NOT appear in the shared source.
+2. No files outside of ALL_AGENTS may exist in .github/agents/.
 
-3. No extra agent files may exist in the shared source beyond CANONICAL_SHARED.
-
-4. No extra agent files may exist in root beyond CANONICAL_SHARED | ROOT_ONLY.
-
-5. Every shared-source file must contain a valid YAML frontmatter block.
+3. Every agent file must contain a valid YAML frontmatter block.
    CRLF line endings and UTF-8 BOM markers are normalised before the check.
 
 Usage::
@@ -31,43 +24,28 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 ROOT_AGENTS_DIR = REPO_ROOT / ".github" / "agents"
-SOURCE_AGENTS_DIR = (
-    REPO_ROOT / "plugins" / "atlas-orchestration-team" / "agents"
-)
 
 # ---------------------------------------------------------------------------
-# Canonical agent sets
+# Canonical agent set — ALL 79 agents that must live in .github/agents/
 # ---------------------------------------------------------------------------
 
-# The 19 agent files shared between the canonical source pack and the root runtime surface.
-CANONICAL_SHARED: frozenset[str] = frozenset(
+ALL_AGENTS: frozenset[str] = frozenset(
     {
+        # Layer 0 — Conductor
+        "Atlas.agent.md",
+        # Layer 1 — Domain gods
         "Afrodita-UX.agent.md",
         "Argus.agent.md",
         "Ariadna.agent.md",
         "Atenea.agent.md",
-        "Atlas.agent.md",
         "Clio.agent.md",
         "Hephaestus.agent.md",
         "Hermes.agent.md",
         "Oracle.agent.md",
         "Prometheus.agent.md",
         "Sisyphus.agent.md",
-        "SpecifyAnalyze.agent.md",
-        "SpecifyClarify.agent.md",
-        "SpecifyConstitution.agent.md",
-        "SpecifyImplement.agent.md",
-        "SpecifyPlan.agent.md",
-        "SpecifySpec.agent.md",
-        "SpecifyTasks.agent.md",
         "Themis.agent.md",
-    }
-)
-
-# The 7 root-only compatibility-alias files.
-# These live ONLY in .github/agents/ and must NOT appear in the shared source pack.
-ROOT_ONLY: frozenset[str] = frozenset(
-    {
+        # Layer 1 — Compatibility aliases
         "Afrodita-subagent.agent.md",
         "Argus-subagent.agent.md",
         "Hephaestus-subagent.agent.md",
@@ -75,8 +53,81 @@ ROOT_ONLY: frozenset[str] = frozenset(
         "Oracle-subagent.agent.md",
         "Sisyphus-subagent.agent.md",
         "Themis-subagent.agent.md",
+        # Specify pipeline
+        "SpecifyAnalyze.agent.md",
+        "SpecifyClarify.agent.md",
+        "SpecifyConstitution.agent.md",
+        "SpecifyImplement.agent.md",
+        "SpecifyPlan.agent.md",
+        "SpecifySpec.agent.md",
+        "SpecifyTasks.agent.md",
+        # Layer 2 — Backend specialists
+        "API-Designer.agent.md",
+        "Backend-Atlas.agent.md",
+        "Backend-Planner.agent.md",
+        "Backend-Reviewer.agent.md",
+        "Database-Engineer.agent.md",
+        "Performance-Tuner.agent.md",
+        "Security-Guard.agent.md",
+        "Service-Builder.agent.md",
+        # Layer 2 — Data specialists
+        "Analytics-Engineer.agent.md",
+        "Data-Architect.agent.md",
+        "Data-Atlas.agent.md",
+        "Data-Planner.agent.md",
+        "Data-Quality.agent.md",
+        "Data-Reviewer.agent.md",
+        "ML-Scientist.agent.md",
+        "Pipeline-Builder.agent.md",
+        # Layer 2 — DevOps specialists
+        "Container-Master.agent.md",
+        "Cost-Optimizer.agent.md",
+        "Deploy-Strategist.agent.md",
+        "DevOps-Atlas.agent.md",
+        "DevOps-Planner.agent.md",
+        "Incident-Responder.agent.md",
+        "Infra-Architect.agent.md",
+        "Monitor-Sentinel.agent.md",
+        "Pipeline-Engineer.agent.md",
+        "Security-Ops.agent.md",
+        # Layer 2 — Frontend/UX specialists
+        "A11y-Auditor.agent.md",
+        "Accessibility-Heuristics.agent.md",
+        "Afrodita.agent.md",
+        "Component-Builder.agent.md",
+        "Design-Critic.agent.md",
+        "Frontend-Handoff.agent.md",
+        "Frontend-Planner.agent.md",
+        "Frontend-Reviewer.agent.md",
+        "State-Manager.agent.md",
+        "Style-Engineer.agent.md",
+        "UI-Designer.agent.md",
+        "UX-Atlas.agent.md",
+        "UX-Planner.agent.md",
+        "User-Flow-Designer.agent.md",
+        # Layer 2 — Automation/MCP specialists
+        "Automation-Atlas.agent.md",
+        "Automation-Planner.agent.md",
+        "Automation-Reviewer.agent.md",
+        "MCP-Integrator.agent.md",
+        "Workflow-Composer.agent.md",
+        "n8n-Connector.agent.md",
+        # Layer 2 — QA specialists
+        "Coverage-Analyst.agent.md",
+        "Mutation-Tester.agent.md",
+        "Test-Runner.agent.md",
+        # Layer 2 — Security specialists
+        "Compliance-Checker.agent.md",
+        "Secret-Scanner.agent.md",
+        # Utility
+        "Memory-Guardian.agent.md",
+        "PackCatalog.agent.md",
     }
 )
+
+# Keep these names for backwards-compat with any external tooling
+CANONICAL_SHARED = ALL_AGENTS
+ROOT_ONLY: frozenset[str] = frozenset()
 
 # Frontmatter pattern — tolerant of leading BOM and CRLF line endings.
 _FRONTMATTER_RE = re.compile(
@@ -110,73 +161,34 @@ def _collect_names(directory: Path) -> frozenset[str]:
 
 
 def check_root_agents(root_dir: Path) -> list[str]:
-    """Validate the default-active root runtime surface against the known surfaces."""
+    """Validate .github/agents/ contains all expected agents and nothing extra."""
     errors: list[str] = []
     present = _collect_names(root_dir)
-    expected = CANONICAL_SHARED | ROOT_ONLY
 
-    for name in sorted(CANONICAL_SHARED):
+    for name in sorted(ALL_AGENTS):
         if name not in present:
-            errors.append(f"root: shared agent missing -> {name}")
+            errors.append(f"root: agent missing -> {name}")
 
-    for name in sorted(ROOT_ONLY):
-        if name not in present:
-            errors.append(f"root: root-only alias missing -> {name}")
+    for name in sorted(present - ALL_AGENTS):
+        errors.append(f"root: unexpected file -> {name}")
 
-    for name in sorted(present - expected):
-        errors.append(
-            f"root: unexpected file (not in shared or root-only) -> {name}"
-        )
-
-    return errors
-
-
-def check_source_agents(source_dir: Path) -> list[str]:
-    """Validate the canonical shared source pack and its frontmatter."""
-    errors: list[str] = []
-    present = _collect_names(source_dir)
-
-    # 1. Missing shared agents in source (content drift — absence side)
-    for name in sorted(CANONICAL_SHARED):
-        if name not in present:
-            errors.append(f"source: shared agent missing -> {name}")
-
-    # 2. Root-only aliases must NOT appear in the source pack
-    for name in sorted(ROOT_ONLY):
-        if name in present:
-            errors.append(
-                f"source: root-only alias must not appear in source -> {name}"
-            )
-
-    # 3. Extra files in source not part of CANONICAL_SHARED (content drift — addition side)
-    for name in sorted(present - CANONICAL_SHARED):
-        errors.append(f"source: unexpected extra file -> {name}")
-
-    # 4. Frontmatter sanity check for every present shared file
-    for name in sorted(CANONICAL_SHARED & present):
-        raw = (source_dir / name).read_text(encoding="utf-8")
+    # Frontmatter sanity check for every present agent file
+    for name in sorted(ALL_AGENTS & present):
+        raw = (root_dir / name).read_text(encoding="utf-8")
         if not _FRONTMATTER_RE.match(_normalize(raw)):
-            errors.append(
-                f"source: {name}: missing or malformed frontmatter block"
-            )
+            errors.append(f"root: {name}: missing or malformed frontmatter block")
 
     return errors
 
 
-def check_shared_content(root_dir: Path, source_dir: Path) -> list[str]:
-    """Validate normalized content parity for all shared files copied from source into root."""
-    errors: list[str] = []
-    root_present = _collect_names(root_dir)
-    source_present = _collect_names(source_dir)
-    shared_present = CANONICAL_SHARED & root_present & source_present
+def check_source_agents(source_dir: Path) -> list[str]:  # noqa: ARG001
+    """Kept for backwards-compat — source pack no longer exists, always returns []."""
+    return []
 
-    for name in sorted(shared_present):
-        source_text = _normalized_text(source_dir / name)
-        root_text = _normalized_text(root_dir / name)
-        if source_text != root_text:
-            errors.append(f"parity: root runtime drift detected from source -> {name}")
 
-    return errors
+def check_shared_content(root_dir: Path, source_dir: Path) -> list[str]:  # noqa: ARG001
+    """Kept for backwards-compat — source pack no longer exists, always returns []."""
+    return []
 
 
 # ---------------------------------------------------------------------------
@@ -186,14 +198,10 @@ def check_shared_content(root_dir: Path, source_dir: Path) -> list[str]:
 
 def run_checks(
     root_dir: Path = ROOT_AGENTS_DIR,
-    source_dir: Path = SOURCE_AGENTS_DIR,
+    source_dir: Path | None = None,  # kept for backwards-compat, ignored
 ) -> list[str]:
-    """Run all parity checks and return a flat list of error strings."""
-    errors: list[str] = []
-    errors.extend(check_root_agents(root_dir))
-    errors.extend(check_source_agents(source_dir))
-    errors.extend(check_shared_content(root_dir, source_dir))
-    return errors
+    """Run all agent completeness checks and return a flat list of error strings."""
+    return check_root_agents(root_dir)
 
 
 def main() -> int:
@@ -202,18 +210,12 @@ def main() -> int:
         for err in errors:
             print(f"FAIL  {err}", file=sys.stderr)
         print(
-            f"\n{len(errors)} parity error(s) found.",
+            f"\n{len(errors)} error(s) found.",
             file=sys.stderr,
         )
         return 1
-    shared_n = len(CANONICAL_SHARED)
-    root_only_n = len(ROOT_ONLY)
-    print(
-        f"ATLAS PACK PARITY OK  "
-        f"source={shared_n} shared agents, "
-        f"root={shared_n + root_only_n} agents "
-        f"({shared_n} synced shared + {root_only_n} root-only)."
-    )
+    total_n = len(ALL_AGENTS)
+    print(f"ALL AGENTS OK  {total_n} agents present in .github/agents/.")
     return 0
 
 

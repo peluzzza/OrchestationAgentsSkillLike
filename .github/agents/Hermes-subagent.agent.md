@@ -3,8 +3,8 @@ description: Read-only codebase exploration specialist. Maps files, usages, and 
 name: Hermes-subagent
 argument-hint: Find files, usages, dependencies, and context related to: <research goal or problem statement>
 model:
-  - Gemini Flash 3.1 (copilot)
-  - Claude Haiku 4.6 (copilot)
+  - Gemini 3 Flash (Preview) (copilot)
+  - Claude Haiku 4.5 (copilot)
   - Claude Haiku 4.5 (copilot)
 user-invocable: false
 tools:

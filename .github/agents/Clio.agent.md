@@ -3,7 +3,6 @@ description: Update README files, usage notes, examples, and other repository do
 name: Clio
 argument-hint: Update documentation for the changed behavior, setup, or interface.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:

@@ -3,7 +3,7 @@ name: User-Flow-Designer
 description: Specialist for user journey mapping and interaction flow diagrams.
 user-invocable: false
 argument-hint: Map the user journey and produce interaction flow diagrams for the given brief.
-model: Gemini Pro 3.1 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 tools:
   - agent
   - search

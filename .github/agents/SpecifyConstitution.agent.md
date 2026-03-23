@@ -4,7 +4,6 @@ name: SpecifyConstitution
 user-invocable: false
 argument-hint: Create or update the project constitution with the provided principles.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - search

@@ -4,7 +4,6 @@ description: Capture, compress, and retrieve agent session memory. Manages sessi
 user-invocable: false
 argument-hint: "<capture|retrieve|compress> memory for session <ID>. Use mode: capture|retrieve|compress."
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - edit

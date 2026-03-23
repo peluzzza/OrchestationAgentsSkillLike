@@ -3,7 +3,7 @@ name: UI-Designer
 description: Component architecture and layout specialist for frontend workflows.
 user-invocable: false
 argument-hint: Design component hierarchy and layout structure for this UI requirement.
-model: Gemini Pro 3.1 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - fetch

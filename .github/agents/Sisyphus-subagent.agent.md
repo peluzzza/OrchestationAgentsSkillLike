@@ -4,7 +4,7 @@ name: Sisyphus-subagent
 argument-hint: Pass FEATURE_ID and the exact PHASE name from Atlas/Prometheus. Implement only the assigned phase.
 model:
   - Claude Opus 4.6 (copilot)
-  - GPT-5.4-Codex (copilot)
+  - GPT-5.3-Codex (copilot)
   - GPT-5.3-Codex (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: false

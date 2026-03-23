@@ -2,7 +2,7 @@
 description: Frontend specialist for accessible, responsive, production-ready UI implementation aligned to project patterns.
 name: Afrodita-UX
 argument-hint: Implement this UI/frontend task with accessibility, responsiveness, UX state coverage, and project style alignment.
-model: Gemini Pro 3.1 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:
   - agent

@@ -3,7 +3,7 @@ name: Afrodita
 description: Conductor orchestrator for frontend development with UI/UX specialists.
 user-invocable: false
 argument-hint: Orchestrate frontend feature implementation with UI/UX specialists.
-model: Gemini Pro 3.1 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 tools:
   - agent
   - search

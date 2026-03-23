@@ -3,7 +3,7 @@ name: Frontend-Handoff
 description: Specialist for packaging UX specs, flow maps, and critique reports into a clean handoff bundle for Afrodita or the implementation team.
 user-invocable: false
 argument-hint: Package the UX spec, flows, critique, and accessibility review into a handoff bundle.
-model: Gemini Pro 3.1 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - edit

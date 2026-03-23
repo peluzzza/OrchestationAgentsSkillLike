@@ -4,7 +4,6 @@ description: Autonomous planner that researches data requirements and writes pha
 user-invocable: false
 argument-hint: Research this data task deeply and produce a phased data engineering plan.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - agent

@@ -3,7 +3,7 @@ name: Component-Builder
 description: TDD-focused component implementation specialist.
 user-invocable: false
 argument-hint: Implement these components following TDD with proper tests.
-model: Gemini Pro 3.1 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 tools:
   - search
   - edit

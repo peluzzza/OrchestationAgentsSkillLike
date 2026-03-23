@@ -4,7 +4,6 @@ name: SpecifyPlan
 user-invocable: false
 argument-hint: Create the technical implementation plan for the spec. I am building with [tech stack description].
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - search

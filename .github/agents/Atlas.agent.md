@@ -4,7 +4,6 @@ name: Atlas
 user-invocable: true
 argument-hint: Orchestrate end-to-end execution for this task using specialist subagents.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - agent

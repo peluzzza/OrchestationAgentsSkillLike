@@ -3,7 +3,7 @@ name: UX-Planner
 description: Autonomous planner that conducts UX research, maps user goals, and produces a structured UX brief.
 user-invocable: false
 argument-hint: Research user goals and produce a structured UX research brief and plan.
-model: Gemini Pro 3.1 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 tools:
   - agent
   - search

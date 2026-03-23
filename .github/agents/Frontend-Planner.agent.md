@@ -3,7 +3,7 @@ name: Frontend-Planner
 description: Autonomous planner that researches UI/UX requirements and writes phased frontend plans.
 user-invocable: false
 argument-hint: Research this UI task deeply and produce a phased frontend implementation plan.
-model: Gemini Pro 3.1 (copilot)
+model: Claude Sonnet 4.6 (copilot)
 tools:
   - agent
   - search

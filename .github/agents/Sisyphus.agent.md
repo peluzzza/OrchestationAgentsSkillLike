@@ -4,7 +4,7 @@ name: Sisyphus
 argument-hint: Implement this scoped phase/task with tests first and minimal diffs.
 model:
   - Claude Opus 4.6 (copilot)
-  - GPT-5.4-Codex (copilot)
+  - GPT-5.3-Codex (copilot)
   - GPT-5.3-Codex (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: false

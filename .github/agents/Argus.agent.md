@@ -3,7 +3,6 @@ description: QA verification agent — targeted test execution, coverage analysi
 name: Argus
 argument-hint: Verify this phase by running the smallest relevant checks first, expanding only when needed.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:

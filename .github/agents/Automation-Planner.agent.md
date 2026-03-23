@@ -5,7 +5,7 @@ user-invocable: false
 argument-hint: Research this automation task and produce a phased integration plan.
 model:
   - Claude Opus 4.6 (copilot)
-  - GPT-5.4-Codex (copilot)
+  - GPT-5.3-Codex (copilot)
   - GPT-5.3-Codex (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:

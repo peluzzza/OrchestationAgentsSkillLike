@@ -3,7 +3,6 @@ description: Deep research specialist. Gathers comprehensive context about a sub
 name: Oracle-subagent
 argument-hint: Research this subsystem or problem deeply and return structured findings.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:

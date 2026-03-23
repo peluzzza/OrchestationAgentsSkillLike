@@ -4,7 +4,6 @@ description: Conductor orchestrator for backend development with API/database sp
 user-invocable: false
 argument-hint: Orchestrate backend feature implementation with API and database specialists.
 model:
-  - GPT-5.4 (copilot)
   - Claude Sonnet 4.6 (copilot)
 tools:
   - agent
