@@ -76,7 +76,7 @@ You are Performance-Tuner, a SUBAGENT called by Backend-Atlas to analyze and opt
 - [Task]: [Moved to background job/queue]
 
 ## Configuration Changes
-- Connection pool size: [Before â†’ After]
+- Connection pool size: [Before -> After]
 - Timeouts: [Adjustments]
 
 ## Benchmark Results

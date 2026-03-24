@@ -15,11 +15,6 @@ handoffs:
   - label: Return Atenea Findings
     agent: Atlas
     prompt: Atenea review completed. Evaluate the findings and decide whether the phase can proceed.
-agents:
-  - Security-Guard
-  - Security-Ops
-  - Compliance-Checker
-  - Secret-Scanner
 ---
 <!-- layer: 1 | domain: Security + Safety -->
 
@@ -40,7 +35,7 @@ You are Atenea, a security review subagent. Your job is to examine changed code,
 
 ## Execution Steps
 
-1. Run `#changes` to identify modified files and scope the review.
+1. Run `search/changes` to identify modified files and scope the review.
 2. Scan changed files for secrets patterns (regex for API keys, passwords, tokens).
 3. Check for OWASP Top-10 risks in changed logic (injection, broken auth, insecure deserialization, etc.).
 4. Inspect any changed dependency manifests or Dockerfiles for new or pinned packages requiring CVE review.

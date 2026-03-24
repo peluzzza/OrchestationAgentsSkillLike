@@ -14,11 +14,6 @@ handoffs:
   - label: Request Revision
     agent: Atlas
     prompt: The implementation has issues. Please revise the code according to the feedback provided in the review.
-agents:
-  - Backend-Reviewer
-  - Frontend-Reviewer
-  - Data-Reviewer
-  - Automation-Reviewer
 ---
 <!-- layer: 1 | domain: Code Review + Quality Gate -->
 
@@ -28,7 +23,7 @@ You are a review subagent called after an implementation phase completes.
 
 ## Review Workflow
 
-1. **Analyze Changes** — Run `#changes` to see what was modified or created. Run `#problems` to surface compiler, linter, or static-analysis diagnostics. Run `#usages` to verify symbol references, detect dead code, and check broken contracts.
+1. **Analyze Changes** — Run `search/changes` to see what was modified or created. Run `read/problems` to surface compiler, linter, or static-analysis diagnostics. Run `search/usages` to verify symbol references, detect dead code, and check broken contracts.
 
 2. **Verify Implementation**
    - Phase objective met against stated acceptance criteria
@@ -38,7 +33,7 @@ You are a review subagent called after an implementation phase completes.
    - Test quality: happy-path and failure-path coverage; no mocking away core logic in tests
    - Scope control: nothing added beyond the requested phase scope
 
-3. **Diagnose Before Judging** — Use `#search` to look up conventions, dependencies, or patterns you are uncertain about before assigning CRITICAL or MAJOR severity.
+3. **Diagnose Before Judging** — Use `search` to look up conventions, dependencies, or patterns you are uncertain about before assigning CRITICAL or MAJOR severity.
 
 ## Output Format (mandatory)
 

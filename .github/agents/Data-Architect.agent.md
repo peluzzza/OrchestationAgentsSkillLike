@@ -90,11 +90,11 @@ You are Data-Architect, a SUBAGENT called by Data-Atlas to design data models an
 - SCD Type: [1/2/3 if applicable]
 
 ### Relationships
-- [table1] â†’ [table2]: [relationship type]
+- [table1] -> [table2]: [relationship type]
 
 ### Data Lineage
 ```
-[Source] â†’ [Bronze] â†’ [Silver] â†’ [Gold]
+[Source] -> [Bronze] -> [Silver] -> [Gold]
 ```
 
 ## Data Contracts

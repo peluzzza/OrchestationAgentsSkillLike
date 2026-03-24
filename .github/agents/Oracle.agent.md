@@ -14,9 +14,9 @@ tools:
   - web
   - web/fetch
 handoffs:
-  - label: Delegate to Hermes
+  - label: Return Findings
     agent: Atlas
-    prompt: Task complete. Review the results and decide the next step.
+    prompt: Research complete. Review the findings and decide the next step.
 ---
 <!-- layer: 1 | domain: Requirements + Architecture Research -->
 

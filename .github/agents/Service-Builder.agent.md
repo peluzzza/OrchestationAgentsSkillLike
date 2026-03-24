@@ -33,7 +33,7 @@ You are Service-Builder, a SUBAGENT called by Backend-Atlas to implement backend
    - Mock external dependencies.
    - Test error handling.
 
-2) **Run Tests â†’ Confirm FAIL**
+2) **Run Tests -> Confirm FAIL**
    ```
    npm test or ./mvnw test or pytest
    ```
@@ -43,7 +43,7 @@ You are Service-Builder, a SUBAGENT called by Backend-Atlas to implement backend
    - Follow SOLID principles.
    - Proper error handling.
 
-4) **Run Tests â†’ Confirm PASS**
+4) **Run Tests -> Confirm PASS**
 
 5) **Refactor**
    - Extract common logic.
@@ -57,7 +57,7 @@ You are Service-Builder, a SUBAGENT called by Backend-Atlas to implement backend
 
 ## Architecture Guidelines
 
-- Controller â†’ Service â†’ Repository pattern.
+- Controller -> Service -> Repository pattern.
 - DTOs for API boundaries.
 - Domain models for business logic.
 - Dependency injection.

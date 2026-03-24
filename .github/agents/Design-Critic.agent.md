@@ -35,7 +35,7 @@ Responsibilities:
 
 ## Verdict
 
-- `APPROVED` â€” no critical or major issues.
-- `NEEDS_REVISION: <issues>` â€” list critical/major issues with recommended fixes.
+- `APPROVED` - no critical or major issues.
+- `NEEDS_REVISION: <issues>` - list critical/major issues with recommended fixes.
 
 Write critique to `plans/ux/<task>-critique.md` and return the verdict plus a recommendation to run `Accessibility-Heuristics` next.

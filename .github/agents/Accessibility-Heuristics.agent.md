@@ -28,12 +28,12 @@ Responsibilities:
 - [ ] All interactive elements have accessible names
 - [ ] Error messages descriptive and linked to fields
 - [ ] No information conveyed by colour alone
-- [ ] Touch targets â‰¥ 44Ã—44 CSS pixels on mobile
+- [ ] Touch targets >= 44x44 CSS pixels on mobile
 - [ ] Cognitive load appropriate for target users
 
 ## Verdict
 
-- `APPROVED` â€” no WCAG 2.1 AA violations; no critical inclusion issues.
-- `NEEDS_REVISION: <issues>` â€” list violations with WCAG success criteria references.
+- `APPROVED` - no WCAG 2.1 AA violations; no critical inclusion issues.
+- `NEEDS_REVISION: <issues>` - list violations with WCAG success criteria references.
 
 Write review to `plans/ux/<task>-a11y.md` and return the artefact path plus a recommendation to proceed to `Frontend-Handoff` after the critique is complete.

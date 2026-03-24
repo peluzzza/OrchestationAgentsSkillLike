@@ -15,9 +15,6 @@ handoffs:
   - label: Return Operations Findings
     agent: Atlas
     prompt: Task complete. Review the results and decide the next step.
-agents:
-  - DevOps-Atlas
-  - Automation-Atlas
 ---
 <!-- layer: 1 | domain: Infrastructure + DevOps + Automation -->
 

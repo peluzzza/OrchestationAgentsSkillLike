@@ -100,11 +100,11 @@ You are Container-Master, a SUBAGENT called by DevOps-Atlas to handle containeri
 ### Helm Chart (if applicable)
 ```
 chart/
-â”œâ”€â”€ Chart.yaml
-â”œâ”€â”€ values.yaml
-â”œâ”€â”€ values-staging.yaml
-â”œâ”€â”€ values-prod.yaml
-â””â”€â”€ templates/
+|-- Chart.yaml
+|-- values.yaml
+|-- values-staging.yaml
+|-- values-prod.yaml
+`-- templates/
 ```
 
 ## Security

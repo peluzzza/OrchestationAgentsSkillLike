@@ -11,11 +11,11 @@
       "activationPath": null,
       "conductor": "Atlas",
       "stability": "stable",
-      "notes": "Default-active workspace runtime surface. Contains a synced copy of the canonical shared Atlas pack plus 7 root-only compatibility aliases. Legacy id retained for compatibility."
+      "notes": "Default-active workspace runtime surface for this clone. Root .github/agents is the authoritative operational path and includes compatibility aliases plus shipped hidden agent definitions used by the runtime and validators. Legacy id retained for compatibility."
     },
     {
       "id": "atlas-orchestration-team",
-      "name": "Atlas Orchestration Team (Canonical Shared Source)",
+      "name": "Atlas Orchestration Team (Distribution Placeholder)",
       "installPath": "plugins/atlas-orchestration-team",
       "shipped": true,
       "defaultActive": false,
@@ -23,7 +23,7 @@
       "activationPath": "plugins/atlas-orchestration-team/agents",
       "conductor": "Atlas",
       "stability": "stable",
-      "notes": "Canonical authoring source for the shared 19-agent Atlas orchestration surface. The default-active root runtime surface consumes a synced copy plus 7 root-only aliases."
+      "notes": "Distribution/marketplace placeholder for the shared Atlas pack. In this clone, the active authoring and runtime surface remains .github/agents; this plugin path is retained for compatibility and future reintroduction of a standalone agents folder."
     },
     {
       "id": "frontend-workflow",

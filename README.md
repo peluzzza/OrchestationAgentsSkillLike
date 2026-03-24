@@ -1,6 +1,6 @@
 # Atlas Agents For VS Code
 
-A multi-agent team for VS Code Copilot Chat. You talk to `@Atlas`; it orchestrates a hidden team of 78 specialists covering planning, implementation, security, testing, documentation, and ops.
+A multi-agent runtime for VS Code Copilot Chat. In this clone, you talk to `@Atlas`; it orchestrates a stable hidden working surface for planning, implementation, review, QA, and ops from the default-active root runtime in `.github/agents`.
 
 ## Install (60 seconds)
 
@@ -35,22 +35,19 @@ Then `Ctrl+Shift+P` → `Developer: Reload Window`. That's it.
 
 ## The Agent Team
 
-All 79 agents live in `.github/agents/`. You only need to know about `@Atlas`.
+This repository ships many agent definitions in `.github/agents`, but the **stable zero-setup orchestration path** is intentionally narrower than the full file count. You only need to know about `@Atlas`.
 
 | Role | Agent | Invoked by |
 |---|---|---|
 | Conductor | `Atlas` | **You** |
 | Planner / Specify pipeline | `Prometheus` | Atlas |
-| Code exploration | `Hermes` | Atlas, Prometheus |
-| Deep research | `Oracle` | Atlas, Prometheus |
-| Implementation | `Sisyphus` | Atlas |
-| Frontend / UI | `Afrodita-UX` | Atlas |
-| Code review | `Themis` | Atlas |
-| Security review | `Atenea` | Atlas |
-| Testing / QA | `Argus` | Atlas |
-| Documentation | `Clio` | Atlas |
-| Dependencies | `Ariadna` | Atlas |
-| Ops / Deploy / Incidents | `Hephaestus` | Atlas |
+| Code exploration | `Hermes-subagent` | Atlas, Prometheus |
+| Deep research | `Oracle-subagent` | Atlas, Prometheus |
+| Implementation | `Sisyphus-subagent` | Atlas |
+| Frontend / UI | `Afrodita-subagent` | Atlas |
+| Code review | `Themis Subagent` | Atlas |
+| Testing / QA | `Argus - QA Testing Subagent` | Atlas |
+| Ops / Deploy / Incidents | `HEPHAESTUS` | Atlas |
 | Specify: Constitution | `SpecifyConstitution` | Prometheus |
 | Specify: Spec | `SpecifySpec` | Prometheus |
 | Specify: Clarify | `SpecifyClarify` | Prometheus |
@@ -59,25 +56,65 @@ All 79 agents live in `.github/agents/`. You only need to know about `@Atlas`.
 | Specify: Consistency | `SpecifyAnalyze` | Prometheus, Sisyphus |
 | Specify: Implement | `SpecifyImplement` | Sisyphus |
 
+Additional governance lanes such as `Atenea`, `Ariadna`, `Clio`, and the canonical Layer-1 gods are still shipped as definitions in the repo, but they are **optional runtime lanes**, not hard requirements for the default orchestration path.
+
+## Duplicate-Looking Files: What Is Intentional
+
+Some files may look duplicated at first glance, but they serve different purposes.
+
+### 1. Canonical agent + compatibility alias
+
+These are intentional pairs. The canonical agent keeps the richer domain definition; the alias provides the stable runtime handle used by the default Atlas surface.
+
+| Canonical agent | Compatibility alias | Why both exist |
+|---|---|---|
+| `Hermes.agent.md` | `Hermes-subagent.agent.md` | Canonical discovery lane + stable Atlas alias |
+| `Oracle.agent.md` | `Oracle-subagent.agent.md` | Canonical research lane + stable Atlas alias |
+| `Sisyphus.agent.md` | `Sisyphus-subagent.agent.md` | Canonical implementation lane + stable Atlas alias |
+| `Themis.agent.md` | `Themis-subagent.agent.md` | Canonical review lane + stable Atlas alias |
+| `Argus.agent.md` | `Argus-subagent.agent.md` | Canonical QA lane + stable Atlas alias |
+| `Hephaestus.agent.md` | `Hephaestus-subagent.agent.md` | Canonical ops lane + stable Atlas alias |
+
+These are **not** exact duplicates. The alias files are marked with comments such as `type: alias` and `delegates-to: ...`.
+
+### 2. The Afrodita cluster
+
+Afrodita is the one that looks most duplicated but is actually a three-role stack:
+
+| File | Role |
+|---|---|
+| `Afrodita-UX.agent.md` | Layer-1 canonical frontend/UX god |
+| `Afrodita-subagent.agent.md` | Stable Atlas-facing alias for the default runtime |
+| `Afrodita.agent.md` | Layer-2 optional workflow conductor for the frontend pack |
+
+So:
+- `Afrodita-UX` = canonical lane
+- `Afrodita-subagent` = runtime compatibility alias
+- `Afrodita` = optional nested conductor under the frontend workflow model
+
+Optional nested conductors such as `Afrodita`, `Backend-Atlas`, `DevOps-Atlas`, `Data-Atlas`, `Automation-Atlas`, and `UX-Atlas` may still appear in `.github/agents` in this clone for hierarchy completeness and shipped-pack visibility. Unless their workflow is explicitly activated, treat them as **non-default lanes** that may operate in degraded/self-contained mode rather than as part of Atlas's stable root-runtime path.
+
+### 3. Exact duplicate names?
+
+In the current clone, there are **no exact duplicate frontmatter `name:` values** across `.github/agents`.
+
 ## How Atlas Works
 
 ```
 You → @Atlas
          ├── Prometheus (planning + Specify pipeline: SP-5 gate)
-         │       ├── Hermes (explore)
-         │       ├── Oracle (research)
+         │       ├── Hermes-subagent (explore)
+         │       ├── Oracle-subagent (research)
          │       └── SpecifyAnalyze (SP-5 consistency gate)
-         ├── Sisyphus (implement, phase by phase)
+         ├── Sisyphus-subagent (implement, phase by phase)
          │       └── SpecifyAnalyze (EX-1 gate pre-implementation)
-         ├── Themis (review)
-         ├── Atenea (security — auto on any auth/secrets/permissions change)
-         ├── Argus (testing)
-         ├── Hephaestus (ops: deploy / release-readiness / incident / maintenance / performance)
-         ├── Clio (docs)
-         └── Ariadna (dependencies)
+         ├── Themis Subagent (review)
+         ├── Argus - QA Testing Subagent (testing)
+         ├── HEPHAESTUS (ops: deploy / release-readiness / incident / maintenance / performance)
+         └── Optional lanes when explicitly available: Atenea / Clio / Ariadna
 ```
 
-Atlas reads `.github/plugin/pack-registry.json` at startup to know which optional packs are shipped but inactive. If your task domain clearly matches one (e.g. Spring Boot → `backend-workflow`), Atlas will recommend activating it.
+Atlas reads `.github/plugin/pack-registry.json` as a shipped-pack activation map. In this clone, the authoritative runtime is still the root `.github/agents` surface; shipped plugin packs remain optional and inactive unless you explicitly enable them.
 
 ## Enable Optional Conductors
 
@@ -119,11 +156,11 @@ Artifacts land in `.specify/specs/<feature-slug>/`. The SP-5 gate (pre-tasks) an
 ## Repository Layout
 
 ```
-.github/agents/          ← 79 agent files (the only thing VS Code reads)
+.github/agents/          ← default-active runtime surface for this clone
 .github/plugin/
   pack-registry.json     ← activation map: which packs are shipped vs active
-plugins/                 ← optional domain packs (inactive unless enabled above)
-  atlas-orchestration-team/agents/  ← empty; all agents consolidated into .github/agents/
+plugins/                 ← optional domain packs and distribution metadata
+  atlas-orchestration-team/         ← metadata shell in this clone (no shipped agents/ folder)
 spec-kit/                ← Specify pipeline reference docs
 demos/                   ← smoke tests per capability lane
 scripts/                 ← sync, validation, and fix utilities
@@ -136,7 +173,7 @@ plans/                   ← Atlas orchestration artifacts
 python -m pytest scripts/ -q
 ```
 
-The parity validator (`validate_atlas_pack_parity.py`) checks that `.github/agents/` contains exactly the canonical 79 agents defined in `ALL_AGENTS` — no more, no fewer.
+Use the validation scripts to verify runtime and pack consistency after edits. The root runtime surface in `.github/agents` is the source you should validate first in this clone.
 
 ### Cross-Workflow Handoffs
 
@@ -209,7 +246,7 @@ Specify agents are already included in `.github/agents/` — no extra plugin sou
 
 ## Optional: Distribution / Marketplace Packs
 
-Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use. All agent improvements go directly into `.github/agents/` — `plugins/atlas-orchestration-team/agents/` is intentionally empty (agents were consolidated in a previous refactor).
+Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use. In the current clone, the operational Atlas runtime lives in `.github/agents`; `plugins/atlas-orchestration-team/` is retained as distribution metadata and README surface, not as an activatable agent source.
 
 Not every directory under `plugins/` is necessarily published in `.github/plugin/marketplace.json` at the same time: some packs can exist as shipped-but-inactive local plugin-path examples, mirrors, or pre-marketplace workflows.
 
@@ -229,7 +266,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1
 
 If you want the clean zero-setup runtime experience, keep `.github/agents` active and avoid enabling duplicate plugin paths for the same shared agents. No repository deletion is required; just leave the plugin paths disabled in VS Code unless you intentionally want distribution-pack mode.
 
-For contributors: do **not** hand-edit both copies of the shared Atlas pack. Edit `plugins/atlas-orchestration-team/agents/` first, then sync the shared files into `.github/agents/` so the root runtime surface stays aligned.
+For contributors in this clone: edit the active root runtime in `.github/agents` first. If a real plugin copy of the Atlas pack is reintroduced later, restore sync rules at that time instead of assuming a missing `agents/` folder is authoritative.
 
 ## Optional: Flow Source Selection Demo
 

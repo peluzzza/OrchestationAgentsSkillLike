@@ -85,10 +85,10 @@ You are Infra-Architect, a SUBAGENT called by DevOps-Atlas to design and impleme
 ### Module Structure
 ```
 modules/
-â”œâ”€â”€ [module_name]/
-â”‚   â”œâ”€â”€ main.tf
-â”‚   â”œâ”€â”€ variables.tf
-â”‚   â””â”€â”€ outputs.tf
+`-- [module_name]/
+  |-- main.tf
+  |-- variables.tf
+  `-- outputs.tf
 ```
 
 ### Terraform Plan Summary

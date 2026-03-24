@@ -12,11 +12,6 @@ tools:
   - search/changes
   - read/problems
   - execute/testFailure
-agents:
-  - A11y-Auditor
-  - Test-Runner
-  - Coverage-Analyst
-  - Mutation-Tester
 ---
 <!-- layer: 1 | domain: QA + Testing -->
 

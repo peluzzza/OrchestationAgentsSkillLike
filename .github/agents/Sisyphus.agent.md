@@ -15,8 +15,6 @@ tools:
   - search/usages
   - execute/testFailure
 agents:
-  - Backend-Atlas
-  - Data-Atlas
   - SpecifyTasks
   - SpecifyAnalyze
   - SpecifyImplement

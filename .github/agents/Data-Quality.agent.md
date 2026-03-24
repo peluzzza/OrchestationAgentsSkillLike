@@ -99,7 +99,7 @@ You are Data-Quality, a SUBAGENT called by Data-Atlas to ensure data quality and
 
 ### Lineage
 ```
-[Source] â”€â†’ [Transform] â”€â†’ [Target]
+[Source] -> [Transform] -> [Target]
 ```
 
 ### Access Policies

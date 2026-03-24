@@ -58,7 +58,7 @@ You are Database-Engineer, a SUBAGENT called by Backend-Atlas to design and impl
 | ... | ... | ... |
 
 ### Relationships
-- [table1] â†’ [table2]: [1:N, FK: column]
+- [table1] -> [table2]: [1:N, FK: column]
 
 ### Indexes
 - idx_[name]: [columns] (purpose)

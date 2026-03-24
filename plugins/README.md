@@ -2,6 +2,18 @@
 
 This directory contains specialized multi-agent workflow packs following the bigguy345/Github-Copilot-Atlas orchestration pattern.
 
+> **Current clone reality:** `.github/agents` is the only default-active runtime surface. Packs under `plugins/` are shipped-but-inactive workflow packs or distribution metadata. `plugins/atlas-orchestration-team/` currently ships README/metadata only and does **not** provide an active `agents/` directory in this checkout.
+
+## Duplicate-Looking Names Across The Repo
+
+If you see pairs such as `Argus.agent.md` and `Argus-subagent.agent.md`, treat them as **canonical lane + compatibility alias**, not accidental duplicates.
+
+- Canonical lane files define the richer domain role.
+- `*-subagent` files provide stable runtime handles for the default Atlas surface.
+- Optional workflow conductors such as `Afrodita`, `Backend-Atlas`, or `DevOps-Atlas` are a separate category again: they belong to shipped-but-inactive workflow packs, not to the core zero-setup surface.
+
+In this clone, those optional workflow conductors are intentionally written to tolerate missing specialist subtrees by falling back to degraded/self-contained behavior until their workflow is explicitly activated.
+
 ## Available Workflows
 
 | Workflow | Conductor | Specialists | Purpose |
@@ -88,8 +100,8 @@ This directory is also the intended landing zone for future optional packs adapt
 
 The policy is:
 
-- keep the root `.github/agents` workflow as the default zero-setup runtime path (79 agents, single source of truth)
-- `plugins/atlas-orchestration-team/agents/` is intentionally empty — all agents were consolidated into `.github/agents/`
+- keep the root `.github/agents` workflow as the default zero-setup runtime path for this clone
+- treat `plugins/atlas-orchestration-team/` as distribution metadata in this checkout; do not assume it contains an activatable `agents/` source
 - ship additional domain packs under `plugins/` as part of the repository distribution
 - keep those shipped plugin packs available-but-inactive until explicitly enabled
 - prefer small, testable packs over large multi-purpose imports
@@ -158,7 +170,7 @@ Copy desired workflow folders to your project's `.github/agents/` or configure i
 }
 ```
 
-Enable only the workflow-pack locations you actually want active in the workspace to avoid duplicate sources. Shipping a pack in-repo does not mean activating it by default. For the shared Atlas pack, edit the plugin source first and keep `.github/agents` as the synced runtime surface.
+Enable only the workflow-pack locations you actually want active in the workspace to avoid duplicate sources. Shipping a pack in-repo does not mean activating it by default. In this clone, edit `.github/agents` for Atlas runtime behavior; the atlas-orchestration-team plugin folder is not the authoritative source because it does not currently ship an `agents/` directory.
 
 ### Option 2: User Data (Global)
 Copy workflow folders to VS Code user prompts directory:

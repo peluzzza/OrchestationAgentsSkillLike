@@ -62,7 +62,7 @@ You are Pipeline-Builder, a SUBAGENT called by Data-Atlas to build data pipeline
 
 ### DAG Structure
 ```
-[Extract] â†’ [Transform] â†’ [Quality Check] â†’ [Load]
+[Extract] -> [Transform] -> [Quality Check] -> [Load]
 ```
 
 ### Jobs
@@ -90,12 +90,12 @@ You are Pipeline-Builder, a SUBAGENT called by Data-Atlas to build data pipeline
 ### dbt Models (if applicable)
 ```
 models/
-â”œâ”€â”€ staging/
-â”‚   â””â”€â”€ stg_[source]_[entity].sql
-â”œâ”€â”€ intermediate/
-â”‚   â””â”€â”€ int_[entity].sql
-â””â”€â”€ marts/
-    â””â”€â”€ [dim|fct]_[entity].sql
+|-- staging/
+|   `-- stg_[source]_[entity].sql
+|-- intermediate/
+|   `-- int_[entity].sql
+`-- marts/
+  `-- [dim|fct]_[entity].sql
 ```
 
 ## Data Quality Checks
