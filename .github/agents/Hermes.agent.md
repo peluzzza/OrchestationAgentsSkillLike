@@ -13,7 +13,7 @@ tools:
 handoffs:
   - label: Return Findings
     agent: Atlas
-agents: []
+    prompt: Exploration complete. Review the findings and decide the next step.
 ---
 <!-- layer: 1 | domain: Discovery + Codebase Mapping -->
 

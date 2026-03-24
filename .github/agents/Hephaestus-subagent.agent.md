@@ -13,6 +13,7 @@ tools:
 handoffs:
   - label: Return operations findings to Atlas
     agent: Atlas
+    prompt: Task complete. Review the results and decide the next step.
 ---
 <!-- layer: 1 | type: alias | delegates-to: Hephaestus -->
 

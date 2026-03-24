@@ -12,7 +12,11 @@ tools:
 handoffs:
   - label: Start implementation with DevOps-Atlas
     agent: DevOps-Atlas
-agents: ["Infra-Architect", "Pipeline-Engineer", "Container-Master"]
+    prompt: Implement the generated DevOps plan using phased orchestration.
+agents:
+  - Infra-Architect
+  - Pipeline-Engineer
+  - Container-Master
 ---
 <!-- layer: 2 | parent: DevOps-Atlas > Hephaestus -->
 

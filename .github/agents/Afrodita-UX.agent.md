@@ -19,6 +19,7 @@ tools:
 handoffs:
   - label: Report back to Atlas
     agent: Atlas
+    prompt: Work complete. Review results and determine next steps.
 agents:
   - Afrodita
   - UX-Atlas

@@ -10,7 +10,9 @@ tools:
   - web
   - web/fetch
   - agent
-agents: ["Hermes-subagent", "Oracle-subagent"]
+agents:
+  - Hermes-subagent
+  - Oracle-subagent
 ---
 <!-- layer: 2 | parent: Prometheus -->
 

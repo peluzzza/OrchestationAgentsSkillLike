@@ -13,6 +13,7 @@ tools:
 handoffs:
   - label: Return findings to Atlas
     agent: Atlas
+    prompt: Exploration complete. Review the findings and decide the next step.
 ---
 <!-- layer: 1 | type: alias | delegates-to: Hermes -->
 

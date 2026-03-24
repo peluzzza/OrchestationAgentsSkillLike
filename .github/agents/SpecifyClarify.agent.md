@@ -7,7 +7,6 @@ model: "Claude Sonnet 4.6 (copilot)"
 tools:
   - search
   - edit
-agents: []
 ---
 <!-- layer: 2 | parent: Prometheus -->
 

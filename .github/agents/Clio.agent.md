@@ -14,6 +14,7 @@ tools:
 handoffs:
   - label: Return Clio Update
     agent: Atlas
+    prompt: Task complete. Review the results and decide the next step.
 agents:
   - Frontend-Handoff
 ---

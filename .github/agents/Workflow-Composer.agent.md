@@ -8,7 +8,8 @@ tools:
   - agent
   - search
   - edit
-agents: ["*"]
+agents:
+  - *
 ---
 <!-- layer: 2 | parent: Automation-Atlas > Hephaestus -->
 

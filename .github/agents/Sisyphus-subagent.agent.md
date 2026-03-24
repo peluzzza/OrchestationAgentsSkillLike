@@ -23,6 +23,7 @@ agents:
 handoffs:
   - label: Report implementation results to Atlas
     agent: Atlas
+    prompt: Implementation complete. Review the phase output and advance to review.
 ---
 <!-- layer: 1 | type: alias | delegates-to: Sisyphus -->
 

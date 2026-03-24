@@ -13,6 +13,7 @@ tools:
 handoffs:
   - label: Request Revision
     agent: Atlas
+    prompt: The implementation has issues. Please revise the code according to the feedback provided in the review.
 agents:
   - Backend-Reviewer
   - Frontend-Reviewer

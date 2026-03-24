@@ -12,7 +12,7 @@ tools:
 handoffs:
   - label: Return Ariadna Audit
     agent: Atlas
-agents: []
+    prompt: Dependency audit complete. Review findings and decide on any required upgrades or mitigations.
 ---
 <!-- layer: 1 | domain: Dependency + Package Audit -->
 

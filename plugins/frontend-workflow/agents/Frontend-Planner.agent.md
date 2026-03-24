@@ -12,7 +12,10 @@ tools:
 handoffs:
   - label: Start implementation with Afrodita
     agent: Afrodita
-agents: ["UI-Designer", "State-Manager"]
+    prompt: Task complete. Review the results and decide the next step.
+agents:
+  - UI-Designer
+  - State-Manager
 ---
 <!-- layer: 2 | parent: Afrodita > Afrodita-UX -->
 

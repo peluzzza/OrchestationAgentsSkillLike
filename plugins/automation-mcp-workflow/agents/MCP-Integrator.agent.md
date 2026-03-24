@@ -10,7 +10,8 @@ tools:
   - web/fetch
   - edit
   - execute
-agents: ["*"]
+agents:
+  - *
 ---
 <!-- layer: 2 | parent: Automation-Atlas > Hephaestus -->
 

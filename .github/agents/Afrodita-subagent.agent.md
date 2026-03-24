@@ -18,6 +18,7 @@ tools:
 handoffs:
   - label: Report back to Atlas
     agent: Atlas
+    prompt: Work complete. Review results and determine next steps.
 ---
 <!-- layer: 1 | type: alias | delegates-to: Afrodita-UX -->
 

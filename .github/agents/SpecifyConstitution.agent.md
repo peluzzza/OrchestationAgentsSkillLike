@@ -8,7 +8,8 @@ tools:
   - search
   - edit
   - agent
-agents: ["Oracle-subagent"]
+agents:
+  - Oracle-subagent
 ---
 <!-- layer: 2 | parent: Prometheus -->
 

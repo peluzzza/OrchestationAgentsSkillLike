@@ -9,7 +9,6 @@ tools:
   - edit
   - web
   - web/fetch
-agents: []
 ---
 <!-- layer: 2 | parent: Prometheus -->
 

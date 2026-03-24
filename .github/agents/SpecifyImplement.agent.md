@@ -10,7 +10,6 @@ tools:
   - execute
   - read
   - agent
-agents: []
 ---
 <!-- layer: 2 | parent: Prometheus -->
 

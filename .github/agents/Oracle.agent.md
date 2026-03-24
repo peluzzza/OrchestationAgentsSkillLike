@@ -16,7 +16,7 @@ tools:
 handoffs:
   - label: Delegate to Hermes
     agent: Atlas
-agents: []
+    prompt: Task complete. Review the results and decide the next step.
 ---
 <!-- layer: 1 | domain: Requirements + Architecture Research -->
 
