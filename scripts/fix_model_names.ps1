@@ -7,7 +7,8 @@ foreach ($file in $files) {
     if ($content -match "GPT-5\.4 \(copilot\)") {
         if ($content -match "GPT-5\.2 \(copilot\)") {
             $new = [System.Text.RegularExpressions.Regex]::Replace($content, "  - GPT-5\.4 \(copilot\)\r?\n", "")
-        } else {
+        }
+        else {
             $new = $content -replace "GPT-5\.4 \(copilot\)", "GPT-5.2 (copilot)"
         }
         [System.IO.File]::WriteAllText($file.FullName, $new, [System.Text.UTF8Encoding]::new($false))

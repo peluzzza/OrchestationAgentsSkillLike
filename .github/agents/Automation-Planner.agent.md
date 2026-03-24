@@ -9,8 +9,7 @@ tools:
   - search
   - web/fetch
   - edit
-agents:
-  - *
+agents: []
 ---
 <!-- layer: 2 | parent: Automation-Atlas > Hephaestus -->
 
