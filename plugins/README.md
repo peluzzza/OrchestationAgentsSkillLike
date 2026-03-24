@@ -5,8 +5,7 @@ This directory contains specialized multi-agent workflow packs following the big
 ## Available Workflows
 
 | Workflow | Conductor | Specialists | Purpose |
-|----------|-----------|-------------|---------|
-| [atlas-orchestration-team](./atlas-orchestration-team/) | Atlas | 19 agents | General-purpose orchestration, Specify pipeline, governance specialists (Atenea, Clio, Ariadna) |
+|----------|-----------|-------------|--------|
 | [frontend-workflow](./frontend-workflow/) | Afrodita | 8 agents | UI/UX **implementation** (React, Vue, Angular, TDD, styling) |
 | [backend-workflow](./backend-workflow/) | Backend-Atlas | 8 agents | API & database development |
 | [devops-workflow](./devops-workflow/) | DevOps-Atlas | 8 agents | Infrastructure & CI/CD |
@@ -89,9 +88,9 @@ This directory is also the intended landing zone for future optional packs adapt
 
 The policy is:
 
-- keep the root `.github/agents` workflow as the default zero-setup runtime path
-- keep `plugins/atlas-orchestration-team/agents` as the canonical shared source for the Atlas pack
-- ship additional packs under `plugins/` as part of the repository distribution
+- keep the root `.github/agents` workflow as the default zero-setup runtime path (79 agents, single source of truth)
+- `plugins/atlas-orchestration-team/agents/` is intentionally empty — all agents were consolidated into `.github/agents/`
+- ship additional domain packs under `plugins/` as part of the repository distribution
 - keep those shipped plugin packs available-but-inactive until explicitly enabled
 - prefer small, testable packs over large multi-purpose imports
 

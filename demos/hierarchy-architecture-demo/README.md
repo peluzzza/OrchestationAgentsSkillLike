@@ -26,11 +26,11 @@ Each agent file must declare its layer via an HTML comment immediately after the
 - **L1 gods** delegate to **L2 pack specialists** within their domain.
 - **L2 specialists** are never `user-invocable: true`.
 
-### 3. Tool Name Cleanliness
-All agent `tools:` blocks must use canonical tool names from the authorised set:
-`agent`, `search`, `usages`, `problems`, `changes`, `testFailure`, `web`, `fetch`, `edit`, `execute`, `read`, `mcp`.
+### 3. Tool Name Correctness
+All agent `tools:` blocks must use the canonical slash-prefixed or aliased tool names:
+`agent`, `search`, `search/usages`, `read/problems`, `search/changes`, `execute/testFailure`, `web`, `web/fetch`, `edit`, `execute`, `read`, `mcp`.
 
-Sub-tool slash notation (`execute/runInTerminal`, `web/fetch`) and aliases (`runCommands`) are invalid. Running `scripts/validate_tool_names.py` across the full workspace must exit with code 0.
+Deprecated flat names (`usages`, `problems`, `changes`, `testFailure`, `fetch`) are automatically renamed by `scripts/fix_model_format.py`. All agent files have been updated; running the parity validator must exit with 0 issues.
 
 ### 4. Memory Protocol Integrity
 The memory system is managed by `Memory-Guardian` (L2) and backed by an MCP knowledge graph server configured in `.vscode/mcp.json`. This demo validates that:

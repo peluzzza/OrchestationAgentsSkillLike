@@ -1,6 +1,6 @@
 # Demo: Full Atlas Team Exercise
 
-Smoke test que verifica los **26 agentes** del ecosistema Atlas en una sola sesión.
+Smoke test que verifica los **79 agentes** del ecosistema Atlas en una sola sesión.
 Escenario: un micro-servicio Python de gestión de tareas (`task_service.py`) que
 necesita un feature nuevo, revisión de dependencias, docs actualizadas, y release
 readiness check.

@@ -1,6 +1,6 @@
 # Atlas Agents For VS Code
 
-A multi-agent team for VS Code Copilot Chat. You talk to `@Atlas`; it orchestrates a hidden team of 25 specialists covering planning, implementation, security, testing, documentation, and ops.
+A multi-agent team for VS Code Copilot Chat. You talk to `@Atlas`; it orchestrates a hidden team of 78 specialists covering planning, implementation, security, testing, documentation, and ops.
 
 ## Install (60 seconds)
 
@@ -35,7 +35,7 @@ Then `Ctrl+Shift+P` → `Developer: Reload Window`. That's it.
 
 ## The Agent Team
 
-All 26 agents live in `.github/agents/`. You only need to know about `@Atlas`.
+All 79 agents live in `.github/agents/`. You only need to know about `@Atlas`.
 
 | Role | Agent | Invoked by |
 |---|---|---|
@@ -119,23 +119,24 @@ Artifacts land in `.specify/specs/<feature-slug>/`. The SP-5 gate (pre-tasks) an
 ## Repository Layout
 
 ```
-.github/agents/          ← 26 agent files (the only thing VS Code reads)
+.github/agents/          ← 79 agent files (the only thing VS Code reads)
 .github/plugin/
   pack-registry.json     ← activation map: which packs are shipped vs active
 plugins/                 ← optional domain packs (inactive unless enabled above)
+  atlas-orchestration-team/agents/  ← empty; all agents consolidated into .github/agents/
 spec-kit/                ← Specify pipeline reference docs
 demos/                   ← smoke tests per capability lane
-scripts/                 ← sync and validation utilities
+scripts/                 ← sync, validation, and fix utilities
 plans/                   ← Atlas orchestration artifacts
 ```
 
 ## Validation
 
 ```shell
-py -m unittest -v scripts/test_validate_pack_registry.py
-py -m unittest -v scripts/test_validate_atlas_pack_parity.py
-py -m unittest -v demos/specify-rbac-springboot-demo/test_rbac_harness.py
+python -m pytest scripts/ -q
 ```
+
+The parity validator (`validate_atlas_pack_parity.py`) checks that `.github/agents/` contains exactly the canonical 79 agents defined in `ALL_AGENTS` — no more, no fewer.
 
 ### Cross-Workflow Handoffs
 
@@ -208,7 +209,7 @@ Specify agents are already included in `.github/agents/` — no extra plugin sou
 
 ## Optional: Distribution / Marketplace Packs
 
-Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use. Shared Atlas-pack improvements should land in `plugins/atlas-orchestration-team/agents` first and then be synced into `.github/agents`.
+Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use. All agent improvements go directly into `.github/agents/` — `plugins/atlas-orchestration-team/agents/` is intentionally empty (agents were consolidated in a previous refactor).
 
 Not every directory under `plugins/` is necessarily published in `.github/plugin/marketplace.json` at the same time: some packs can exist as shipped-but-inactive local plugin-path examples, mirrors, or pre-marketplace workflows.
 

@@ -1,8 +1,10 @@
 # Atlas Orchestration Team
 
+> **Note:** The `agents/` subfolder in this pack is intentionally empty. All 79 agents have been consolidated into `.github/agents/` as the single source of truth. This pack folder is retained for repository structure compatibility only.
+
 Core end-to-end orchestration pack for plan → implement → review → verify flows.
 
-This is the canonical shared source for the repository's 19-agent Atlas orchestration pack. The root `.github/agents` surface stays active by default for zero-setup use, but its shared files are expected to remain synced from this pack while preserving 7 root-only compatibility aliases.
+The root `.github/agents/` surface is the canonical runtime location for all agents. It contains the full 3-layer hierarchy: Layer 0 (Atlas), Layer 1 (11 domain gods + 7 compatibility aliases), and Layer 2 (60+ domain specialists).
 
 ## Purpose
 
