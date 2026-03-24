@@ -37,17 +37,31 @@ Then `Ctrl+Shift+P` → `Developer: Reload Window`. That's it.
 
 This repository ships many agent definitions in `.github/agents`, but the **stable zero-setup orchestration path** is intentionally narrower than the full file count. You only need to know about `@Atlas`.
 
+Under `stable-runtime-v1`, the root runtime is split into a **mandatory stable core** and a few **optional validated utility lanes**. The validator requires the stable core to be complete; `Hermes-subagent`, `Oracle-subagent`, and `HEPHAESTUS` are validated when present, but they are not part of the stable-core completeness requirement.
+
+### Stable core (mandatory)
+
 | Role | Agent | Invoked by |
 |---|---|---|
 | Conductor | `Atlas` | **You** |
 | Planner / Specify pipeline | `Prometheus` | Atlas |
-| Code exploration | `Hermes-subagent` | Atlas, Prometheus |
-| Deep research | `Oracle-subagent` | Atlas, Prometheus |
 | Implementation | `Sisyphus-subagent` | Atlas |
 | Frontend / UI | `Afrodita-subagent` | Atlas |
 | Code review | `Themis Subagent` | Atlas |
 | Testing / QA | `Argus - QA Testing Subagent` | Atlas |
-| Ops / Deploy / Incidents | `HEPHAESTUS` | Atlas |
+
+### Optional validated utility lanes
+
+| Role | Agent | Invoked by | Runtime note |
+|---|---|---|---|
+| Code exploration | `Hermes-subagent` | Atlas, Prometheus | Validated when present; inherits session context and requires trace propagation |
+| Deep research | `Oracle-subagent` | Atlas, Prometheus | Validated when present; inherits session context and requires trace propagation |
+| Ops / Deploy / Incidents | `HEPHAESTUS` | Atlas | Validated when present; inherits session context and requires trace propagation |
+
+### Hidden Specify pipeline agents
+
+| Role | Agent | Invoked by |
+|---|---|---|
 | Specify: Constitution | `SpecifyConstitution` | Prometheus |
 | Specify: Spec | `SpecifySpec` | Prometheus |
 | Specify: Clarify | `SpecifyClarify` | Prometheus |
@@ -116,6 +130,8 @@ You → @Atlas
 
 Atlas reads `.github/plugin/pack-registry.json` as a shipped-pack activation map. In this clone, the authoritative runtime is still the root `.github/agents` surface; shipped plugin packs remain optional and inactive unless you explicitly enable them.
 
+In practice, Atlas's stable default path always expects the stable core above. `Hermes-subagent`, `Oracle-subagent`, and `HEPHAESTUS` remain available utility lanes in this checkout, but their runtime contract is intentionally softer: they must match `stable-runtime-v1` **when present**, they inherit the caller session, and they require trace propagation across delegated work.
+
 ## Enable Optional Conductors
 
 Optional domain conductors are shipped in `plugins/` but inactive by default. Add to `.vscode/settings.json` to activate:
@@ -170,6 +186,7 @@ plans/                   ← Atlas orchestration artifacts
 ## Validation
 
 ```shell
+python3 scripts/validate_layer_hierarchy.py
 python -m pytest scripts/ -q
 ```
 
@@ -320,7 +337,7 @@ If you see more than one visible agent:
 If `Atlas` does not delegate:
 
 1. Verify `Atlas` frontmatter includes `tools: [agent, ...]`.
-2. Verify `Atlas` includes `agents: ["*"]`.
+2. Verify `Atlas` frontmatter lists its stable specialists in `agents:` (`Prometheus`, `Hermes-subagent`, `Oracle-subagent`, `Sisyphus-subagent`, `Afrodita-subagent`, `Themis Subagent`, `Argus - QA Testing Subagent`, `HEPHAESTUS`).
 3. Confirm subagent files exist under `.github/agents`.
 
 If the flow-selection demo seems wrong:

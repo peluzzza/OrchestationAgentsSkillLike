@@ -10,17 +10,24 @@ This folder currently acts as a **distribution metadata shell** for the Atlas or
 
 ## What Atlas Runtime Means Here
 
-The live orchestration surface in this clone is rooted in `.github/agents` and currently centers on:
+The live orchestration surface in this clone is rooted in `.github/agents`.
+
+### Stable core (mandatory)
 
 - `Atlas`
 - `Prometheus`
-- `Hermes-subagent`
-- `Oracle-subagent`
 - `Sisyphus-subagent`
 - `Afrodita-subagent`
 - `Themis Subagent`
 - `Argus - QA Testing Subagent`
+
+### Optional validated utility lanes
+
+- `Hermes-subagent`
+- `Oracle-subagent`
 - `HEPHAESTUS`
+
+These three utility lanes are still part of the shipped root runtime in this checkout, but they are **validated when present**, not part of stable-core completeness. Under `stable-runtime-v1` they inherit the caller session context and require trace propagation across delegated work.
 
 Optional governance lanes such as `Atenea`, `Ariadna`, and `Clio` remain shipped as root agent definitions, but they are not required for the stable default path.
 

@@ -125,6 +125,56 @@ _STABLE_RUNTIME_AGENTS: dict[str, dict] = {
 
 
 # ---------------------------------------------------------------------------
+# Optional runtime agent contract requirements
+# ---------------------------------------------------------------------------
+# These agents are validated when present but are NOT part of the mandatory
+# core stable set.  Absence of any one of them never triggers a completeness
+# requirement for the others.
+
+_OPTIONAL_RUNTIME_AGENTS: dict[str, dict] = {
+    "Hermes-subagent": {
+        "version": "stable-runtime-v1",
+        "role": "explorer",
+        "layer": "1",
+        "accepts": "parent-agent",
+        "returns": "parent-agent",
+        "session": "inherited",
+        "trace": "required",
+        "request": frozenset({"goal", "scope", "constraints"}),
+        "response": frozenset({"intent_analysis", "files", "answer", "next_steps"}),
+    },
+    "Oracle-subagent": {
+        "version": "stable-runtime-v1",
+        "role": "researcher",
+        "layer": "1",
+        "accepts": "parent-agent",
+        "returns": "parent-agent",
+        "session": "inherited",
+        "trace": "required",
+        "request": frozenset({"goal", "context", "constraints"}),
+        "response": frozenset({
+            "relevant_files", "key_functions_classes", "patterns_conventions",
+            "existing_tests", "implementation_options", "open_questions",
+        }),
+    },
+    "HEPHAESTUS": {
+        "version": "stable-runtime-v1",
+        "role": "ops_specialist",
+        "layer": "1",
+        "accepts": "Atlas",
+        "returns": "Atlas",
+        "session": "inherited",
+        "trace": "required",
+        "request": frozenset({"mode", "scope", "environment", "context"}),
+        "response": frozenset({
+            "mode", "status", "evidence", "actions_taken",
+            "issues_found", "recommended_next_steps",
+        }),
+    },
+}
+
+
+# ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
@@ -269,7 +319,7 @@ def _check_runtime_contract(
     if contract is None:
         violations.append(
             f"MISSING RUNTIME CONTRACT: {rec.path} | "
-            f"stable agent '{rec.name}' has no runtime-contract comment"
+            f"agent '{rec.name}' has no runtime-contract comment"
         )
         return
 
@@ -374,6 +424,9 @@ def validate(files: list[Path]) -> tuple[list[AgentRecord], list[str]]:
         _check_layer_rules(rec, name_to_layer, violations)
         if rec.name in _STABLE_RUNTIME_AGENTS:
             _check_runtime_contract(rec, _STABLE_RUNTIME_AGENTS[rec.name], violations)
+        elif rec.name in _OPTIONAL_RUNTIME_AGENTS:
+            # Optional agents: validate when present, no completeness coupling.
+            _check_runtime_contract(rec, _OPTIONAL_RUNTIME_AGENTS[rec.name], violations)
 
     _check_stable_agent_completeness(records, violations)
 

@@ -28,6 +28,7 @@ _extract_agents_list = _vlh._extract_agents_list
 _parse_runtime_contract = _vlh._parse_runtime_contract
 _check_runtime_contract = _vlh._check_runtime_contract
 _STABLE_RUNTIME_AGENTS = _vlh._STABLE_RUNTIME_AGENTS
+_collect_agent_files = _vlh._collect_agent_files
 REPO_ROOT = _vlh.REPO_ROOT
 
 
@@ -330,6 +331,28 @@ _ARGUS_CONTRACT = (
     "accepts=Atlas | returns=Atlas | "
     "request=phase_objective,modified_files,existing_tests | "
     "response=status,summary,coverage_analysis,edge_cases_discovered,additional_tests_recommended,test_execution_results,next_steps -->"
+)
+
+# Optional-lane contract fixtures (Hermes, Oracle, HEPHAESTUS)
+# Include session=inherited and trace=required — required by the wave-3 registry.
+_HERMES_CONTRACT = (
+    "<!-- runtime-contract | version=stable-runtime-v1 | role=explorer | layer=1 | "
+    "accepts=parent-agent | returns=parent-agent | session=inherited | trace=required | "
+    "request=goal,scope,constraints | "
+    "response=intent_analysis,files,answer,next_steps -->"
+)
+_ORACLE_CONTRACT = (
+    "<!-- runtime-contract | version=stable-runtime-v1 | role=researcher | layer=1 | "
+    "accepts=parent-agent | returns=parent-agent | session=inherited | trace=required | "
+    "request=goal,context,constraints | "
+    "response=relevant_files,key_functions_classes,patterns_conventions,"
+    "existing_tests,implementation_options,open_questions -->"
+)
+_HEPHAESTUS_CONTRACT = (
+    "<!-- runtime-contract | version=stable-runtime-v1 | role=ops_specialist | layer=1 | "
+    "accepts=Atlas | returns=Atlas | session=inherited | trace=required | "
+    "request=mode,scope,environment,context | "
+    "response=mode,status,evidence,actions_taken,issues_found,recommended_next_steps -->"
 )
 
 
@@ -789,6 +812,550 @@ class TestExtractAgentsList:
             assert rec.agents_list == []
         finally:
             p.chmod(0o644)  # restore for tmp_path cleanup
+
+
+# ---------------------------------------------------------------------------
+# Optional runtime contract enforcement
+# ---------------------------------------------------------------------------
+
+
+class TestOptionalRuntimeContracts:
+    """Optional agents (Hermes, Oracle, HEPHAESTUS) are validated when present
+    but are never part of the mandatory core stable completeness set."""
+
+    # -- valid contract passes -----------------------------------------------
+
+    def test_valid_hermes_contract_passes(self, tmp_path: Path) -> None:
+        """Hermes-subagent with a valid contract → no runtime-contract violation."""
+        p = _write_agent(
+            tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+            runtime_contract=_HERMES_CONTRACT,
+        )
+        _, violations = validate([p])
+        assert not any("RUNTIME CONTRACT" in v for v in violations), violations
+
+    def test_valid_oracle_contract_passes(self, tmp_path: Path) -> None:
+        """Oracle-subagent with a valid contract → no runtime-contract violation."""
+        p = _write_agent(
+            tmp_path, "Oracle-subagent.agent.md", "Oracle-subagent", "<!-- layer: 1 -->",
+            runtime_contract=_ORACLE_CONTRACT,
+        )
+        _, violations = validate([p])
+        assert not any("RUNTIME CONTRACT" in v for v in violations), violations
+
+    def test_valid_hephaestus_contract_passes(self, tmp_path: Path) -> None:
+        """HEPHAESTUS with a valid contract → no runtime-contract violation."""
+        p = _write_agent(
+            tmp_path, "HEPHAESTUS.agent.md", "HEPHAESTUS", "<!-- layer: 1 -->",
+            runtime_contract=_HEPHAESTUS_CONTRACT,
+        )
+        _, violations = validate([p])
+        assert not any("RUNTIME CONTRACT" in v for v in violations), violations
+
+    # -- missing contract yields violation when the agent is present ----------
+
+    def test_missing_hermes_contract_yields_violation(self, tmp_path: Path) -> None:
+        """Hermes-subagent present without a contract → MISSING RUNTIME CONTRACT violation."""
+        p = _write_agent(
+            tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+        )
+        _, violations = validate([p])
+        assert any(
+            "MISSING RUNTIME CONTRACT" in v and "Hermes-subagent" in v
+            for v in violations
+        ), violations
+
+    def test_missing_oracle_contract_yields_violation(self, tmp_path: Path) -> None:
+        """Oracle-subagent present without a contract → MISSING RUNTIME CONTRACT violation."""
+        p = _write_agent(
+            tmp_path, "Oracle-subagent.agent.md", "Oracle-subagent", "<!-- layer: 1 -->",
+        )
+        _, violations = validate([p])
+        assert any(
+            "MISSING RUNTIME CONTRACT" in v and "Oracle-subagent" in v
+            for v in violations
+        ), violations
+
+    def test_missing_hephaestus_contract_yields_violation(self, tmp_path: Path) -> None:
+        """HEPHAESTUS present without a contract → MISSING RUNTIME CONTRACT violation."""
+        p = _write_agent(
+            tmp_path, "HEPHAESTUS.agent.md", "HEPHAESTUS", "<!-- layer: 1 -->",
+        )
+        _, violations = validate([p])
+        assert any(
+            "MISSING RUNTIME CONTRACT" in v and "HEPHAESTUS" in v
+            for v in violations
+        ), violations
+
+    # -- invalid optional contract fields yield violation --------------------
+
+    def test_wrong_role_in_hermes_contract_yields_violation(self, tmp_path: Path) -> None:
+        """Hermes-subagent with wrong role → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=implementer | layer=1 | "
+            "accepts=parent-agent | returns=parent-agent | session=inherited | trace=required | "
+            "request=goal,scope,constraints | "
+            "response=intent_analysis,files,answer,next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "role" in v and "Hermes-subagent" in v
+            for v in violations
+        ), violations
+
+    def test_missing_request_field_in_oracle_yields_violation(self, tmp_path: Path) -> None:
+        """Oracle-subagent contract missing 'context' → REQUEST FIELDS violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=researcher | layer=1 | "
+            "accepts=parent-agent | returns=parent-agent | session=inherited | trace=required | "
+            "request=goal,constraints | "
+            "response=relevant_files,key_functions_classes,patterns_conventions,"
+            "existing_tests,implementation_options,open_questions -->"
+        )
+        p = _write_agent(
+            tmp_path, "Oracle-subagent.agent.md", "Oracle-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT REQUEST FIELDS" in v and "context" in v and "Oracle-subagent" in v
+            for v in violations
+        ), violations
+
+    def test_missing_response_field_in_hephaestus_yields_violation(self, tmp_path: Path) -> None:
+        """HEPHAESTUS contract missing 'evidence' → RESPONSE FIELDS violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=ops_specialist | layer=1 | "
+            "accepts=Atlas | returns=Atlas | session=inherited | trace=required | "
+            "request=mode,scope,environment,context | "
+            "response=mode,status,actions_taken,issues_found,recommended_next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "HEPHAESTUS.agent.md", "HEPHAESTUS", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT RESPONSE FIELDS" in v and "evidence" in v and "HEPHAESTUS" in v
+            for v in violations
+        ), violations
+
+    # -- no completeness coupling between optional agents --------------------
+
+    def test_hermes_alone_does_not_require_oracle_or_hephaestus(self, tmp_path: Path) -> None:
+        """Hermes present alone → no completeness or missing violation for Oracle/HEPHAESTUS."""
+        p = _write_agent(
+            tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+            runtime_contract=_HERMES_CONTRACT,
+        )
+        _, violations = validate([p])
+        assert not any(
+            ("Oracle-subagent" in v or "HEPHAESTUS" in v) and "MISSING" in v
+            for v in violations
+        ), violations
+
+    def test_optional_agents_alone_do_not_trigger_stable_completeness(self, tmp_path: Path) -> None:
+        """Hermes + Oracle present (no stable agents) → no MISSING STABLE AGENT violations."""
+        files = [
+            _write_agent(
+                tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_HERMES_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Oracle-subagent.agent.md", "Oracle-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_ORACLE_CONTRACT,
+            ),
+        ]
+        _, violations = validate(files)
+        assert not any("MISSING STABLE AGENT" in v for v in violations), violations
+
+    # -- core stable completeness behavior preserved -------------------------
+
+    def test_stable_completeness_unaffected_by_optional_presence(self, tmp_path: Path) -> None:
+        """All six stable agents plus Hermes → stable completeness satisfied, no spurious violations."""
+        files = [
+            _write_agent(
+                tmp_path, "Atlas.agent.md", "Atlas", "<!-- layer: 0 -->",
+                runtime_contract=_ATLAS_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Prometheus.agent.md", "Prometheus", "<!-- layer: 1 -->",
+                runtime_contract=_PROMETHEUS_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Sisyphus-subagent.agent.md", "Sisyphus-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_SISYPHUS_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Afrodita-subagent.agent.md", "Afrodita-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_AFRODITA_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Themis-subagent.agent.md", "Themis Subagent", "<!-- layer: 1 -->",
+                runtime_contract=_THEMIS_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Argus-subagent.agent.md", "Argus - QA Testing Subagent", "<!-- layer: 1 -->",
+                runtime_contract=_ARGUS_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_HERMES_CONTRACT,
+            ),
+        ]
+        _, violations = validate(files)
+        assert not any("MISSING STABLE AGENT" in v for v in violations), violations
+        assert not any("RUNTIME CONTRACT" in v for v in violations), violations
+
+    def test_stable_completeness_still_fails_when_one_stable_missing_and_optional_present(
+        self, tmp_path: Path
+    ) -> None:
+        """Five stable agents + Hermes (Argus absent) → MISSING STABLE AGENT for Argus."""
+        files = [
+            _write_agent(
+                tmp_path, "Atlas.agent.md", "Atlas", "<!-- layer: 0 -->",
+                runtime_contract=_ATLAS_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Prometheus.agent.md", "Prometheus", "<!-- layer: 1 -->",
+                runtime_contract=_PROMETHEUS_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Sisyphus-subagent.agent.md", "Sisyphus-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_SISYPHUS_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Afrodita-subagent.agent.md", "Afrodita-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_AFRODITA_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Themis-subagent.agent.md", "Themis Subagent", "<!-- layer: 1 -->",
+                runtime_contract=_THEMIS_CONTRACT,
+            ),
+            # Argus deliberately omitted
+            _write_agent(
+                tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_HERMES_CONTRACT,
+            ),
+        ]
+        _, violations = validate(files)
+        assert any(
+            "MISSING STABLE AGENT" in v and "Argus - QA Testing Subagent" in v
+            for v in violations
+        ), violations
+
+    # -- session / trace field enforcement for optional agents ---------------
+
+    def test_missing_session_in_hermes_yields_violation(self, tmp_path: Path) -> None:
+        """Hermes-subagent contract with session field absent → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=explorer | layer=1 | "
+            "accepts=parent-agent | returns=parent-agent | trace=required | "
+            "request=goal,scope,constraints | "
+            "response=intent_analysis,files,answer,next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "session" in v and "Hermes-subagent" in v
+            for v in violations
+        ), violations
+
+    def test_missing_trace_in_oracle_yields_violation(self, tmp_path: Path) -> None:
+        """Oracle-subagent contract with trace field absent → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=researcher | layer=1 | "
+            "accepts=parent-agent | returns=parent-agent | session=inherited | "
+            "request=goal,context,constraints | "
+            "response=relevant_files,key_functions_classes,patterns_conventions,"
+            "existing_tests,implementation_options,open_questions -->"
+        )
+        p = _write_agent(
+            tmp_path, "Oracle-subagent.agent.md", "Oracle-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "trace" in v and "Oracle-subagent" in v
+            for v in violations
+        ), violations
+
+    def test_wrong_session_in_hephaestus_yields_violation(self, tmp_path: Path) -> None:
+        """HEPHAESTUS contract with session=required (should be inherited) → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=ops_specialist | layer=1 | "
+            "accepts=Atlas | returns=Atlas | session=required | trace=required | "
+            "request=mode,scope,environment,context | "
+            "response=mode,status,evidence,actions_taken,issues_found,recommended_next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "HEPHAESTUS.agent.md", "HEPHAESTUS", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "session" in v and "HEPHAESTUS" in v
+            for v in violations
+        ), violations
+
+    def test_wrong_trace_in_hermes_yields_violation(self, tmp_path: Path) -> None:
+        """Hermes-subagent contract with trace=optional (should be required) → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=explorer | layer=1 | "
+            "accepts=parent-agent | returns=parent-agent | session=inherited | trace=optional | "
+            "request=goal,scope,constraints | "
+            "response=intent_analysis,files,answer,next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "trace" in v and "Hermes-subagent" in v
+            for v in violations
+        ), violations
+
+    # -- parity: version enforcement for optional agents --------------------
+
+    def test_wrong_version_in_optional_agent_yields_violation(self, tmp_path: Path) -> None:
+        """Hermes-subagent contract with wrong version string → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v0 | role=explorer | layer=1 | "
+            "accepts=parent-agent | returns=parent-agent | session=inherited | trace=required | "
+            "request=goal,scope,constraints | "
+            "response=intent_analysis,files,answer,next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "version" in v and "Hermes-subagent" in v
+            for v in violations
+        ), violations
+
+    # -- parity: accepts drift rejected for Hermes and Oracle ---------------
+
+    def test_wrong_accepts_in_hermes_yields_violation(self, tmp_path: Path) -> None:
+        """Hermes-subagent with accepts=Atlas (should be parent-agent) → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=explorer | layer=1 | "
+            "accepts=Atlas | returns=parent-agent | session=inherited | trace=required | "
+            "request=goal,scope,constraints | "
+            "response=intent_analysis,files,answer,next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "accepts" in v and "Hermes-subagent" in v
+            for v in violations
+        ), violations
+
+    def test_wrong_accepts_in_oracle_yields_violation(self, tmp_path: Path) -> None:
+        """Oracle-subagent with accepts=user (should be parent-agent) → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=researcher | layer=1 | "
+            "accepts=user | returns=parent-agent | session=inherited | trace=required | "
+            "request=goal,context,constraints | "
+            "response=relevant_files,key_functions_classes,patterns_conventions,"
+            "existing_tests,implementation_options,open_questions -->"
+        )
+        p = _write_agent(
+            tmp_path, "Oracle-subagent.agent.md", "Oracle-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "accepts" in v and "Oracle-subagent" in v
+            for v in violations
+        ), violations
+
+    # -- parity: all three optional agents valid together -------------------
+
+    def test_all_three_optional_agents_valid_together_pass(self, tmp_path: Path) -> None:
+        """Hermes-subagent + Oracle-subagent + HEPHAESTUS all valid contracts together
+        → zero runtime-contract violations and no stable-completeness noise."""
+        files = [
+            _write_agent(
+                tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_HERMES_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "Oracle-subagent.agent.md", "Oracle-subagent", "<!-- layer: 1 -->",
+                runtime_contract=_ORACLE_CONTRACT,
+            ),
+            _write_agent(
+                tmp_path, "HEPHAESTUS.agent.md", "HEPHAESTUS", "<!-- layer: 1 -->",
+                runtime_contract=_HEPHAESTUS_CONTRACT,
+            ),
+        ]
+        _, violations = validate(files)
+        rc_violations = [v for v in violations if "RUNTIME CONTRACT" in v]
+        completeness_violations = [v for v in violations if "MISSING STABLE AGENT" in v]
+        assert rc_violations == [], f"Unexpected runtime contract violations: {rc_violations}"
+        assert completeness_violations == [], f"Unexpected completeness violations: {completeness_violations}"
+
+    # -- parity: returns drift rejected for optional agents -----------------
+
+    def test_wrong_returns_in_hermes_yields_violation(self, tmp_path: Path) -> None:
+        """Hermes-subagent with returns=Atlas (should be parent-agent) → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=explorer | layer=1 | "
+            "accepts=parent-agent | returns=Atlas | session=inherited | trace=required | "
+            "request=goal,scope,constraints | "
+            "response=intent_analysis,files,answer,next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "Hermes-subagent.agent.md", "Hermes-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "returns" in v and "Hermes-subagent" in v
+            for v in violations
+        ), violations
+
+    def test_wrong_returns_in_oracle_yields_violation(self, tmp_path: Path) -> None:
+        """Oracle-subagent with returns=user (should be parent-agent) → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=researcher | layer=1 | "
+            "accepts=parent-agent | returns=user | session=inherited | trace=required | "
+            "request=goal,context,constraints | "
+            "response=relevant_files,key_functions_classes,patterns_conventions,"
+            "existing_tests,implementation_options,open_questions -->"
+        )
+        p = _write_agent(
+            tmp_path, "Oracle-subagent.agent.md", "Oracle-subagent", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "returns" in v and "Oracle-subagent" in v
+            for v in violations
+        ), violations
+
+    def test_wrong_returns_in_hephaestus_yields_violation(self, tmp_path: Path) -> None:
+        """HEPHAESTUS with returns=parent-agent (should be Atlas) → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=ops_specialist | layer=1 | "
+            "accepts=Atlas | returns=parent-agent | session=inherited | trace=required | "
+            "request=mode,scope,environment,context | "
+            "response=mode,status,evidence,actions_taken,issues_found,recommended_next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "HEPHAESTUS.agent.md", "HEPHAESTUS", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "returns" in v and "HEPHAESTUS" in v
+            for v in violations
+        ), violations
+
+    # -- parity: version absent from optional agent contract ----------------
+
+    def test_version_absent_from_optional_agent_contract_yields_violation(self, tmp_path: Path) -> None:
+        """Oracle-subagent contract with version field absent → RUNTIME CONTRACT FIELD violation."""
+        no_version_contract = (
+            "<!-- runtime-contract | role=researcher | layer=1 | "
+            "accepts=parent-agent | returns=parent-agent | session=inherited | trace=required | "
+            "request=goal,context,constraints | "
+            "response=relevant_files,key_functions_classes,patterns_conventions,"
+            "existing_tests,implementation_options,open_questions -->"
+        )
+        p = _write_agent(
+            tmp_path, "Oracle-subagent.agent.md", "Oracle-subagent", "<!-- layer: 1 -->",
+            runtime_contract=no_version_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "version" in v and "Oracle-subagent" in v
+            for v in violations
+        ), violations
+
+    # -- parity: accepts drift rejected for HEPHAESTUS ----------------------
+
+    def test_wrong_accepts_in_hephaestus_yields_violation(self, tmp_path: Path) -> None:
+        """HEPHAESTUS with accepts=parent-agent (should be Atlas) → RUNTIME CONTRACT FIELD violation."""
+        bad_contract = (
+            "<!-- runtime-contract | version=stable-runtime-v1 | role=ops_specialist | layer=1 | "
+            "accepts=parent-agent | returns=Atlas | session=inherited | trace=required | "
+            "request=mode,scope,environment,context | "
+            "response=mode,status,evidence,actions_taken,issues_found,recommended_next_steps -->"
+        )
+        p = _write_agent(
+            tmp_path, "HEPHAESTUS.agent.md", "HEPHAESTUS", "<!-- layer: 1 -->",
+            runtime_contract=bad_contract,
+        )
+        _, violations = validate([p])
+        assert any(
+            "RUNTIME CONTRACT FIELD" in v and "accepts" in v and "HEPHAESTUS" in v
+            for v in violations
+        ), violations
+
+
+# ---------------------------------------------------------------------------
+# _collect_agent_files — isolated coverage
+# ---------------------------------------------------------------------------
+
+
+class TestCollectAgentFiles:
+    """Direct coverage for ``_collect_agent_files`` using a temporary fake repo layout."""
+
+    def test_discovers_github_agents_and_plugins(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Files in both ``.github/agents/`` and ``plugins/`` subdirs are returned."""
+        agents_dir = tmp_path / ".github" / "agents"
+        agents_dir.mkdir(parents=True)
+        (agents_dir / "Atlas.agent.md").write_text("", encoding="utf-8")
+        (agents_dir / "Prometheus.agent.md").write_text("", encoding="utf-8")
+
+        plugin_dir = tmp_path / "plugins" / "extra"
+        plugin_dir.mkdir(parents=True)
+        (plugin_dir / "MyPlugin.agent.md").write_text("", encoding="utf-8")
+
+        monkeypatch.setattr(_vlh, "REPO_ROOT", tmp_path)
+        files = _collect_agent_files()
+        names = {f.name for f in files}
+        assert "Atlas.agent.md" in names
+        assert "Prometheus.agent.md" in names
+        assert "MyPlugin.agent.md" in names
+
+    def test_returns_empty_when_neither_dir_exists(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Neither ``.github/agents`` nor ``plugins`` present → empty list, no crash."""
+        monkeypatch.setattr(_vlh, "REPO_ROOT", tmp_path)
+        files = _collect_agent_files()
+        assert files == []
+
+    def test_non_agent_md_files_excluded(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Plain ``.md`` files in ``agents/`` are not collected; only ``*.agent.md``."""
+        agents_dir = tmp_path / ".github" / "agents"
+        agents_dir.mkdir(parents=True)
+        (agents_dir / "README.md").write_text("", encoding="utf-8")
+        (agents_dir / "Atlas.agent.md").write_text("", encoding="utf-8")
+
+        monkeypatch.setattr(_vlh, "REPO_ROOT", tmp_path)
+        files = _collect_agent_files()
+        names = {f.name for f in files}
+        assert "README.md" not in names
+        assert "Atlas.agent.md" in names
 
 
 # ---------------------------------------------------------------------------
