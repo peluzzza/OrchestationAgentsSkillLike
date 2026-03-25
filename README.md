@@ -62,11 +62,11 @@ Under `stable-runtime-v1`, the root runtime is split into a **mandatory stable c
 
 | Role | Agent | Invoked by |
 |---|---|---|
-| Specify: Constitution | `SpecifyConstitution` | Prometheus |
+| Specify: Constitution | `SpecifyConstitution` | Shipped helper agent (not in Prometheus default delegated path) |
 | Specify: Spec | `SpecifySpec` | Prometheus |
-| Specify: Clarify | `SpecifyClarify` | Prometheus |
+| Specify: Clarify | `SpecifyClarify` | Shipped helper agent (not in Prometheus default delegated path) |
 | Specify: Plan | `SpecifyPlan` | Prometheus |
-| Specify: Tasks | `SpecifyTasks` | Prometheus |
+| Specify: Tasks | `SpecifyTasks` | Sisyphus |
 | Specify: Consistency | `SpecifyAnalyze` | Prometheus, Sisyphus |
 | Specify: Implement | `SpecifyImplement` | Sisyphus |
 
@@ -161,10 +161,10 @@ Optional domain conductors are shipped in `plugins/` but inactive by default. Ad
 
 ## Spec-Driven Development (Specify pipeline)
 
-For any implementation task, Atlas routes through Prometheus which runs the full Specify pipeline before writing code:
+For any implementation task, Atlas routes through Prometheus which runs the effective Specify planning path before writing code. In the current default runtime, `SpecifyConstitution` and `SpecifyClarify` are still shipped as hidden helper agents, but Prometheus treats the ratified constitution file as the authority and applies conservative clarification defaults inline instead of invoking those two agents directly:
 
 ```
-Constitution → Spec → Clarify → Plan → SP-5 gate → Tasks → EX-1 gate → Implement
+Constitution file → Spec → inline clarification defaults (if needed) → Plan → SP-5 gate → Tasks → EX-1 gate → Implement
 ```
 
 Artifacts land in `.specify/specs/<feature-slug>/`. The SP-5 gate (pre-tasks) and EX-1 gate (pre-implementation) are consistency checkpoints that Atlas enforces before allowing Sisyphus to write code.
@@ -218,17 +218,19 @@ See [plugins/README.md](plugins/README.md) only if you intentionally want distri
 | `SpecifyAnalyze` | Cross-artifact consistency analysis (read-only) | `spec-kit/analyze` |
 | `SpecifyImplement` | Execute tasks phase-by-phase, mark `[x]`, enforce checklist gate | `spec-kit/implement` |
 
+In the default runtime path today, Prometheus actively delegates to `SpecifySpec`, `SpecifyPlan`, and `SpecifyAnalyze`. `SpecifyConstitution` and `SpecifyClarify` remain shipped and hardened, but the planner currently handles those concerns through direct file authority and conservative inline defaults.
+
 ### Pipeline Flow
 
 ```
 Atlas
  └─ Prometheus (planning)
-      ├─ SP-0  Hermes + Oracle          → context mapping
-      ├─ SP-1  SpecifyConstitution        → .specify/memory/constitution.md
-      ├─ SP-2  SpecifySpec                → .specify/specs/<feature>/spec.md
-      ├─ SP-3  SpecifyClarify (if needed) → spec.md updated
-      ├─ SP-4  SpecifyPlan                → plan.md, data-model.md, contracts/, research.md
-      └─ SP-5  SpecifyAnalyze             → analysis-report.md → plan delivered to Atlas
+  ├─ SP-0  Hermes + Oracle               → context mapping
+  ├─ SP-1  constitution file authority   → .specify/memory/constitution.md
+  ├─ SP-2  SpecifySpec                   → .specify/specs/<feature>/spec.md
+  ├─ SP-3  inline clarification defaults → spec.md updated when needed
+  ├─ SP-4  SpecifyPlan                   → plan.md, data-model.md, contracts/, research.md
+  └─ SP-5  SpecifyAnalyze                → analysis-report.md → plan delivered to Atlas
 
 Atlas
  └─ Sisyphus (implementation)
