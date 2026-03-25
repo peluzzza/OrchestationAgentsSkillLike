@@ -1,6 +1,8 @@
 # Atlas Agents For VS Code
 
-A multi-agent runtime for VS Code Copilot Chat. In this clone, you talk to `@Atlas`; it orchestrates a stable hidden working surface for planning, implementation, review, QA, and ops from the default-active root runtime in `.github/agents`.
+A multi-agent runtime for VS Code Copilot Chat. In this clone, you talk to `@Atlas`; it orchestrates a stable hidden working surface for planning, implementation, review, QA, and ops from `.github/agents`.
+
+> **Important for this repo:** the active agents you should edit live in `.github/agents`. Do not treat `plugins/` as the working runtime surface unless you are explicitly operating in plugin/distribution mode.
 
 ## Install (60 seconds)
 
@@ -128,11 +130,13 @@ You → @Atlas
          └── Optional lanes when explicitly available: Atenea / Clio / Ariadna
 ```
 
-Atlas reads `.github/plugin/pack-registry.json` as a shipped-pack activation map. In this clone, the authoritative runtime is still the root `.github/agents` surface; shipped plugin packs remain optional and inactive unless you explicitly enable them.
+Atlas reads `.github/plugin/pack-registry.json` as a shipped-pack activation map. In this clone, the authoritative runtime is `.github/agents`; shipped plugin packs are optional and inactive unless you explicitly enable them.
 
 In practice, Atlas's stable default path always expects the stable core above. `Hermes-subagent`, `Oracle-subagent`, and `HEPHAESTUS` remain available utility lanes in this checkout, but their runtime contract is intentionally softer: they must match `stable-runtime-v1` **when present**, they inherit the caller session, and they require trace propagation across delegated work.
 
 ## Enable Optional Conductors
+
+Ignore this section unless you explicitly want plugin/distribution mode. Normal work in this repo should stay in `.github/agents`.
 
 Optional domain conductors are shipped in `plugins/` but inactive by default. Add to `.vscode/settings.json` to activate:
 
@@ -172,10 +176,10 @@ Artifacts land in `.specify/specs/<feature-slug>/`. The SP-5 gate (pre-tasks) an
 ## Repository Layout
 
 ```
-.github/agents/          ← default-active runtime surface for this clone
+.github/agents/          ← active runtime surface and working edit target
 .github/plugin/
   pack-registry.json     ← activation map: which packs are shipped vs active
-plugins/                 ← optional domain packs and distribution metadata
+plugins/                 ← optional distribution metadata / inactive packs in this clone
   atlas-orchestration-team/         ← metadata shell in this clone (no shipped agents/ folder)
 spec-kit/                ← Specify pipeline reference docs
 demos/                   ← smoke tests per capability lane
@@ -265,7 +269,7 @@ Specify agents are already included in `.github/agents/` — no extra plugin sou
 
 ## Optional: Distribution / Marketplace Packs
 
-Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use. In the current clone, the operational Atlas runtime lives in `.github/agents`; `plugins/atlas-orchestration-team/` is retained as distribution metadata and README surface, not as an activatable agent source.
+Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use. In this clone, the operational runtime lives in `.github/agents`; `plugins/` is not the normal working surface.
 
 Not every directory under `plugins/` is necessarily published in `.github/plugin/marketplace.json` at the same time: some packs can exist as shipped-but-inactive local plugin-path examples, mirrors, or pre-marketplace workflows.
 
@@ -283,9 +287,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1
 
 ## Keep Setup Agents-First (Recommended)
 
-If you want the clean zero-setup runtime experience, keep `.github/agents` active and avoid enabling duplicate plugin paths for the same shared agents. No repository deletion is required; just leave the plugin paths disabled in VS Code unless you intentionally want distribution-pack mode.
+If you want the clean zero-setup runtime experience, keep `.github/agents` active and leave plugin paths disabled unless you intentionally want distribution-pack mode.
 
-For contributors in this clone: edit the active root runtime in `.github/agents` first. If a real plugin copy of the Atlas pack is reintroduced later, restore sync rules at that time instead of assuming a missing `agents/` folder is authoritative.
+For contributors in this clone: edit the active runtime in `.github/agents`. Do not default to `plugins/` as the authoring location here.
 
 ## Optional: Flow Source Selection Demo
 

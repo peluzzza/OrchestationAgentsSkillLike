@@ -78,11 +78,11 @@ Prompt-level controls always take precedence over file-level controls.
 
 Build an in-memory agent index every run. Do not assume availability.
 
-Discovery sources (higher precedence wins on duplicate names):
-1. `.github/agents/*.agent.md`
-2. `plugins/**/agents/*.agent.md`
+Discovery sources for this clone:
+1. `.github/agents/*.agent.md` (active runtime surface)
+2. `plugins/**/agents/*.agent.md` only if those paths were explicitly enabled in the runtime
 
-The shared orchestration pack is authored in `plugins/atlas-orchestration-team/agents`. Runtime resolution stays root-first: prefer `.github/agents` for active behavior, but treat plugin sources as canonical when syncing shared-pack edits.
+For this repository, treat `.github/agents` as the working source of truth. Do not assume `plugins/` is active or editable unless the user explicitly says plugin mode is in use.
 
 Capture for each agent: `name`, `description`, `user-invocable`, `tools`, `handoffs`.
 
@@ -120,7 +120,7 @@ If `.github/plugin/pack-registry.json` exists, read it during discovery to build
 - `defaultActive: true` → agents from that pack are active in this runtime.
 - `shipped: true, defaultActive: false` → pack is available but not yet active.
 
-When the task domain clearly maps to an inactive pack, emit a one-line recommendation before planning (example: Spring Boot work → `backend-workflow`; infrastructure/CI → `devops-workflow`; UX research → `ux-enhancement-workflow`). Do not block execution on it.
+When the task domain clearly maps to an inactive pack, emit a one-line recommendation before planning. Do not block execution on it, and do not treat an inactive plugin pack as the working surface for this clone.
 
 ## 3. Context Conservation
 
