@@ -80,9 +80,9 @@ Build an in-memory agent index every run. Do not assume availability.
 
 Discovery sources for this clone:
 1. `.github/agents/*.agent.md` (active runtime surface)
-2. `plugins/**/agents/*.agent.md` only if those paths were explicitly enabled in the runtime
+2. `plugins/**/agents/*.agent.md` only in explicit legacy/plugin mode
 
-For this repository, treat `.github/agents` as the working source of truth. Do not assume `plugins/` is active or editable unless the user explicitly says plugin mode is in use.
+For this repository, treat `.github/agents` as the working source of truth. Treat `plugins/` as legacy compatibility material unless the user explicitly asks for plugin mode.
 
 Capture for each agent: `name`, `description`, `user-invocable`, `tools`, `handoffs`.
 
@@ -114,7 +114,7 @@ Routing policy:
 
 If a subagent invocation fails, continue in degraded mode with available agents.
 
-### Pack Registry (activation map)
+### Legacy Pack Registry (compatibility map)
 
 If `.github/plugin/pack-registry.json` exists, read it during discovery to build an activation map:
 - `defaultActive: true` → agents from that pack are active in this runtime.

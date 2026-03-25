@@ -93,6 +93,8 @@ These are intentional pairs. The canonical agent keeps the richer domain definit
 
 These are **not** exact duplicates. The alias files are marked with comments such as `type: alias` and `delegates-to: ...`.
 
+Aliases should stay **thin**: activation guard, stable runtime envelope, strict limits, and the Atlas-facing return contract. Rich domain workflow guidance belongs in the canonical lane file, not in the compatibility alias.
+
 ### 2. The Afrodita cluster
 
 Afrodita is the one that looks most duplicated but is actually a three-role stack:
@@ -134,25 +136,11 @@ Atlas reads `.github/plugin/pack-registry.json` as a shipped-pack activation map
 
 In practice, Atlas's stable default path always expects the stable core above. `Hermes-subagent`, `Oracle-subagent`, and `HEPHAESTUS` remain available utility lanes in this checkout, but their runtime contract is intentionally softer: they must match `stable-runtime-v1` **when present**, they inherit the caller session, and they require trace propagation across delegated work.
 
-## Enable Optional Conductors
+## Legacy: Optional Plugin Conductors
 
-Ignore this section unless you explicitly want plugin/distribution mode. Normal work in this repo should stay in `.github/agents`.
+Ignore this section unless you explicitly want legacy plugin/distribution mode. Normal work in this repo should stay in `.github/agents`.
 
-Optional domain conductors are shipped in `plugins/` but inactive by default. Add to `.vscode/settings.json` to activate:
-
-```json
-{
-  "chat.agentFilesLocations": {
-    ".github/agents": true,
-    "plugins/frontend-workflow/agents": true,
-    "plugins/backend-workflow/agents": true,
-    "plugins/devops-workflow/agents": true,
-    "plugins/data-workflow/agents": true,
-    "plugins/automation-mcp-workflow/agents": true,
-    "plugins/ux-enhancement-workflow/agents": true
-  }
-}
-```
+Legacy optional domain conductors can still be enabled from `plugins/`, but they are not part of the normal working runtime for this clone. If you really need that mode, enable only the specific legacy path you want alongside `.github/agents` in `.vscode/settings.json`.
 
 | Conductor | Domain |
 |---|---|
@@ -173,14 +161,25 @@ Constitution file → Spec → inline clarification defaults (if needed) → Pla
 
 Artifacts land in `.specify/specs/<feature-slug>/`. The SP-5 gate (pre-tasks) and EX-1 gate (pre-implementation) are consistency checkpoints that Atlas enforces before allowing Sisyphus to write code.
 
+## Shared Memory
+
+The runtime memory feature is **global**, not pack-specific. When mounted in task context, all agents may consult:
+
+- `.specify/memory/session-memory.md` for current session continuity
+- `.specify/memory/decision-log.md` for durable decisions
+- the MCP knowledge graph when configured
+
+This is a shared resource, not a per-agent store. Agents should reuse it when available and must not create duplicate memory stores just to satisfy local workflow logic.
+
 ## Repository Layout
 
 ```
 .github/agents/          ← active runtime surface and working edit target
 .github/plugin/
-  pack-registry.json     ← activation map: which packs are shipped vs active
-plugins/                 ← optional distribution metadata / inactive packs in this clone
+  pack-registry.json     ← legacy activation/compatibility map
+plugins/                 ← legacy distribution metadata / inactive packs in this clone
   atlas-orchestration-team/         ← metadata shell in this clone (no shipped agents/ folder)
+.specify/memory/         ← shared runtime memory when mounted in task context
 spec-kit/                ← Specify pipeline reference docs
 demos/                   ← smoke tests per capability lane
 scripts/                 ← sync, validation, and fix utilities
@@ -191,20 +190,29 @@ plans/                   ← Atlas orchestration artifacts
 
 ```shell
 python3 scripts/validate_layer_hierarchy.py
-python -m pytest scripts/ -q
+python3 -m pytest scripts/test_validate_layer_hierarchy.py -q
 ```
 
 Use the validation scripts to verify runtime and pack consistency after edits. The root runtime surface in `.github/agents` is the source you should validate first in this clone.
 
-### Cross-Workflow Handoffs
+### Cross-Workflow Routing
 
-Workflows can hand off to each other:
+Optional conductors can route work across domains when needed:
 - `Afrodita` → `Backend-Atlas`, `DevOps-Atlas`
 - `Backend-Atlas` → `Afrodita`, `DevOps-Atlas`, `Data-Atlas`
 - `DevOps-Atlas` → `Afrodita`, `Backend-Atlas`, `Data-Atlas`
 - `Data-Atlas` → `Backend-Atlas`, `DevOps-Atlas`
 
-See [plugins/README.md](plugins/README.md) only if you intentionally want distribution-pack mode.
+### Secondary Planner / Reviewer Leaves
+
+Under those conductors, specialized Layer-2 leaves stay hidden from the main runtime surface and follow compact shared conventions:
+
+- planners return: `plan path`, `scope summary`, `primary risks`, `suggested first phase`
+- reviewers return: `status`, `summary`, `issues`, `domain assessment`, `recommendations`, `next step`
+
+These leaves are implementation details behind the conductor lanes; keep the README high-level and edit the detailed contracts in `.github/agents/`.
+
+See [plugins/README.md](plugins/README.md) only if you intentionally want legacy distribution-pack mode.
 
 ## Specify Pipeline — Spec-Driven Development (NEW)
 
@@ -267,23 +275,16 @@ Specify agents are already included in `.github/agents/` — no extra plugin sou
 
 ---
 
-## Optional: Distribution / Marketplace Packs
+## Legacy: Distribution / Marketplace Packs
 
-Use this only if you want secondary distribution through marketplace/plugin packs. It is not required for normal use. In this clone, the operational runtime lives in `.github/agents`; `plugins/` is not the normal working surface.
+Use this only if you want legacy secondary distribution through marketplace/plugin packs. It is not required for normal use. In this clone, the operational runtime lives in `.github/agents`; `plugins/` is not the normal working surface.
 
-Not every directory under `plugins/` is necessarily published in `.github/plugin/marketplace.json` at the same time: some packs can exist as shipped-but-inactive local plugin-path examples, mirrors, or pre-marketplace workflows.
+If you intentionally work in that legacy mode, use these only as reference points:
 
-- Marketplace definition: `.github/plugin/marketplace.json`
-- Plugin packs: `plugins/atlas-orchestration-team`, `plugins/agent-pack-catalog`
-- Domain workflow packs: `plugins/frontend-workflow`, `plugins/backend-workflow`, `plugins/devops-workflow`, `plugins/data-workflow`, `plugins/automation-mcp-workflow`, `plugins/ux-enhancement-workflow`
-- Sync helper script: `scripts/sync_agent_packs.ps1`
-- Validation helper script: `scripts/validate_plugin_packs.py`
-
-Example (optional):
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_agent_packs.ps1
-```
+- `.github/plugin/marketplace.json`
+- `scripts/sync_agent_packs.ps1`
+- `scripts/validate_plugin_packs.py`
+- `plugins/README.md`
 
 ## Keep Setup Agents-First (Recommended)
 
@@ -291,29 +292,9 @@ If you want the clean zero-setup runtime experience, keep `.github/agents` activ
 
 For contributors in this clone: edit the active runtime in `.github/agents`. Do not default to `plugins/` as the authoring location here.
 
-## Optional: Flow Source Selection Demo
+## Legacy: Flow Source Selection Demo
 
-This repo includes demos and reference logic for **intelligent flow source selection** in multi-workflow setups. That logic is useful if you build a custom Atlas variant or explicitly enable optional distribution packs, but it is **not** the default root-only `.github/agents` behavior documented above.
-
-In the demo/reference model, a conductor can:
-
-1. **Discovers all available flow sources** (`.github/agents` + `plugins/*/agents`)
-2. **Analyzes the task type** (frontend, backend, devops, data, general)
-3. **Selects the best workflow** based on:
-   - Origin precedence (`github > plugin > other`)
-   - Capability matching (task type + required skills)
-   - Preferred source with fallback if unavailable
-   - Deterministic tie-break for stable results
-
-### Example Flow Selection Policy
-
-| Your Task | Selected Workflow | Why |
-|-----------|-------------------|-----|
-| "Create a React login form" | `frontend-workflow` | Has UI-Designer, Component-Builder, A11y-Auditor |
-| "Add REST endpoint for users" | `backend-workflow` | Has API-Designer, Service-Builder, Security-Guard |
-| "Deploy to Kubernetes" | `devops-workflow` | Has Container-Master, Pipeline-Engineer |
-| "Train ML model" | `data-workflow` | Has ML-Scientist, Pipeline-Builder |
-| "Fix this bug" | `.github/agents` | General-purpose, highest precedence |
+This repo includes demos and reference logic for **intelligent flow source selection** in multi-workflow setups. Treat that logic as legacy or experimental unless you explicitly enable plugin/distribution mode; it is **not** the default root-only `.github/agents` behavior documented above.
 
 ### Demo: Test Source Selection
 
@@ -337,7 +318,7 @@ If you see more than one visible agent:
 
 1. Check all subagents have `user-invocable: false`.
 2. Check `Atlas` has `user-invocable: true`.
-3. Remove duplicate plugin sources (`plugins/`) if you are not using plugin mode.
+3. Remove duplicate legacy plugin sources (`plugins/`) if you are not intentionally using legacy plugin mode.
 4. Reload VS Code.
 
 If `Atlas` does not delegate:
