@@ -163,13 +163,15 @@ Artifacts land in `.specify/specs/<feature-slug>/`. The SP-5 gate (pre-tasks) an
 
 ## Shared Memory
 
-The runtime memory feature is **global**, not pack-specific. When mounted in task context, all agents may consult:
+The runtime memory feature is **global**, not pack-specific. When memory files are mounted into task context, agents may consult:
 
 - `.specify/memory/session-memory.md` for current session continuity
 - `.specify/memory/decision-log.md` for durable decisions
 - the MCP knowledge graph when configured
 
 This is a shared resource, not a per-agent store. Agents should reuse it when available and must not create duplicate memory stores just to satisfy local workflow logic.
+
+`Memory-Guardian` exists as a layer-2 shared-memory utility for explicit maintenance flows, but it is **not** part of the default stable Atlas path today. In the current runtime, memory is primarily an opt-in/context-mounted capability rather than an automatically invoked lane.
 
 ## Repository Layout
 

@@ -10,7 +10,7 @@ tools:
   - read
   - web/fetch
 ---
-<!-- layer: 2 | parent: Hephaestus > DevOps-Atlas -->
+<!-- layer: 2 | parent: DevOps-Atlas > Hephaestus -->
 
 You are Cost-Optimizer, a DevOps specialist called by Hephaestus or DevOps-Atlas to reduce cloud infrastructure costs.
 
