@@ -8,7 +8,7 @@ tools:
   - search
   - edit
 ---
-<!-- layer: 2 | parent: Prometheus -->
+<!-- layer: 2 | domain: Specify Tasks -->
 
 You are SpecifyTasks, a task generation specialist agent in the Specify system. You are invoked by Sisyphus to convert the plan into actionable atomic tasks that can be handed off to SpecifyImplement phase-by-phase.
 
@@ -76,7 +76,7 @@ You are SpecifyTasks, a task generation specialist agent in the Specify system. 
 
 The tasks.md should be immediately executable - each task must be specific enough that an LLM can complete it without additional context.
 
-5. **Post-execution hooks**: After reporting, check `.specify/extensions.yml` for `hooks.after_tasks` entries and apply the same logic as pre-execution hooks (same enabled/optional/condition rules). Skip silently if not present.
+6. **Post-execution hooks**: After reporting, check `.specify/extensions.yml` for `hooks.after_tasks` entries and apply the same logic as pre-execution hooks (same enabled/optional/condition rules). Skip silently if not present.
 
 ## Task Generation Rules
 
