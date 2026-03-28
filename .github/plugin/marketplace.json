@@ -18,7 +18,7 @@
     {
       "name": "atlas-orchestration-team",
       "source": "atlas-orchestration-team",
-      "description": "Canonical shared source for the 19-agent Atlas orchestration surface (Atlas conductor + focused specialists) via the marketplace. The root .github/agents surface stays default-active for zero-setup runtime use and adds 7 root-only compatibility aliases.",
+      "description": "Canonical shared source for the 19-agent Zeus orchestration surface (Zeus conductor + focused specialists) via the marketplace. The root .github/agents surface stays default-active for zero-setup runtime use and adds 7 root-only compatibility aliases.",
       "version": "0.1.0"
     },
     {

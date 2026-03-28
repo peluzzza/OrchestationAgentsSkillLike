@@ -1,4 +1,4 @@
-# Atlas Agents for VS Code
+# Zeus Agents for VS Code
 
 ## AI Agent Orchestration Framework — Project Document
 
@@ -12,7 +12,7 @@
 
 **Usage Disclaimer**
 
-This document describes the Atlas Agents for VS Code project, an open-source AI agent orchestration framework. All content herein has been reviewed to ensure no confidential, client-specific, or proprietary organizational data is included. This document is suitable for public distribution under the MIT License terms.
+This document describes the Zeus Agents for VS Code project, an open-source AI agent orchestration framework. All content herein has been reviewed to ensure no confidential, client-specific, or proprietary organizational data is included. This document is suitable for public distribution under the MIT License terms.
 
 ---
 
@@ -67,7 +67,7 @@ This "monolithic agent" approach suffers from several critical shortcomings:
 - **No quality checkpoints**: Without structured handoffs and review gates, errors compound across phases and are detected late in the process.
 - **Inefficient token economics**: Re-reading entire codebases for each interaction wastes valuable inference capacity and increases latency and cost.
 
-The **Atlas Agents for VS Code** project was created to address these challenges by introducing a **multi-agent orchestration framework** that divides complex software tasks among specialized AI agents, each optimized for a specific role, and coordinates their work through a single conductor agent visible to the user.
+The **Zeus Agents for VS Code** project was created to address these challenges by introducing a **multi-agent orchestration framework** that divides complex software tasks among specialized AI agents, each optimized for a specific role, and coordinates their work through a single conductor agent visible to the user.
 
 This project has been developed and released as **open-source software** under the **MIT License**, making it freely available to the broader developer community for adoption, customization, and contribution.
 
@@ -89,9 +89,9 @@ When using AI assistants in software engineering, practitioners face a recurring
 
 ### 2.2 Proposed Solution
 
-Atlas Agents introduces a **conductor–specialist orchestration pattern** inspired by real-world engineering team structures:
+Zeus Agents introduces a **conductor–specialist orchestration pattern** inspired by real-world engineering team structures:
 
-1. **Single Entry Point**: The user interacts exclusively with `Atlas`; all specialist agents are hidden and invoked automatically.
+1. **Single Entry Point**: The user interacts exclusively with `Zeus`; all specialist agents are hidden and invoked automatically.
 2. **Role-Based Delegation**: Each task phase (planning, research, implementation, review, testing, deployment) is handled by a dedicated specialist agent with optimized model selection.
 3. **Structured Lifecycle**: Every task follows a mandatory lifecycle: **Plan → Implement → Review → Verify → Report**.
 4. **Quality Gates**: Mandatory checkpoints between phases ensure correctness before work progresses.
@@ -111,16 +111,16 @@ Atlas Agents introduces a **conductor–specialist orchestration pattern** inspi
 
 ### 3.1 Conductor–Specialist Pattern
 
-Atlas implements a hierarchical orchestration model where a single **conductor agent** (`Atlas`) manages a team of **hidden specialist agents**. This pattern provides:
+Zeus implements a hierarchical orchestration model where a single **conductor agent** (`Zeus`) manages a team of **hidden specialist agents**. This pattern provides:
 
-- **Zero-setup experience**: Users see only `Atlas` in the VS Code agent picker.
-- **Canonical shared Atlas source**: `plugins/atlas-orchestration-team/agents/` is the authoring source for the shared 19-agent Atlas pack.
-- **Default-active runtime surface**: `.github/agents/` stays enabled by default as the synced workspace runtime copy plus root-only compatibility aliases.
-- **Automatic agent discovery**: At runtime, Atlas scans `.github/agents/` first and may also scan `plugins/**/agents/` when optional distribution packs are explicitly enabled.
-- **Dynamic routing**: Based on task analysis, Atlas routes work to the most appropriate specialist using a defined routing policy.
+- **Zero-setup experience**: Users see only `Zeus` in the VS Code agent picker.
+- **Operational source of truth**: `.github/agents/` is the authoring and runtime source of truth in this clone.
+- **Workspace attendance surface**: `.github/hooks/` is the team-shared hook surface Zeus uses for global subagent attendance.
+- **Automatic agent discovery**: At runtime, Zeus scans `.github/agents/` first and may also scan `plugins/**/agents/` when optional distribution packs are explicitly enabled.
+- **Dynamic routing**: Based on task analysis, Zeus routes work to the most appropriate specialist using a defined routing policy.
 
 ```
-User → Atlas (Conductor)
+User → Zeus (Conductor)
            ├── Prometheus (Planning)
            ├── Oracle (Research & Requirements)
            ├── Hermes (Codebase Reconnaissance)
@@ -142,7 +142,7 @@ The default-active `.github/agents` runtime surface consists of the following ag
 
 | # | Agent | Role | Visibility | Primary Function |
 |---|-------|------|------------|------------------|
-| 1 | **Atlas** | Conductor | User-visible | Orchestrates all phases; delegates and synthesizes |
+| 1 | **Zeus** | Conductor | User-visible | Orchestrates all phases; delegates, synthesizes, and reports attendance evidence |
 | 2 | **Prometheus** | Planner | Hidden | Autonomous research and phased plan generation |
 | 3 | **Oracle** | Analyst | Hidden | Deep requirements analysis and risk assessment |
 | 4 | **Hermes** | Scout | Hidden | Fast, read-only codebase reconnaissance |
@@ -164,35 +164,44 @@ The default-active `.github/agents` runtime surface consists of the following ag
 
 ### 3.3 Workflow Lifecycle
 
-Every task orchestrated by Atlas follows a structured lifecycle:
+Every task orchestrated by Zeus follows a structured lifecycle:
 
 ```
 ┌──────────┐    ┌─────────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────┐
 │  1. Plan  │───▶│ 2. Implement │───▶│ 3. Review │───▶│ 4. Security │───▶│ 5. Verify │───▶│ 6. Docs / Deps │───▶│ 7. Report │
 └──────────┘    └─────────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────────┘    └──────────┘
- Prometheus       Sisyphus /        Themis          Atenea          Argus /         Clio /              Atlas
+ Prometheus       Sisyphus /        Themis          Atenea          Argus /         Clio /              Zeus
  Hermes         Afrodita-UX                                         Hephaestus     Ariadna
  Oracle
 ```
 
 **Phase Details:**
 
-1. **Plan**: If `Prometheus` is available and scope is medium/large, planning is delegated to it. Otherwise, `Hermes` + `Oracle` gather context and Atlas produces a concise 3–7 phase plan.
+1. **Plan**: If `Prometheus` is available and scope is medium/large, planning is delegated to it. Otherwise, `Hermes` + `Oracle` gather context and Zeus produces a concise 3–7 phase plan.
 2. **Implement**: Each phase is delegated to `Sisyphus` or `Afrodita-UX` with explicit acceptance criteria and test expectations.
-3. **Review**: `Themis` evaluates the implementation. If status is `NEEDS_REVISION`, work routes back to the implementer. If `FAILED`, Atlas stops and requests user guidance.
+3. **Review**: `Themis` evaluates the implementation. If status is `NEEDS_REVISION`, work routes back to the implementer. If `FAILED`, Zeus stops and requests user guidance.
 4. **Security**: `Atenea` runs when behavior-bearing code, dependencies, configuration, infrastructure, or exposed interfaces changed.
 5. **Verify**: `Argus` runs targeted checks. `Hephaestus` validates build and release readiness when applicable.
 6. **Docs / Dependencies**: `Clio` and `Ariadna` run conditionally when operator-facing docs or manifests/images changed.
-7. **Report**: Atlas returns a concise outcome summarizing completed phases, changed files, gate status, and recommended next actions.
+7. **Report**: Zeus returns a concise outcome summarizing completed phases, changed files, gate status, and recommended next actions.
 
 ### 3.4 Context Conservation Strategy
 
-A key innovation of Atlas is its **context conservation** approach:
+A key innovation of Zeus is its **context conservation** approach:
 
 - **Delegate when**: Scope spans multiple subsystems, more than ~5 files need reading, or tasks can be parallelized.
 - **Handle directly when**: The task is small and orchestration overhead would exceed direct execution cost.
 - **Parallel subagent calls**: Independent workstreams are dispatched simultaneously for maximum efficiency.
-- **Synthesis over re-reading**: Atlas synthesizes subagent outputs rather than re-reading all source material.
+- **Synthesis over re-reading**: Zeus synthesizes subagent outputs rather than re-reading all source material.
+
+### 3.5 Hook Attendance and Traceability
+
+Zeus uses a two-level evidence model for orchestration traceability:
+
+1. **Workspace hook attendance** under `.github/hooks/` for global subagent start/stop evidence.
+2. **Prompt-local stage hooks** (for example under `.specify/extensions.yml`) for deeper stage-level proof inside the Specify pipeline.
+
+The workspace hook layer is intended to function as a deterministic “attendance sheet” of all invoked subagents, while stage hooks provide narrower pipeline proof when deeper analysis is needed.
 
 This strategy results in significant **token budget savings** compared to feeding entire codebases into a single model context.
 
@@ -202,11 +211,11 @@ This strategy results in significant **token budget savings** compared to feedin
 
 ### 4.1 Distribution Pack Summary
 
-The project also includes optional **distribution packs**, each targeting a specific software engineering domain. The shared Atlas pack is authored canonically in `plugins/atlas-orchestration-team`, while `.github/agents` remains the default-active runtime surface. The remaining packs are intended for explicit enablement, packaging, or future expansion.
+The project also includes optional **distribution packs**, each targeting a specific software engineering domain. In this clone, `.github/agents` remains the operational runtime surface. The remaining packs are intended for explicit enablement, packaging, or future expansion.
 
 | # | Workflow Pack | Conductor | Specialists | Domain |
 |---|----------|-----------|:-----------:|--------|
-| 1 | `atlas-orchestration-team` | Atlas | 19 agents | General software engineering |
+| 1 | `atlas-orchestration-team` | Zeus | 19 agents | General software engineering |
 | 2 | `frontend-workflow` | Afrodita | 8 agents | UI/UX development |
 | 3 | `backend-workflow` | Backend-Atlas | 8 agents | API design, databases, services |
 | 4 | `devops-workflow` | DevOps-Atlas | 8 agents | Infrastructure, CI/CD, containers |
@@ -307,7 +316,7 @@ The following components have been designed, implemented, and validated:
 
 | # | Component | Status | Description |
 |---|-----------|:------:|-------------|
-| 1 | Core Atlas conductor agent | ✅ Complete | Full orchestration lifecycle with dynamic routing |
+| 1 | Core Zeus conductor agent | ✅ Complete | Full orchestration lifecycle with dynamic routing |
 | 2 | 18 hidden specialist agents (core pack) | ✅ Complete | Prometheus, Oracle, Hermes, Sisyphus, Themis, Argus, Atenea, Ariadna, Clio, Hephaestus, Afrodita-UX, and Specify specialists |
 | 3 | Model selection strategy | ✅ Complete | Documented role-specific model assignments |
 | 4 | Agent auto-discovery system | ✅ Complete | Runtime scanning with `.github/agents` precedence over optional distribution packs |
@@ -334,7 +343,7 @@ Each demo includes a `DEMO_PROMPT.md` (scripted prompt), `README.md` (setup and 
 
 ### 7.3 User Management Demo (Spring Boot)
 
-A complete **Java Spring Boot 3.2.2 microservice** has been built as the primary demonstration target for Atlas orchestration. This demo showcases how Atlas can take a Jira ticket and autonomously produce a production-ready microservice.
+A complete **Java Spring Boot 3.2.2 microservice** has been built as the primary demonstration target for Zeus orchestration. This demo showcases how Zeus can take a Jira ticket and autonomously produce a production-ready microservice.
 
 **Technical Specifications:**
 
@@ -350,7 +359,7 @@ A complete **Java Spring Boot 3.2.2 microservice** has been built as the primary
 
 **Demonstrated Orchestration Flow:**
 
-1. **Phase A — Research & Design**: Atlas delegates to `Hermes` to analyze Jira requirements, define the domain model, identify ports (Hexagonal Architecture), and research Spring Security JWT best practices.
+1. **Phase A — Research & Design**: Zeus delegates to `Hermes` to analyze Jira requirements, define the domain model, identify ports (Hexagonal Architecture), and research Spring Security JWT best practices.
 2. **Phase B — Implementation**: `Sisyphus` generates the project structure and implements domain → application → infrastructure layers.
 3. **Phase C — QA/TDD**: `Argus` writes unit tests (Mockito), integration tests, and enforces 80% code coverage targets.
 4. **Phase D — DevOps**: `Hephaestus` generates Dockerfile and Kubernetes deployment manifests.
@@ -362,7 +371,7 @@ Comprehensive materials have been produced for knowledge transfer and demonstrat
 | # | Material | Format | Content |
 |---|----------|--------|---------|
 | 1 | Orchestration presentation deck | Markdown + PPTX | 11-slide deck covering monolithic vs. orchestrated agents, model selection, handoffs, quality gates |
-| 2 | Live demo script | Markdown | Step-by-step script for demonstrating Atlas building a microservice |
+| 2 | Live demo script | Markdown | Step-by-step script for demonstrating Zeus building a microservice |
 | 3 | Hexagonal architecture report | Markdown | Architectural guidance for Spring Boot implementations |
 | 4 | Model selection guide | Markdown | Technical specification for LLM assignment per agent role |
 | 5 | Source selection demo plan | Markdown | Detailed flow for the selection engine demonstration |
@@ -376,12 +385,13 @@ Comprehensive materials have been produced for knowledge transfer and demonstrat
 The project is publicly available as an open-source repository under the **MIT License** (Copyright © 2026 <<Author>>). The repository is organized as follows:
 
 ```
-atlas-agents/
+zeus-agents/
 ├── README.md                          # Project documentation and quick start
 ├── LICENSE                            # MIT License
-├── .github/agents/                    # Default-active runtime surface (synced shared pack + root-only aliases)
+├── .github/agents/                    # Default-active runtime surface and source of truth
+├── .github/hooks/                     # Workspace hook surface for Zeus attendance and traceability
 ├── plugins/                           # Optional distribution/organization packs
-│   ├── atlas-orchestration-team/      # Canonical shared Atlas source pack (19 agents)
+│   ├── atlas-orchestration-team/      # Legacy distribution placeholder for the shared root pack
 │   ├── frontend-workflow/             # Frontend specialists (8 agents)
 │   ├── backend-workflow/              # Backend specialists (8 agents)
 │   ├── devops-workflow/               # DevOps specialists (8 agents)
@@ -417,7 +427,7 @@ The project provides a **60-second setup** experience:
 }
 ```
 
-Optional distribution packs under `plugins/` can be enabled separately, but they are not required for the zero-setup Atlas-first runtime experience. Contributors should edit the shared Atlas pack in `plugins/atlas-orchestration-team/agents/` and sync `.github/agents/` instead of hand-editing both surfaces.
+Optional distribution packs under `plugins/` can be enabled separately, but they are not required for the zero-setup Zeus-first runtime experience. Contributors should edit `.github/agents/` as the source of truth in this clone and treat plugin-pack paths as compatibility/distribution material unless explicitly reactivated.
 
 **Prerequisites:**
 - VS Code Insiders with GitHub Copilot extension
@@ -468,7 +478,7 @@ The following items represent planned enhancements for the next development cycl
 
 ### 10.2 Strategic Vision: Self-Expanding Agent Ecosystem
 
-The long-term vision for Atlas Agents is to evolve from a static collection of predefined workflows into a **self-expanding, community-driven ecosystem** where users can create, share, and discover unlimited agent workflows. This vision encompasses three major initiatives:
+The long-term vision for Zeus Agents is to evolve from a static collection of predefined workflows into a **self-expanding, community-driven ecosystem** where users can create, share, and discover unlimited agent workflows. This vision encompasses three major initiatives:
 
 #### 10.2.1 Agent & Workflow CRUD System
 
@@ -530,10 +540,10 @@ A **centralized registry** will serve as the source of truth for discovering, sh
 
 #### 10.2.3 Dynamic Atlas Discovery
 
-Atlas will be enhanced to **dynamically discover and integrate** workflows from multiple sources at runtime:
+Zeus will be enhanced to **dynamically discover and integrate** workflows from multiple sources at runtime:
 
 ```
-Atlas Runtime Discovery
+Zeus Runtime Discovery
         │
         ├── Local Project (.github/agents/)
         │
@@ -541,7 +551,7 @@ Atlas Runtime Discovery
         │
         ├── Organization Registry (private)
         │
-        └── Public Atlas Registry (community)
+      └── Public Zeus Registry (community)
                 │
                 └── ∞ Unlimited Workflows
 ```
@@ -550,9 +560,9 @@ Atlas Runtime Discovery
 
 | # | Feature | Description |
 |---|---------|-------------|
-| 1 | **Multi-Source Scanning** | Atlas scans local, user, organization, and public registries |
+| 1 | **Multi-Source Scanning** | Zeus scans local, user, organization, and public registries |
 | 2 | **Real-Time Updates** | New workflows become available without IDE restart |
-| 3 | **Intelligent Routing** | Atlas automatically routes tasks to newly discovered specialists |
+| 3 | **Intelligent Routing** | Zeus automatically routes tasks to newly discovered specialists |
 | 4 | **Conflict Resolution** | Priority rules when multiple workflows claim the same domain |
 | 5 | **Lazy Loading** | Workflows are loaded on-demand to optimize startup time |
 | 6 | **Compatibility Checking** | Verify model and tool requirements before workflow activation |
@@ -569,7 +579,7 @@ User A creates          User B creates          User C creates
                                │
                                ▼
                     ┌─────────────────────┐
-                    │   Atlas Registry    │
+                    │   Zeus Registry     │
                     │   (∞ Workflows)     │
                     └─────────────────────┘
                                │
@@ -628,9 +638,9 @@ User A creates          User B creates          User C creates
 | **Agent** | An AI assistant with specific instructions, model preferences, and tool access, defined in a `.agent.md` file |
 | **Agent CRUD** | (Future) Create-Read-Update-Delete operations for managing agents and workflows through a user interface |
 | **Agent Registry** | (Future) Centralized repository for discovering, sharing, and distributing agent workflows |
-| **Conductor** | The orchestrating agent (Atlas) that coordinates specialist agents and manages the workflow lifecycle |
+| **Conductor** | The orchestrating agent (Zeus) that coordinates specialist agents and manages the workflow lifecycle |
 | **Context Conservation** | Strategy of minimizing token consumption by delegating scoped tasks and synthesizing outputs |
-| **Dynamic Discovery** | (Future) Atlas's capability to automatically detect and integrate workflows from multiple sources at runtime |
+| **Dynamic Discovery** | (Future) Zeus's capability to automatically detect and integrate workflows from multiple sources at runtime |
 | **Handoff** | Structured transfer of work between agents, including context, scope, and acceptance criteria |
 | **Hexagonal Architecture** | Software design pattern separating domain logic from external concerns via ports and adapters |
 | **Infinite Workflow Ecosystem** | (Future) A self-expanding system where unlimited community-contributed workflows can be created and shared |

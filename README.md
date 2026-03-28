@@ -1,6 +1,6 @@
-# Atlas Agents For VS Code
+# Zeus Agents For VS Code
 
-A multi-agent runtime for VS Code Copilot Chat. In this clone, you talk to `@Atlas`; it orchestrates a stable hidden working surface for planning, implementation, review, QA, and ops from `.github/agents`.
+A multi-agent runtime for VS Code Copilot Chat. In this clone, you talk to `@Zeus`; it orchestrates a stable hidden working surface for planning, implementation, review, QA, and ops from `.github/agents`.
 
 > **Important for this repo:** the active agents you should edit live in `.github/agents`. Do not treat `plugins/` as the working runtime surface unless you are explicitly operating in plugin/distribution mode.
 
@@ -20,14 +20,14 @@ A multi-agent runtime for VS Code Copilot Chat. In this clone, you talk to `@Atl
 ```
 
 5. Run `Developer: Reload Window`.
-6. Open Copilot Chat and select `Atlas`.
+6. Open Copilot Chat and select `Zeus`.
 7. Ask for a task (for example: "Plan and implement X with tests").
 
 Done. No extra installation steps are needed.
 
 ## Global Install (available in any workspace)
 
-To use Atlas in any project on your machine, without cloning this repo:
+To use Zeus in any project on your machine, without cloning this repo:
 
 ```powershell
 .\scripts\install-agents-user-level.ps1 -Force
@@ -37,7 +37,7 @@ Then `Ctrl+Shift+P` → `Developer: Reload Window`. That's it.
 
 ## The Agent Team
 
-This repository ships many agent definitions in `.github/agents`, but the **stable zero-setup orchestration path** is intentionally narrower than the full file count. You only need to know about `@Atlas`.
+This repository ships many agent definitions in `.github/agents`, but the **stable zero-setup orchestration path** is intentionally narrower than the full file count. You only need to know about `@Zeus`.
 
 Under `stable-runtime-v1`, the root runtime is split into a **mandatory stable core** and a few **optional validated utility lanes**. The validator requires the stable core to be complete; `Hermes-subagent`, `Oracle-subagent`, and `HEPHAESTUS` are validated when present, but they are not part of the stable-core completeness requirement.
 
@@ -45,20 +45,20 @@ Under `stable-runtime-v1`, the root runtime is split into a **mandatory stable c
 
 | Role | Agent | Invoked by |
 |---|---|---|
-| Conductor | `Atlas` | **You** |
-| Planner / Specify pipeline | `Prometheus` | Atlas |
-| Implementation | `Sisyphus-subagent` | Atlas |
-| Frontend / UI | `Afrodita-subagent` | Atlas |
-| Code review | `Themis Subagent` | Atlas |
-| Testing / QA | `Argus - QA Testing Subagent` | Atlas |
+| Conductor | `Zeus` | **You** |
+| Planner / Specify pipeline | `Prometheus` | Zeus |
+| Implementation | `Sisyphus-subagent` | Zeus |
+| Frontend / UI | `Afrodita-subagent` | Zeus |
+| Code review | `Themis Subagent` | Zeus |
+| Testing / QA | `Argus - QA Testing Subagent` | Zeus |
 
 ### Optional validated utility lanes
 
 | Role | Agent | Invoked by | Runtime note |
 |---|---|---|---|
-| Code exploration | `Hermes-subagent` | Atlas, Prometheus | Validated when present; inherits session context and requires trace propagation |
-| Deep research | `Oracle-subagent` | Atlas, Prometheus | Validated when present; inherits session context and requires trace propagation |
-| Ops / Deploy / Incidents | `HEPHAESTUS` | Atlas | Validated when present; inherits session context and requires trace propagation |
+| Code exploration | `Hermes-subagent` | Zeus, Prometheus | Validated when present; inherits session context and requires trace propagation |
+| Deep research | `Oracle-subagent` | Zeus, Prometheus | Validated when present; inherits session context and requires trace propagation |
+| Ops / Deploy / Incidents | `HEPHAESTUS` | Zeus | Validated when present; inherits session context and requires trace propagation |
 
 ### Hidden Specify pipeline agents
 
@@ -80,20 +80,20 @@ Some files may look duplicated at first glance, but they serve different purpose
 
 ### 1. Canonical agent + compatibility alias
 
-These are intentional pairs. The canonical agent keeps the richer domain definition; the alias provides the stable runtime handle used by the default Atlas surface.
+These are intentional pairs. The canonical agent keeps the richer domain definition; the alias provides the stable runtime handle used by the default Zeus surface.
 
 | Canonical agent | Compatibility alias | Why both exist |
 |---|---|---|
-| `Hermes.agent.md` | `Hermes-subagent.agent.md` | Canonical discovery lane + stable Atlas alias |
-| `Oracle.agent.md` | `Oracle-subagent.agent.md` | Canonical research lane + stable Atlas alias |
-| `Sisyphus.agent.md` | `Sisyphus-subagent.agent.md` | Canonical implementation lane + stable Atlas alias |
-| `Themis.agent.md` | `Themis-subagent.agent.md` | Canonical review lane + stable Atlas alias |
-| `Argus.agent.md` | `Argus-subagent.agent.md` | Canonical QA lane + stable Atlas alias |
-| `Hephaestus.agent.md` | `Hephaestus-subagent.agent.md` | Canonical ops lane + stable Atlas alias |
+| `Hermes.agent.md` | `Hermes-subagent.agent.md` | Canonical discovery lane + stable Zeus alias |
+| `Oracle.agent.md` | `Oracle-subagent.agent.md` | Canonical research lane + stable Zeus alias |
+| `Sisyphus.agent.md` | `Sisyphus-subagent.agent.md` | Canonical implementation lane + stable Zeus alias |
+| `Themis.agent.md` | `Themis-subagent.agent.md` | Canonical review lane + stable Zeus alias |
+| `Argus.agent.md` | `Argus-subagent.agent.md` | Canonical QA lane + stable Zeus alias |
+| `Hephaestus.agent.md` | `Hephaestus-subagent.agent.md` | Canonical ops lane + stable Zeus alias |
 
 These are **not** exact duplicates. The alias files are marked with comments such as `type: alias` and `delegates-to: ...`.
 
-Aliases should stay **thin**: activation guard, stable runtime envelope, strict limits, and the Atlas-facing return contract. Rich domain workflow guidance belongs in the canonical lane file, not in the compatibility alias.
+Aliases should stay **thin**: activation guard, stable runtime envelope, strict limits, and the Zeus-facing return contract. Rich domain workflow guidance belongs in the canonical lane file, not in the compatibility alias.
 
 ### 2. The Afrodita cluster
 
@@ -102,7 +102,7 @@ Afrodita is the one that looks most duplicated but is actually a three-role stac
 | File | Role |
 |---|---|
 | `Afrodita-UX.agent.md` | Layer-1 canonical frontend/UX god |
-| `Afrodita-subagent.agent.md` | Stable Atlas-facing alias for the default runtime |
+| `Afrodita-subagent.agent.md` | Stable Zeus-facing alias for the default runtime |
 | `Afrodita.agent.md` | Layer-2 optional workflow conductor for the frontend pack |
 
 So:
@@ -110,16 +110,16 @@ So:
 - `Afrodita-subagent` = runtime compatibility alias
 - `Afrodita` = optional nested conductor under the frontend workflow model
 
-Optional nested conductors such as `Afrodita`, `Backend-Atlas`, `DevOps-Atlas`, `Data-Atlas`, `Automation-Atlas`, and `UX-Atlas` may still appear in `.github/agents` in this clone for hierarchy completeness and shipped-pack visibility. Unless their workflow is explicitly activated, treat them as **non-default lanes** that may operate in degraded/self-contained mode rather than as part of Atlas's stable root-runtime path.
+Optional nested conductors such as `Afrodita`, `Backend-Atlas`, `DevOps-Atlas`, `Data-Atlas`, `Automation-Atlas`, and `UX-Atlas` may still appear in `.github/agents` in this clone for hierarchy completeness and shipped-pack visibility. Unless their workflow is explicitly activated, treat them as **non-default lanes** that may operate in degraded/self-contained mode rather than as part of Zeus's stable root-runtime path.
 
 ### 3. Exact duplicate names?
 
 In the current clone, there are **no exact duplicate frontmatter `name:` values** across `.github/agents`.
 
-## How Atlas Works
+## How Zeus Works
 
 ```
-You → @Atlas
+You → @Zeus
          ├── Prometheus (planning + Specify pipeline: SP-5 gate)
          │       ├── Hermes-subagent (explore)
          │       ├── Oracle-subagent (research)
@@ -132,9 +132,19 @@ You → @Atlas
          └── Optional lanes when explicitly available: Atenea / Clio / Ariadna
 ```
 
-Atlas reads `.github/plugin/pack-registry.json` as a shipped-pack activation map. In this clone, the authoritative runtime is `.github/agents`; shipped plugin packs are optional and inactive unless you explicitly enable them.
+Zeus reads `.github/plugin/pack-registry.json` as a shipped-pack activation map. In this clone, the authoritative runtime is `.github/agents`; shipped plugin packs are optional and inactive unless you explicitly enable them.
 
-In practice, Atlas's stable default path always expects the stable core above. `Hermes-subagent`, `Oracle-subagent`, and `HEPHAESTUS` remain available utility lanes in this checkout, but their runtime contract is intentionally softer: they must match `stable-runtime-v1` **when present**, they inherit the caller session, and they require trace propagation across delegated work.
+In practice, Zeus's stable default path always expects the stable core above. `Hermes-subagent`, `Oracle-subagent`, and `HEPHAESTUS` remain available utility lanes in this checkout, but their runtime contract is intentionally softer: they must match `stable-runtime-v1` **when present**, they inherit the caller session, and they require trace propagation across delegated work.
+
+## Hook Attendance Surface
+
+Zeus now treats workspace hooks under `.github/hooks/` as the canonical surface for **attendance-style traceability**.
+
+- Workspace hooks are for **global attendance** of invoked subagents.
+- Prompt-local Specify hooks remain useful for **stage-specific proof** inside the planning/implementation pipeline.
+- The first operator-facing artifact should answer: **which subagents were invoked, and in what order?**
+
+See `.github/hooks/README.md` for the contract Zeus uses for the attendance ledger.
 
 ## Legacy: Optional Plugin Conductors
 
@@ -153,25 +163,26 @@ Legacy optional domain conductors can still be enabled from `plugins/`, but they
 
 ## Spec-Driven Development (Specify pipeline)
 
-For any implementation task, Atlas routes through Prometheus which runs the effective Specify planning path before writing code. In the current default runtime, `SpecifyConstitution` and `SpecifyClarify` are still shipped as hidden helper agents, but Prometheus treats the ratified constitution file as the authority and applies conservative clarification defaults inline instead of invoking those two agents directly:
+For any implementation task, Zeus routes through Prometheus which runs the effective Specify planning path before writing code. In the current default runtime, `SpecifyConstitution` and `SpecifyClarify` are still shipped as hidden helper agents, but Prometheus treats the ratified constitution file as the authority and applies conservative clarification defaults inline instead of invoking those two agents directly:
 
 ```
 Constitution file → Spec → inline clarification defaults (if needed) → Plan → SP-5 gate → Tasks → EX-1 gate → Implement
 ```
 
-Artifacts land in `.specify/specs/<feature-slug>/`. The SP-5 gate (pre-tasks) and EX-1 gate (pre-implementation) are consistency checkpoints that Atlas enforces before allowing Sisyphus to write code.
+Artifacts land in `.specify/specs/<feature-slug>/`. The SP-5 gate (pre-tasks) and EX-1 gate (pre-implementation) are consistency checkpoints that Zeus enforces before allowing Sisyphus to write code.
 
 ## Shared Memory
 
 The runtime memory feature is **global**, not pack-specific. When memory files are mounted into task context, agents may consult:
 
-- `.specify/memory/session-memory.md` for current session continuity
+- `.specify/memory/zeus-context.md` — compact hook-refreshed snapshot **Zeus reads first**; rebuilt on every `SubagentStart` by `sync_memory_context.py`
+- `.specify/memory/session-memory.md` for full current session continuity (fallback when snapshot is absent)
 - `.specify/memory/decision-log.md` for durable decisions
-- the MCP knowledge graph when configured
+- the MCP knowledge graph (Level 3) — `.vscode/mcp.json` is present and configures `@modelcontextprotocol/server-memory`
 
 This is a shared resource, not a per-agent store. Agents should reuse it when available and must not create duplicate memory stores just to satisfy local workflow logic.
 
-`Memory-Guardian` exists as a layer-2 shared-memory utility for explicit maintenance flows, but it is **not** part of the default stable Atlas path today. In the current runtime, memory is primarily an opt-in/context-mounted capability rather than an automatically invoked lane.
+`Memory-Guardian` exists as a layer-2 shared-memory utility for explicit maintenance flows, but it is **not** part of the default stable Zeus path today. In the current runtime, memory is primarily an opt-in/context-mounted capability rather than an automatically invoked lane.
 
 ## Repository Layout
 
@@ -185,7 +196,7 @@ plugins/                 ← legacy distribution metadata / inactive packs in th
 spec-kit/                ← Specify pipeline reference docs
 demos/                   ← smoke tests per capability lane
 scripts/                 ← sync, validation, and fix utilities
-plans/                   ← Atlas orchestration artifacts
+plans/                   ← Zeus orchestration artifacts
 ```
 
 ## Validation
@@ -237,16 +248,16 @@ In the default runtime path today, Prometheus actively delegates to `SpecifySpec
 ### Pipeline Flow
 
 ```
-Atlas
+Zeus
  └─ Prometheus (planning)
   ├─ SP-0  Hermes + Oracle               → context mapping
   ├─ SP-1  constitution file authority   → .specify/memory/constitution.md
   ├─ SP-2  SpecifySpec                   → .specify/specs/<feature>/spec.md
   ├─ SP-3  inline clarification defaults → spec.md updated when needed
   ├─ SP-4  SpecifyPlan                   → plan.md, data-model.md, contracts/, research.md
-  └─ SP-5  SpecifyAnalyze                → analysis-report.md → plan delivered to Atlas
+  └─ SP-5  SpecifyAnalyze                → analysis-report.md → plan delivered to Zeus
 
-Atlas
+Zeus
  └─ Sisyphus (implementation)
       ├─ EX-0  SpecifyTasks               → tasks.md (T001..Tnnn)
       ├─ EX-1  SpecifyAnalyze             → consistency gate
@@ -273,7 +284,7 @@ Atlas
 
 ### Enable Specify Agents
 
-Specify agents are already included in `.github/agents/` — no extra plugin source is needed. They are hidden from the agent picker and invoked automatically by `Prometheus` (during planning) and `Sisyphus` (during implementation). Just use `@Atlas` as normal.
+Specify agents are already included in `.github/agents/` — no extra plugin source is needed. They are hidden from the agent picker and invoked automatically by `Prometheus` (during planning) and `Sisyphus` (during implementation). Just use `@Zeus` as normal.
 
 ---
 
@@ -319,14 +330,14 @@ See [demos/atlas-source-selection-demo/DEMO_PROMPT.md](demos/atlas-source-select
 If you see more than one visible agent:
 
 1. Check all subagents have `user-invocable: false`.
-2. Check `Atlas` has `user-invocable: true`.
+2. Check `Zeus` has `user-invocable: true`.
 3. Remove duplicate legacy plugin sources (`plugins/`) if you are not intentionally using legacy plugin mode.
 4. Reload VS Code.
 
-If `Atlas` does not delegate:
+If `Zeus` does not delegate:
 
-1. Verify `Atlas` frontmatter includes `tools: [agent, ...]`.
-2. Verify `Atlas` frontmatter lists its stable specialists in `agents:` (`Prometheus`, `Hermes-subagent`, `Oracle-subagent`, `Sisyphus-subagent`, `Afrodita-subagent`, `Themis Subagent`, `Argus - QA Testing Subagent`, `HEPHAESTUS`).
+1. Verify `Zeus` frontmatter includes `tools: [agent, ...]`.
+2. Verify `Zeus` frontmatter lists its stable specialists in `agents:` (`Prometheus`, `Hermes-subagent`, `Oracle-subagent`, `Sisyphus-subagent`, `Afrodita-subagent`, `Themis Subagent`, `Argus - QA Testing Subagent`, `HEPHAESTUS`).
 3. Confirm subagent files exist under `.github/agents`.
 
 If the flow-selection demo seems wrong:

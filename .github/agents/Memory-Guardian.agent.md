@@ -1,6 +1,6 @@
 ---
 name: Memory-Guardian
-description: Capture, compress, and retrieve the shared agent memory system. Manages session-memory.md, decision-log.md, and the MCP knowledge graph for the full runtime.
+description: Capture, compress, and retrieve the shared agent memory system. Manages session-memory.md, decision-log.md, and the mcp-backed knowledge graph for the full runtime.
 user-invocable: false
 argument-hint: "<capture|retrieve|compress> memory for session <ID>. Use mode: capture|retrieve|compress."
 model: "Claude Sonnet 4.6 (copilot)"
@@ -28,7 +28,7 @@ The system maintains three persistent memory levels that any agent may consult w
 ### `capture` — Write memory
 - Extract key decisions, architectural choices, and in-progress state from the provided context.
 - Append to the appropriate level file.
-- Update the knowledge graph via `mcp` tool if entities or relations changed.
+- Update the knowledge graph through the workspace-configured MCP memory integration when the host runtime exposes MCP access.
 
 ### `retrieve` — Read memory
 - Return relevant context from all three levels for the given topic or session ID.
@@ -43,5 +43,6 @@ The system maintains three persistent memory levels that any agent may consult w
 
 - Never delete Level 2 or Level 3 entries — only append.
 - Level 1 entries older than 24h should be compressed on the next `capture` call.
-- When MCP is not configured, operate on Level 1 and Level 2 files only and note the limitation.
+- **Level 3 (MCP knowledge graph):** `.vscode/mcp.json` is present and configures `@modelcontextprotocol/server-memory`. This agent documents MCP-backed behavior, but the current editor validator does not allow an `mcp` frontmatter tool declaration here. Use Level 3 operations only when the host runtime exposes MCP access; otherwise operate in degraded file-backed mode.
+- When the MCP server is unreachable at runtime, fall back to Level 1 and Level 2 files and note the degraded mode in the capture output.
 - Keep Level 2 entries concise: decision context + choice + rationale (max 5 lines each).

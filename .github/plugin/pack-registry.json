@@ -3,15 +3,15 @@
   "packs": [
     {
       "id": "canonical-root",
-      "name": "Atlas Orchestration (Default Runtime Surface)",
+      "name": "Zeus Orchestration (Default Runtime Surface)",
       "installPath": ".github/agents",
       "shipped": true,
       "defaultActive": true,
       "marketplacePublished": false,
       "activationPath": null,
-      "conductor": "Atlas",
+      "conductor": "Zeus",
       "stability": "stable",
-      "notes": "Default-active workspace runtime surface for this clone. Root .github/agents is the authoritative operational path and includes compatibility aliases plus shipped hidden agent definitions used by the runtime and validators. Legacy id retained for compatibility."
+      "notes": "Default-active workspace runtime surface for this clone. Root .github/agents is the authoritative operational path and includes compatibility aliases plus shipped hidden agent definitions used by the runtime and validators. Zeus is the visible Layer-0 conductor; legacy pack id retained for compatibility."
     },
     {
       "id": "atlas-orchestration-team",
@@ -21,9 +21,9 @@
       "defaultActive": false,
       "marketplacePublished": true,
       "activationPath": "plugins/atlas-orchestration-team/agents",
-      "conductor": "Atlas",
+      "conductor": "Zeus",
       "stability": "stable",
-      "notes": "Distribution/marketplace placeholder for the shared Atlas pack. In this clone, the active authoring and runtime surface remains .github/agents; this plugin path is retained for compatibility and future reintroduction of a standalone agents folder."
+      "notes": "Distribution/marketplace placeholder for the shared Zeus runtime pack. In this clone, the active authoring and runtime surface remains .github/agents; this plugin path is retained for compatibility and future reintroduction of a standalone agents folder."
     },
     {
       "id": "frontend-workflow",

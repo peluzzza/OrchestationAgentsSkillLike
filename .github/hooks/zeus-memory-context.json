@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "SubagentStart": [
+      {
+        "type": "command",
+        "command": "python3 scripts/sync_memory_context.py",
+        "timeout": 10
+      }
+    ]
+  }
+}

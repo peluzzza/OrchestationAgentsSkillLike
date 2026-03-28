@@ -48,7 +48,7 @@ Sisyphus provides:
      | ux.md       | 12    | 12        | 0          | ✓ PASS |
      | security.md | 6     | 5         | 1          | ✗ FAIL |
      ```
-   - **FAIL**: If any checklist has incomplete items — STOP and escalate to Sisyphus/Atlas with the failing checklist summary before continuing.
+   - **FAIL**: If any checklist has incomplete items — STOP and escalate to Sisyphus/Zeus with the failing checklist summary before continuing.
    - **PASS**: All checklists complete — proceed automatically.
 
 3. **Load implementation context**:

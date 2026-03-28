@@ -1,6 +1,6 @@
 # Memory System
 
-Multi-level persistent memory management pack. Provides session memory, decision log, and MCP knowledge graph capabilities to the Prometheus planning god.
+Multi-level persistent memory management pack. Provides session memory, decision log, and MCP knowledge graph maintenance for the shared runtime memory surface.
 
 ## Architecture
 
@@ -22,16 +22,16 @@ Prometheus (L1 God — Planning + Specification)
 
 | Agent | Role | Invoked By |
 |-------|------|-----------|
-| **Memory-Guardian** | Capture, retrieve, and compress agent memory | Prometheus |
+| **Memory-Guardian** | Capture, retrieve, and compress agent memory | Prometheus (explicit maintenance flows) |
 
 ## Prerequisites
 
-- Level 3 (MCP knowledge graph) requires `@modelcontextprotocol/server-memory` configured in `.vscode/mcp.json`.
+- Level 3 (MCP knowledge graph) requires `@modelcontextprotocol/server-memory` configured in `.vscode/mcp.json`. **`.vscode/mcp.json` is now present in this repository** — run `npx -y @modelcontextprotocol/server-memory` to verify the server is available.
 - Levels 1 and 2 work with local markdown files only.
 
 ## Usage
 
-This pack is invoked by the `Prometheus` canonical god agent. It is not user-invocable.
+This pack is invoked by `Prometheus` for explicit maintenance flows. Zeus consumes the derived hook-refreshed snapshot at `.specify/memory/zeus-context.md` instead of delegating directly to Memory-Guardian. It is not user-invocable.
 
 Enable in `.vscode/settings.json`:
 ```json

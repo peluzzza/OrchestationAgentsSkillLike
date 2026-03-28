@@ -145,16 +145,16 @@ class TestOrphanDetection:
 
 class TestAtlasRules:
     def test_atlas_layer_0_valid(self, tmp_path: Path) -> None:
-        """Atlas with ``<!-- layer: 0 -->`` → valid, no violation."""
+        """Legacy Atlas alias at ``<!-- layer: 0 -->`` → valid, no root-layer violation."""
         p = _write_agent(tmp_path, "Atlas.agent.md", "Atlas", "<!-- layer: 0 -->")
         _, violations = validate([p])
-        assert not any("ATLAS LAYER ERROR" in v for v in violations)
+        assert not any("ROOT LAYER ERROR" in v for v in violations)
 
     def test_atlas_layer_1_violation(self, tmp_path: Path) -> None:
-        """Atlas with ``<!-- layer: 1 -->`` → violation."""
+        """Legacy Atlas alias at ``<!-- layer: 1 -->`` → root-layer violation."""
         p = _write_agent(tmp_path, "Atlas.agent.md", "Atlas", "<!-- layer: 1 -->")
         _, violations = validate([p])
-        assert any("ATLAS LAYER ERROR" in v for v in violations)
+        assert any("ROOT LAYER ERROR" in v for v in violations)
 
     def test_atlas_agents_list_l1_only_no_violation(self, tmp_path: Path) -> None:
         """Atlas ``agents:`` list with only L1 agents → no L0→L2 violation."""
@@ -207,7 +207,7 @@ class TestL1Rules:
         """A non-Atlas L0 agent (rare) should not trigger the Atlas-name rule."""
         p = _write_agent(tmp_path, "Conductor.agent.md", "Conductor", "<!-- layer: 0 -->")
         _, violations = validate([p])
-        assert not any("ATLAS LAYER ERROR" in v for v in violations)
+        assert not any("ROOT LAYER ERROR" in v for v in violations)
 
     def test_alias_with_correct_layer_valid(self, tmp_path: Path) -> None:
         """Alias agent at layer 1 with correct comment → no orphan."""

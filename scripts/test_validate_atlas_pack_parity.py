@@ -79,9 +79,9 @@ class TestCheckRootAgents(unittest.TestCase):
     def test_fails_on_missing_agent(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._make_root(tmp)
-            _write_agents(root, validator.ALL_AGENTS - {"Atlas.agent.md"})
+            _write_agents(root, validator.ALL_AGENTS - {"Zeus.agent.md"})
             errors = validator.check_root_agents(root)
-            self.assertTrue(any("Atlas.agent.md" in e and "agent missing" in e for e in errors), errors)
+            self.assertTrue(any("Zeus.agent.md" in e and "agent missing" in e for e in errors), errors)
 
     def test_fails_on_unexpected_extra_file(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -95,9 +95,9 @@ class TestCheckRootAgents(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._make_root(tmp)
             _write_agents(root, validator.ALL_AGENTS)
-            (root / "Atlas.agent.md").write_text(_INVALID_MD)
+            (root / "Zeus.agent.md").write_text(_INVALID_MD)
             errors = validator.check_root_agents(root)
-            self.assertTrue(any("Atlas.agent.md" in e and "frontmatter" in e for e in errors), errors)
+            self.assertTrue(any("Zeus.agent.md" in e and "frontmatter" in e for e in errors), errors)
 
     def test_passes_with_crlf_frontmatter(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -114,7 +114,7 @@ class TestCheckRootAgents(unittest.TestCase):
     def test_error_count_for_multiple_missing(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._make_root(tmp)
-            subset = validator.ALL_AGENTS - {"Atlas.agent.md", "Clio.agent.md", "Argus.agent.md"}
+            subset = validator.ALL_AGENTS - {"Zeus.agent.md", "Clio.agent.md", "Argus.agent.md"}
             _write_agents(root, subset)
             errors = validator.check_root_agents(root)
             missing = [e for e in errors if "agent missing" in e]
@@ -168,5 +168,5 @@ class TestEdgeCases(unittest.TestCase):
     def test_canonical_shared_alias_still_works(self):
         self.assertIs(validator.CANONICAL_SHARED, validator.ALL_AGENTS)
 
-    def test_root_only_is_empty(self):
-        self.assertEqual(validator.ROOT_ONLY, frozenset())
+    def test_root_only_contains_atlas_compat(self):
+        self.assertEqual(validator.ROOT_ONLY, frozenset({"Atlas.agent.md"}))

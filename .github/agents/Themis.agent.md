@@ -12,7 +12,7 @@ tools:
   - search
 handoffs:
   - label: Request Revision
-    agent: Atlas
+    agent: Zeus
     prompt: The implementation has issues. Please revise the code according to the feedback provided in the review.
 ---
 <!-- layer: 1 | domain: Code Review + Quality Gate -->
@@ -56,4 +56,4 @@ You are a review subagent called after an implementation phase completes.
 **Residual Risks / Testing Gaps:**
 - {Even when APPROVED, call out paths not covered by existing tests}
 
-**Next Step:** {What Atlas should do next — continue, request revision, or escalate}
+**Next Step:** {What Zeus should do next — continue, request revision, or escalate}

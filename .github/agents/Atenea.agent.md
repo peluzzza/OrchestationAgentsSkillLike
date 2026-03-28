@@ -13,7 +13,7 @@ tools:
   - execute
 handoffs:
   - label: Return Atenea Findings
-    agent: Atlas
+    agent: Zeus
     prompt: Atenea review completed. Evaluate the findings and decide whether the phase can proceed.
 ---
 <!-- layer: 1 | domain: Security + Safety -->
@@ -51,7 +51,7 @@ Findings:
 Secrets Scan: CLEAN | FLAGGED (list any detected secrets or false-positive notes)
 Dependency Risk: CLEAN | FLAGGED (list packages/images flagged)
 Recommendations: <prioritized remediation steps>
-Next Steps: <what Atlas should do based on status>
+Next Steps: <what Zeus should do based on status>
 ```
 
 Severity levels: CRITICAL, HIGH, MEDIUM, LOW.

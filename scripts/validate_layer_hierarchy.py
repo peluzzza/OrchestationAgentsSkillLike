@@ -10,7 +10,8 @@ For each file the YAML frontmatter and the first ``<!-- layer: N -->`` comment
 Enforced rules
 --------------
 1. Every agent must declare a layer comment — missing ones are flagged ORPHAN.
-2. The ``Atlas`` agent (``name: Atlas``) must be layer 0.
+2. The root conductor (``name: Zeus``; legacy ``Atlas`` tolerated in tests)
+    must be layer 0.
 3. No L0 agent's ``agents:`` list may reference an agent assigned layer 2.
 4. No L1 agent's ``agents:`` list may reference an agent assigned layer 0.
 
@@ -45,8 +46,13 @@ _RUNTIME_CONTRACT_RE = re.compile(r"<!--\s*runtime-contract\s*(.*?)-->")
 # Keys "request"/"response" hold frozensets of required field names.
 # All other keys hold exact expected string values for the contract fields.
 
+_ROOT_CONDUCTOR = "Zeus"
+_ROOT_CONDUCTOR_ALIASES = frozenset({"Atlas", "Zeus"})
+_ROOT_ROUTING_ALIASES = frozenset({"Atlas", "Zeus"})
+
+
 _STABLE_RUNTIME_AGENTS: dict[str, dict] = {
-    "Atlas": {
+    "Zeus": {
         "version": "stable-runtime-v1",
         "role": "conductor",
         "layer": "0",
@@ -65,20 +71,26 @@ _STABLE_RUNTIME_AGENTS: dict[str, dict] = {
         "version": "stable-runtime-v1",
         "role": "planner",
         "layer": "1",
-        "accepts": "Atlas",
-        "returns": "Atlas",
+        "accepts": _ROOT_ROUTING_ALIASES,
+        "returns": _ROOT_ROUTING_ALIASES,
         "request": frozenset({"goal", "tech_stack", "feature_id", "plan_dir"}),
-        "response": frozenset({
-            "feature_id", "feature_dir", "spec_path", "plan_path",
-            "analysis_report", "specify_pipeline_status", "open_questions", "atlas_notes",
-        }),
+        "response_any_of": (
+            frozenset({
+                "feature_id", "feature_dir", "spec_path", "plan_path",
+                "analysis_report", "specify_pipeline_status", "open_questions", "atlas_notes",
+            }),
+            frozenset({
+                "feature_id", "feature_dir", "spec_path", "plan_path",
+                "analysis_report", "specify_pipeline_status", "open_questions", "zeus_notes",
+            }),
+        ),
     },
     "Sisyphus-subagent": {
         "version": "stable-runtime-v1",
         "role": "implementer",
         "layer": "1",
-        "accepts": "Atlas",
-        "returns": "Atlas",
+        "accepts": _ROOT_ROUTING_ALIASES,
+        "returns": _ROOT_ROUTING_ALIASES,
         "request": frozenset({"feature_id", "phase", "acceptance_criteria", "constraints"}),
         "response": frozenset({
             "status", "scope_completed", "feature_id", "files_changed", "tests_added",
@@ -89,8 +101,8 @@ _STABLE_RUNTIME_AGENTS: dict[str, dict] = {
         "version": "stable-runtime-v1",
         "role": "ui_implementer",
         "layer": "1",
-        "accepts": "Atlas",
-        "returns": "Atlas",
+        "accepts": _ROOT_ROUTING_ALIASES,
+        "returns": _ROOT_ROUTING_ALIASES,
         "request": frozenset({"ui_scope", "component_patterns", "design_tokens", "acceptance_criteria"}),
         "response": frozenset({
             "status", "scope_completed", "files_changed", "ui_states_covered",
@@ -101,8 +113,8 @@ _STABLE_RUNTIME_AGENTS: dict[str, dict] = {
         "version": "stable-runtime-v1",
         "role": "reviewer",
         "layer": "1",
-        "accepts": "Atlas",
-        "returns": "Atlas",
+        "accepts": _ROOT_ROUTING_ALIASES,
+        "returns": _ROOT_ROUTING_ALIASES,
         "request": frozenset({"phase_objective", "acceptance_criteria", "files_changed"}),
         "response": frozenset({
             "status", "summary", "strengths", "issues_found",
@@ -113,8 +125,8 @@ _STABLE_RUNTIME_AGENTS: dict[str, dict] = {
         "version": "stable-runtime-v1",
         "role": "qa_specialist",
         "layer": "1",
-        "accepts": "Atlas",
-        "returns": "Atlas",
+        "accepts": _ROOT_ROUTING_ALIASES,
+        "returns": _ROOT_ROUTING_ALIASES,
         "request": frozenset({"phase_objective", "modified_files", "existing_tests"}),
         "response": frozenset({
             "status", "summary", "coverage_analysis", "edge_cases_discovered",
@@ -161,8 +173,8 @@ _OPTIONAL_RUNTIME_AGENTS: dict[str, dict] = {
         "version": "stable-runtime-v1",
         "role": "ops_specialist",
         "layer": "1",
-        "accepts": "Atlas",
-        "returns": "Atlas",
+        "accepts": _ROOT_ROUTING_ALIASES,
+        "returns": _ROOT_ROUTING_ALIASES,
         "session": "inherited",
         "trace": "required",
         "request": frozenset({"mode", "scope", "environment", "context"}),
@@ -181,6 +193,74 @@ _OPTIONAL_RUNTIME_AGENTS: dict[str, dict] = {
 
 def _normalize(text: str) -> str:
     return text.lstrip("\ufeff").replace("\r\n", "\n").replace("\r", "\n")
+
+
+def _canonical_agent_name(name: str | None) -> str | None:
+    if name in _ROOT_CONDUCTOR_ALIASES:
+        return _ROOT_CONDUCTOR
+    return name
+
+
+def _declared_contract_fields(contract: dict[str, str], field: str) -> set[str]:
+    return {value.strip() for value in contract.get(field, "").split(",") if value.strip()}
+
+
+def _check_contract_scalar_field(
+    rec: AgentRecord,
+    field: str,
+    got: str | None,
+    expected: object,
+    violations: list[str],
+) -> None:
+    if isinstance(expected, (set, frozenset, tuple, list)):
+        if got not in expected:
+            violations.append(
+                f"RUNTIME CONTRACT FIELD: {rec.path} | "
+                f"'{rec.name}' field '{field}': expected one of {sorted(expected)!r}, got '{got}'"
+            )
+        return
+    if got != expected:
+        violations.append(
+            f"RUNTIME CONTRACT FIELD: {rec.path} | "
+            f"'{rec.name}' field '{field}': expected '{expected}', got '{got}'"
+        )
+
+
+def _check_required_contract_fields(
+    rec: AgentRecord,
+    contract: dict[str, str],
+    field: str,
+    required: frozenset[str],
+    violations: list[str],
+) -> None:
+    if not required:
+        return
+    declared = _declared_contract_fields(contract, field)
+    missing = required - declared
+    if missing:
+        violations.append(
+            f"RUNTIME CONTRACT {field.upper()} FIELDS: {rec.path} | "
+            f"'{rec.name}' missing {field} fields: {', '.join(sorted(missing))}"
+        )
+
+
+def _check_response_contract_variants(
+    rec: AgentRecord,
+    contract: dict[str, str],
+    response_any_of: tuple[frozenset[str], ...],
+    violations: list[str],
+) -> bool:
+    if not response_any_of:
+        return False
+    declared = _declared_contract_fields(contract, "response")
+    if any(not (required_set - declared) for required_set in response_any_of):
+        return True
+    expected_sets = [", ".join(sorted(required_set)) for required_set in response_any_of]
+    violations.append(
+        f"RUNTIME CONTRACT RESPONSE FIELDS: {rec.path} | "
+        f"'{rec.name}' response must satisfy one of: {' || '.join(expected_sets)}"
+    )
+    return True
 
 
 def _collect_agent_files() -> list[Path]:
@@ -328,34 +408,28 @@ def _check_runtime_contract(
         expected = spec.get(field)
         if expected is None:
             continue
-        got = contract.get(field)
-        if got != expected:
-            violations.append(
-                f"RUNTIME CONTRACT FIELD: {rec.path} | "
-                f"'{rec.name}' field '{field}': expected '{expected}', got '{got}'"
-            )
+        _check_contract_scalar_field(rec, field, contract.get(field), expected, violations)
 
     # Check required request fields.
-    required_req: frozenset[str] = spec.get("request", frozenset())
-    if required_req:
-        declared_req = {f.strip() for f in contract.get("request", "").split(",") if f.strip()}
-        missing = required_req - declared_req
-        if missing:
-            violations.append(
-                f"RUNTIME CONTRACT REQUEST FIELDS: {rec.path} | "
-                f"'{rec.name}' missing request fields: {', '.join(sorted(missing))}"
-            )
+    _check_required_contract_fields(
+        rec,
+        contract,
+        "request",
+        spec.get("request", frozenset()),
+        violations,
+    )
 
     # Check required response fields.
-    required_resp: frozenset[str] = spec.get("response", frozenset())
-    if required_resp:
-        declared_resp = {f.strip() for f in contract.get("response", "").split(",") if f.strip()}
-        missing = required_resp - declared_resp
-        if missing:
-            violations.append(
-                f"RUNTIME CONTRACT RESPONSE FIELDS: {rec.path} | "
-                f"'{rec.name}' missing response fields: {', '.join(sorted(missing))}"
-            )
+    response_any_of: tuple[frozenset[str], ...] = tuple(spec.get("response_any_of", ()))
+    if _check_response_contract_variants(rec, contract, response_any_of, violations):
+        return
+    _check_required_contract_fields(
+        rec,
+        contract,
+        "response",
+        spec.get("response", frozenset()),
+        violations,
+    )
 
 
 def _check_layer_rules(
@@ -366,14 +440,14 @@ def _check_layer_rules(
         violations.append(f"ORPHAN: {rec.path}")
         return
 
-    if rec.name == "Atlas" and rec.layer != 0:
+    if _canonical_agent_name(rec.name) == _ROOT_CONDUCTOR and rec.layer != 0:
         violations.append(
-            f"ATLAS LAYER ERROR: {rec.path} | expected layer 0, got {rec.layer}"
+            f"ROOT LAYER ERROR: {rec.path} | expected layer 0 for {_ROOT_CONDUCTOR}, got {rec.layer}"
         )
 
     if rec.layer == 0:
         for agent_name in rec.agents_list:
-            if name_to_layer.get(agent_name) == 2:
+            if name_to_layer.get(_canonical_agent_name(agent_name)) == 2:
                 violations.append(
                     f"L0→L2 VIOLATION: {rec.path} | "
                     f"L0 agent references L2 agent '{agent_name}'"
@@ -381,7 +455,7 @@ def _check_layer_rules(
 
     if rec.layer == 1:
         for agent_name in rec.agents_list:
-            if name_to_layer.get(agent_name) == 0:
+            if name_to_layer.get(_canonical_agent_name(agent_name)) == 0:
                 violations.append(
                     f"L1→L0 VIOLATION: {rec.path} | "
                     f"L1 agent references L0 agent '{agent_name}'"
@@ -392,7 +466,11 @@ def _check_stable_agent_completeness(
     records: list[AgentRecord], violations: list[str]
 ) -> None:
     """Require the full stable runtime set when any stable agent is present."""
-    found_stable_names = {rec.name for rec in records if rec.name in _STABLE_RUNTIME_AGENTS}
+    found_stable_names = {
+        _canonical_agent_name(rec.name)
+        for rec in records
+        if _canonical_agent_name(rec.name) in _STABLE_RUNTIME_AGENTS
+    }
     if not found_stable_names:
         return
 
@@ -415,18 +493,20 @@ def validate(files: list[Path]) -> tuple[list[AgentRecord], list[str]]:
     # Build name→layer map for cross-agent checks.
     name_to_layer: dict[str, int] = {}
     for rec in records:
-        if rec.name and rec.layer is not None:
-            name_to_layer[rec.name] = rec.layer
+        canonical_name = _canonical_agent_name(rec.name)
+        if canonical_name and rec.layer is not None:
+            name_to_layer[canonical_name] = rec.layer
 
     violations: list[str] = []
 
     for rec in records:
         _check_layer_rules(rec, name_to_layer, violations)
-        if rec.name in _STABLE_RUNTIME_AGENTS:
-            _check_runtime_contract(rec, _STABLE_RUNTIME_AGENTS[rec.name], violations)
-        elif rec.name in _OPTIONAL_RUNTIME_AGENTS:
+        canonical_name = _canonical_agent_name(rec.name)
+        if canonical_name in _STABLE_RUNTIME_AGENTS:
+            _check_runtime_contract(rec, _STABLE_RUNTIME_AGENTS[canonical_name], violations)
+        elif canonical_name in _OPTIONAL_RUNTIME_AGENTS:
             # Optional agents: validate when present, no completeness coupling.
-            _check_runtime_contract(rec, _OPTIONAL_RUNTIME_AGENTS[rec.name], violations)
+            _check_runtime_contract(rec, _OPTIONAL_RUNTIME_AGENTS[canonical_name], violations)
 
     _check_stable_agent_completeness(records, violations)
 

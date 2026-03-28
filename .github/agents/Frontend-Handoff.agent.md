@@ -16,7 +16,7 @@ Responsibilities:
 - Collect the brief, flow maps, critique, and accessibility review.
 - Produce one handoff document with artefact paths and open issues.
 - Flag any API endpoints that must be designed before implementation.
-- Prepare the handoff for Afrodita (frontend implementation) or Atlas (API contract follow-up).
+- Prepare the handoff for Afrodita (frontend implementation) or Backend-Atlas / Zeus (API contract or orchestration follow-up).
 
 Limits:
 - Do not implement components — that is Afrodita's role.
@@ -29,7 +29,7 @@ Produce `plans/ux/<task>-handoff.md` with:
 - Artefact index (brief, flows, critique, a11y review) with paths
 - Open issues requiring resolution before or during implementation
 - API endpoints flagged by User-Flow-Designer
-- Recommended handoff target (Afrodita and/or Atlas)
+- Recommended handoff target (Afrodita, Backend-Atlas, and/or Zeus)
 - Memory note: shared Specify memory is available across the runtime when mounted. When this workflow uses it, the invoking conductor should record accepted spec decisions in the declared decision log after handoff is accepted.
 
-Return `HANDOFF_READY: <path>` to Atlas with the recommended handoff target (`Afrodita` and/or `Atlas` for API follow-up).
+Return `HANDOFF_READY: <path>` to UX-Atlas with the recommended handoff target (`Afrodita`, `Backend-Atlas`, and/or `Zeus` for broader follow-up).

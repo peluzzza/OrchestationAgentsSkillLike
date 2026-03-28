@@ -13,7 +13,7 @@ tools:
   - read/problems
 handoffs:
   - label: Return Operations Findings
-    agent: Atlas
+    agent: Zeus
     prompt: Task complete. Review the results and decide the next step.
 ---
 <!-- layer: 1 | domain: Infrastructure + DevOps + Automation -->
@@ -58,7 +58,7 @@ Verify dependencies, images, configs, secrets, manifests, health endpoints, and 
 3. **Deploy** — Apply manifests or run release pipeline, monitor rollout progress
 4. **Post-Deploy Validate** — Health checks, logs, smoke tests, performance baseline
 5. **Troubleshoot** — CrashLoopBackOff, networking, config errors, resource exhaustion, or stalled rollouts
-6. **Rollback** — Attempt a safe preview step where the tool supports it; document root cause, notify Atlas
+6. **Rollback** — Attempt a safe preview step where the tool supports it; document root cause, notify Zeus
 
 ## Operations Support
 
@@ -93,7 +93,7 @@ Every response must start with these two lines, in this order:
 - Required Commands: ordered and minimal
 - Artifacts to Verify
 - Blockers / Risks
-- Release Readiness: `READY` | `NEEDS_WORK` — when `NEEDS_WORK`, list each blocker explicitly so Atlas can route it to the responsible agent
+- Release Readiness: `READY` | `NEEDS_WORK` — when `NEEDS_WORK`, list each blocker explicitly so Zeus can route it to the responsible agent
 
 **Performance / Maintenance:**
 - **Maintenance Status:** `COMPLETED` | `PARTIALLY_APPLIED` | `BLOCKED` | `FAILED`
@@ -107,7 +107,7 @@ Every response must start with these two lines, in this order:
 
 - Always validate configs before applying (`--dry-run` where supported)
 - Take the smallest safe, reversible action first; expand only when evidence demands it
-- **Irreversible operations (delete, prune, drop, purge):** the smallest-safe-reversible-action rule does NOT override caution here. Always run a dry-run or preview step first. If a destructive action requires confirmation (no preview available, or side effects are permanent across services), stop and hand off to Atlas rather than proceeding autonomously.
+- **Irreversible operations (delete, prune, drop, purge):** the smallest-safe-reversible-action rule does NOT override caution here. Always run a dry-run or preview step first. If a destructive action requires confirmation (no preview available, or side effects are permanent across services), stop and hand off to Zeus rather than proceeding autonomously.
 - Prioritize zero-downtime deployments
 - Document manual interventions
 - Follow `copilot-instructions.md` or `AGENTS.md` conventions found in the repo

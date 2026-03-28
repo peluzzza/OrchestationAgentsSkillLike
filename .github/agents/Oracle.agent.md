@@ -15,7 +15,7 @@ tools:
   - web/fetch
 handoffs:
   - label: Return Findings
-    agent: Atlas
+    agent: Zeus
     prompt: Research complete. Review the findings and decide the next step.
 ---
 <!-- layer: 1 | domain: Requirements + Architecture Research -->
@@ -56,4 +56,4 @@ You are a research specialist subagent called by a conductor. Gather context and
 - **Skill Hints:** skills subagents should load for this work (e.g., `golang-patterns`, `python-dev`); omit if none clearly apply
 - **Open Questions:** unresolved items blocking implementation
 
-Keep output concise, structured, and actionable for Atlas.
+Keep output concise, structured, and actionable for Zeus.

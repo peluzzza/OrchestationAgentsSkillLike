@@ -2,7 +2,9 @@
 description: QA verification agent — targeted test execution, coverage analysis, edge-case discovery, and failure triage.
 name: Argus
 argument-hint: Verify this phase by running the smallest relevant checks first, expanding only when needed.
-model: "Claude Sonnet 4.6 (copilot)"
+model: 
+  - GPT-5.3-Codex (copilot)
+  - Claude Sonnet 4.6 (copilot)
 user-invocable: false
 tools:
   - agent
@@ -12,6 +14,10 @@ tools:
   - search/changes
   - read/problems
   - execute/testFailure
+handoffs: 
+  - label: Return QA findings to Zeus
+    agent: Zeus
+    prompt: QA testing complete. If FAILED or NEEDS_MORE_TESTS, route back to Sisyphus for fixes. If PASSED, advance the phase or close.
 ---
 <!-- layer: 1 | domain: QA + Testing -->
 
@@ -81,7 +87,7 @@ Run a broader suite to detect unintended side effects on neighbouring code.
 **Additional Tests Recommended:**
 - `{test_name}` — {one-line rationale}
 
-**Next Steps for Atlas:**
+**Next Steps for Zeus:**
 - `PASSED` → proceed to commit / code review
 - `NEEDS_MORE_TESTS` → add listed tests before merging
 - `FAILED` → fix listed failures; re-invoke Argus after fix

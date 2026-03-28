@@ -32,7 +32,7 @@ ROOT_AGENTS_DIR = REPO_ROOT / ".github" / "agents"
 ALL_AGENTS: frozenset[str] = frozenset(
     {
         # Layer 0 — Conductor
-        "Atlas.agent.md",
+        "Zeus.agent.md",
         # Layer 1 — Domain gods
         "Afrodita-UX.agent.md",
         "Argus.agent.md",
@@ -127,7 +127,7 @@ ALL_AGENTS: frozenset[str] = frozenset(
 
 # Keep these names for backwards-compat with any external tooling
 CANONICAL_SHARED = ALL_AGENTS
-ROOT_ONLY: frozenset[str] = frozenset()
+ROOT_ONLY: frozenset[str] = frozenset({"Atlas.agent.md"})
 
 # Frontmatter pattern — tolerant of leading BOM and CRLF line endings.
 _FRONTMATTER_RE = re.compile(
@@ -169,7 +169,7 @@ def check_root_agents(root_dir: Path) -> list[str]:
         if name not in present:
             errors.append(f"root: agent missing -> {name}")
 
-    for name in sorted(present - ALL_AGENTS):
+    for name in sorted(present - ALL_AGENTS - ROOT_ONLY):
         errors.append(f"root: unexpected file -> {name}")
 
     # Frontmatter sanity check for every present agent file
@@ -181,12 +181,12 @@ def check_root_agents(root_dir: Path) -> list[str]:
     return errors
 
 
-def check_source_agents(source_dir: Path) -> list[str]:  # noqa: ARG001
+def check_source_agents(_source_dir: Path) -> list[str]:
     """Kept for backwards-compat — source pack no longer exists, always returns []."""
     return []
 
 
-def check_shared_content(root_dir: Path, source_dir: Path) -> list[str]:  # noqa: ARG001
+def check_shared_content(_root_dir: Path, _source_dir: Path) -> list[str]:
     """Kept for backwards-compat — source pack no longer exists, always returns []."""
     return []
 
@@ -201,6 +201,7 @@ def run_checks(
     source_dir: Path | None = None,  # kept for backwards-compat, ignored
 ) -> list[str]:
     """Run all agent completeness checks and return a flat list of error strings."""
+    _ = source_dir
     return check_root_agents(root_dir)
 
 

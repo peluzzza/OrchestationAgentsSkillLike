@@ -1,0 +1,34 @@
+hooks:
+  before_specify:
+    - label: Trace before SpecifySpec
+      command: python3 scripts/trace_hook_event.py --hook-event before_specify --parent-agent Prometheus --subagent-name SpecifySpec --status started
+  after_specify:
+    - label: Trace after SpecifySpec
+      command: python3 scripts/trace_hook_event.py --hook-event after_specify --parent-agent Prometheus --subagent-name SpecifySpec --status completed
+  before_plan:
+    - label: Trace before SpecifyPlan
+      command: python3 scripts/trace_hook_event.py --hook-event before_plan --parent-agent Prometheus --subagent-name SpecifyPlan --status started
+  after_plan:
+    - label: Trace after SpecifyPlan
+      command: python3 scripts/trace_hook_event.py --hook-event after_plan --parent-agent Prometheus --subagent-name SpecifyPlan --status completed
+  before_tasks:
+    - label: Trace before SpecifyTasks
+      command: python3 scripts/trace_hook_event.py --hook-event before_tasks --parent-agent Sisyphus-subagent --subagent-name SpecifyTasks --status started
+  after_tasks:
+    - label: Trace after SpecifyTasks
+      command: python3 scripts/trace_hook_event.py --hook-event after_tasks --parent-agent Sisyphus-subagent --subagent-name SpecifyTasks --status completed
+  before_implement:
+    - label: Trace before SpecifyImplement
+      command: python3 scripts/trace_hook_event.py --hook-event before_implement --parent-agent Sisyphus-subagent --subagent-name SpecifyImplement --status started
+  after_implement:
+    - label: Trace after SpecifyImplement
+      command: python3 scripts/trace_hook_event.py --hook-event after_implement --parent-agent Sisyphus-subagent --subagent-name SpecifyImplement --status completed
+  # Shared analyze hook for both Prometheus (SP-5) and Sisyphus-subagent (EX-1).
+  # Prompt-local trace keeps an abstract parent label; workspace hooks remain
+  # the canonical source for the exact caller edge observed by Zeus.
+  before_analyze:
+    - label: Trace before SpecifyAnalyze
+      command: python3 scripts/trace_hook_event.py --hook-event before_analyze --parent-agent parent-agent --subagent-name SpecifyAnalyze --status started
+  after_analyze:
+    - label: Trace after SpecifyAnalyze
+      command: python3 scripts/trace_hook_event.py --hook-event after_analyze --parent-agent parent-agent --subagent-name SpecifyAnalyze --status completed

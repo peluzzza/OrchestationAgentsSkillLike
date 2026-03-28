@@ -14,8 +14,8 @@ tools:
   - web
   - web/fetch
 handoffs:
-  - label: Return findings to Atlas
-    agent: Atlas
+  - label: Return findings to Zeus
+    agent: Zeus
     prompt: Exploration complete. Review the findings and decide the next step.
 agents:
   - Hermes-subagent

@@ -11,7 +11,7 @@ tools:
   - read/problems
 handoffs:
   - label: Return Ariadna Audit
-    agent: Atlas
+    agent: Zeus
     prompt: Dependency audit complete. Review findings and decide on any required upgrades or mitigations.
 ---
 <!-- layer: 1 | domain: Dependency + Package Audit -->
@@ -47,7 +47,7 @@ Summary: <one-paragraph overview>
 Findings:
   - [PRIORITY] <package/image>: <issue description>
 Recommended Actions: <prioritized upgrade or remediation steps>
-Next Steps: <what Atlas should do based on status>
+Next Steps: <what Zeus should do based on status>
 ```
 
 Priority levels: HIGH, MEDIUM, LOW.

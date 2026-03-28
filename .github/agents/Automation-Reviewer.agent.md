@@ -33,7 +33,7 @@ Responsibilities:
 
 Return one of:
 - `APPROVED` - workflow is safe and correct; ready for delivery.
-- `NEEDS_REVISION: <issues>` - return the issue list to Atlas for follow-up routing.
-- `UNSAFE: <critical issue>` - block delivery and escalate to Atlas.
+- `NEEDS_REVISION: <issues>` - return the issue list to Automation-Atlas for follow-up routing.
+- `UNSAFE: <critical issue>` - block delivery and escalate to Automation-Atlas or Zeus when broader intervention is required.
 
 Return the verdict inline to the invoking conductor; do not rely on a static handoff declaration.

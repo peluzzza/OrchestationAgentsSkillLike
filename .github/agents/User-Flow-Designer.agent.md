@@ -20,7 +20,7 @@ Responsibilities:
 - Map primary user journeys as step-by-step flows.
 - Identify decision points, branching paths, and error states.
 - Produce flow diagrams in Mermaid or equivalent text format.
-- Flag any flows that require API endpoints (for Atlas follow-up).
+- Flag any flows that require API endpoints (for Backend-Atlas or Zeus follow-up).
 
 Hard limits:
 - Do not design component internals - that is Afrodita's scope.

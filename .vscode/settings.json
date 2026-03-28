@@ -1,15 +1,5 @@
 {
   "chat.agentFilesLocations": {
-    ".github/agents": true,
-    "plugins/frontend-workflow/agents": true,
-    "plugins/backend-workflow/agents": true,
-    "plugins/devops-workflow/agents": true,
-    "plugins/data-workflow/agents": true,
-    "plugins/automation-mcp-workflow/agents": true,
-    "plugins/ux-enhancement-workflow/agents": true,
-    "plugins/agent-pack-catalog/agents": true,
-    "plugins/qa-workflow/agents": true,
-    "plugins/security-workflow/agents": true,
-    "plugins/memory-system/agents": true
+    ".github/agents": true
   }
 }

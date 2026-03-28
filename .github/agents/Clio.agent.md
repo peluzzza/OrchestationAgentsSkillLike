@@ -13,7 +13,7 @@ tools:
   - read/problems
 handoffs:
   - label: Return Clio Update
-    agent: Atlas
+    agent: Zeus
     prompt: Task complete. Review the results and decide the next step.
 ---
 <!-- layer: 1 | domain: Documentation -->
@@ -48,7 +48,7 @@ Status: UPDATED | SKIPPED | NEEDS_INPUT
 Summary: <one-paragraph overview of changes made>
 Files Updated: <list of files changed>
 Remaining Gaps: <documentation that could not be completed without additional input>
-Next Steps: <what Atlas should do based on status>
+Next Steps: <what Zeus should do based on status>
 ```
 
 Return `UPDATED` when all identified documentation changes are applied. Return `SKIPPED` when no documentation changes are needed (e.g., internal refactoring with no user-visible behavior change). Return `NEEDS_INPUT` when clarification is required to write accurate documentation.
