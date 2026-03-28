@@ -265,15 +265,23 @@ def _payload_from_args(args: argparse.Namespace) -> dict[str, Any]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = _parse_args(sys.argv[1:] if argv is None else argv)
+    programmatic_call = argv is None
+    args = _parse_args([] if programmatic_call else argv)
     payload = _payload_from_args(args)
     if not payload:
         payload = _read_payload_from_stdin()
-    event = record_hook_event(payload, repo_root=args.repo_root)
+    if programmatic_call:
+        event = record_hook_event(payload)
+        ledger_path = trace_ledger_path(event["trace_id"])
+        report_path = trace_report_path(event["trace_id"])
+    else:
+        event = record_hook_event(payload, repo_root=args.repo_root)
+        ledger_path = trace_ledger_path(event["trace_id"], repo_root=args.repo_root)
+        report_path = trace_report_path(event["trace_id"], repo_root=args.repo_root)
     summary = {
         "trace_id": event["trace_id"],
-        "ledger_path": str(trace_ledger_path(event["trace_id"], repo_root=args.repo_root)),
-        "report_path": str(trace_report_path(event["trace_id"], repo_root=args.repo_root)),
+        "ledger_path": str(ledger_path),
+        "report_path": str(report_path),
         "hook_event": event["hook_event"],
         "subagent_name": event["subagent_name"],
     }
@@ -282,4 +290,4 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main(sys.argv[1:]))

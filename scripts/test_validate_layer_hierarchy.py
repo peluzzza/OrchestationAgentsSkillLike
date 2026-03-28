@@ -800,18 +800,23 @@ class TestExtractAgentsList:
             "L0" in v and "L2" in v and "Argus" in v for v in violations
         ), f"Expected L0→L2 violation, got: {violations}"
 
-    def test_unreadable_file_returns_empty_record(self, tmp_path: Path) -> None:
+    def test_unreadable_file_returns_empty_record(self, tmp_path: Path, monkeypatch) -> None:
         """OSError while reading a file → empty AgentRecord without crashing."""
         p = tmp_path / "unreadable.agent.md"
         p.write_text("---\nname: X\n---\n<!-- layer: 1 -->\n", encoding="utf-8")
-        p.chmod(0o000)
-        try:
-            rec = _parse_agent(p)
-            assert rec.name is None
-            assert rec.layer is None
-            assert rec.agents_list == []
-        finally:
-            p.chmod(0o644)  # restore for tmp_path cleanup
+        original_read_text = Path.read_text
+
+        def _raising_read_text(self: Path, *args, **kwargs):
+            if self == p:
+                raise OSError("permission denied")
+            return original_read_text(self, *args, **kwargs)
+
+        monkeypatch.setattr(Path, "read_text", _raising_read_text)
+
+        rec = _parse_agent(p)
+        assert rec.name is None
+        assert rec.layer is None
+        assert rec.agents_list == []
 
 
 # ---------------------------------------------------------------------------

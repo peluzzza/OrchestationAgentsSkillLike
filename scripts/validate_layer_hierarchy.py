@@ -370,6 +370,11 @@ class AgentRecord:
 
 def _parse_agent(path: Path) -> AgentRecord:
     try:
+        # Some test environments (notably Windows) may still allow read_text()
+        # after chmod(0o000). Treat a file with no owner/group/other read bits as
+        # unreadable so the behavior stays deterministic across platforms.
+        if path.stat().st_mode & 0o444 == 0:
+            return AgentRecord(path, None, None, [])
         text = path.read_text(encoding="utf-8")
     except OSError:
         return AgentRecord(path, None, None, [])
